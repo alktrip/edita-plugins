@@ -35,8 +35,9 @@ Las recetas, los parches y los *overlays* tienen la misma licencia que Edita (GP
 
 | Paso | Estado |
 |---|---|
-| Auditoría del catálogo de N++ | ✅ [audit/](audit/): con el SDK actual solo compilan 3 plugins nativos; el bloqueo es la capa de compatibilidad |
-| Capa de compatibilidad v2 en Edita (Unicode, KERNEL32/USER32 básico, clases de la plantilla, diálogos `.rc`), midiendo cada paso con la auditoría | Pendiente |
+| Auditoría del catálogo de N++ | ✅ [audit/](audit/) |
+| Capa de compatibilidad v2, parte 1: Unicode y Win32 sin ventanas | ✅ [fase 51 de Edita](https://github.com/alktrip/edita/blob/main/docs/fase51.md): de 3 a 7 plugins que compilan; ahora el bloqueo son las ventanas |
+| Capa de compatibilidad v2, parte 2: ventanas de la plantilla de N++, paneles acoplables y diálogos `.rc` | Pendiente |
 | Mudar las recetas desde el repositorio de Edita | Pendiente |
 | CI: compilar las recetas por plataforma y publicar la lista firmada | Pendiente |
 | Edita: descargar la lista remota, verificar la firma e instalar los binarios | Pendiente |

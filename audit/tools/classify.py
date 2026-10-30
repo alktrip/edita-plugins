@@ -15,6 +15,8 @@ pl = json.load(open(f'{base}/npl/pl.x64.json', encoding='utf-8-sig'))['npp-plugi
 rows = {r['folder']: r for r in json.load(open(f'{base}/rows.json'))}
 scan = json.load(open(f'{base}/scan.json'))
 dialogs = json.load(open(f'{base}/dialogs.json'))
+# Qué archivos fallaron y si alguno es del núcleo (core.py); opcional
+core = json.load(open(f'{base}/core.json')) if os.path.exists(f'{base}/core.json') else {}
 
 # Ya cubiertos por Edita: fase en la que se hizo
 COVERED = {
@@ -93,6 +95,9 @@ for p in pl:
                else 'compila, pero sus diálogos o ventanas hay que portarlos a Qt')
         if stubs:
             why += ' (con cabeceras vacías: ' + ', '.join(stubs) + ')'
+    elif core.get(key, {}).get('failed') and not core[key]['core_failed']:
+        cls = 'B1'
+        why = 'el núcleo compila; solo fallan los archivos de la interfaz (diálogos, ventanas)'
     else:
         cls = 'B2'
         why = {

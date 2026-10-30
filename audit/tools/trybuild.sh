@@ -20,7 +20,7 @@ project(Try C CXX)
 set(EDITA_PLUGIN_SDK $ED/plugin-sdk)
 set(EDITA_SCINTILLA_INCLUDE $ED/third_party/scintilla/include)
 include(\${EDITA_PLUGIN_SDK}/cmake/EditaNppPlugin.cmake)
-edita_npp_plugin(try SOURCES $(echo $SRCS) INCLUDES $(echo $INCS) $W/stubs $ED/third_party/lexilla/include)
+edita_npp_plugin(try UNICODE SOURCES $(echo $SRCS) INCLUDES $(echo $INCS) $W/stubs $ED/third_party/lexilla/include)
 target_link_options(try PRIVATE -Wl,--no-undefined)
 CM
 cd $W
