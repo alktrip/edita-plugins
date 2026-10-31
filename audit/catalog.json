@@ -116,10 +116,10 @@
   "symbols": [
    "STDMETHODIMP",
    "REBARBANDINFO",
-   "WNDCLASSEX",
    "pAccess",
    "s_",
-   "BITMAPINFOHEADER"
+   "BITMAPINFOHEADER",
+   "POINTL"
   ],
   "wide": true,
   "dialogs": 1,
@@ -128,7 +128,7 @@
   "com": false,
   "subclass": false,
   "class": "B2",
-  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: STDMETHODIMP, REBARBANDINFO, WNDCLASSEX, pAccess, s_, BITMAPINFOHEADER",
+  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: STDMETHODIMP, REBARBANDINFO, pAccess, s_, BITMAPINFOHEADER, POINTL",
   "redist": "no (sin licencia declarada)"
  },
  {
@@ -166,21 +166,17 @@
   "archived": false,
   "pushed": "2022-02-09",
   "stars": 45,
-  "build": "compile",
+  "build": "ok",
   "stubs": [],
-  "symbols": [
-   "Sci_TextRange",
-   "SCI_GETTEXTRANGE",
-   "textRange"
-  ],
+  "symbols": [],
   "wide": false,
   "dialogs": 1,
   "loc": 4631,
   "mfc": false,
   "com": false,
   "subclass": false,
-  "class": "B2",
-  "reason": "no compila: necesita un port; faltan: Sci_TextRange, SCI_GETTEXTRANGE, textRange",
+  "class": "A",
+  "reason": "compila con la capa de compatibilidad; como mucho pierde el «Acerca de»",
   "redist": "sí (GPL-3.0)"
  },
  {
@@ -290,24 +286,17 @@
   "archived": false,
   "pushed": "2026-09-23",
   "stars": 0,
-  "build": "compile",
+  "build": "ok",
   "stubs": [],
-  "symbols": [
-   "DefWindowProcW",
-   "WNDCLASSEXW",
-   "windowClass",
-   "RegisterClassExW",
-   "HWND_MESSAGE",
-   "CreateWindowExW"
-  ],
+  "symbols": [],
   "wide": false,
   "dialogs": 0,
   "loc": 5096,
   "mfc": false,
   "com": false,
   "subclass": true,
-  "class": "B2",
-  "reason": "no compila: necesita un port; faltan: DefWindowProcW, WNDCLASSEXW, windowClass, RegisterClassExW, HWND_MESSAGE, CreateWindowExW",
+  "class": "B1",
+  "reason": "compila, pero sus diálogos o ventanas hay que portarlos a Qt",
   "redist": "no (sin licencia declarada)"
  },
  {
@@ -324,12 +313,12 @@
   "build": "compile",
   "stubs": [],
   "symbols": [
-   "GWLP_WNDPROC",
-   "SetWindowLongPtr",
-   "CallWindowProc",
    "hook",
-   "GetProp",
-   "RemoveProp"
+   "SCI_SETLEXERLANGUAGE",
+   "SCI_LOADLEXERLIBRARY",
+   "UnhookWindowsHookEx",
+   "PtInRect",
+   "Edit_SetText"
   ],
   "wide": false,
   "dialogs": 1,
@@ -338,7 +327,7 @@
   "com": false,
   "subclass": false,
   "class": "B2",
-  "reason": "no compila: necesita un port; faltan: GWLP_WNDPROC, SetWindowLongPtr, CallWindowProc, hook, GetProp, RemoveProp",
+  "reason": "no compila: necesita un port; faltan: hook, SCI_SETLEXERLANGUAGE, SCI_LOADLEXERLIBRARY, UnhookWindowsHookEx, PtInRect, Edit_SetText",
   "redist": "sí (GPL-2.0)"
  },
  {
@@ -357,12 +346,12 @@
    "shobjidl.h"
   ],
   "symbols": [
-   "IMAGE_BITMAP",
-   "LR_DEFAULTSIZE",
-   "LR_LOADMAP3DCOLORS",
    "COINIT_APARTMENTTHREADED",
    "COINIT_DISABLE_OLE1DDE",
-   "CoInitializeEx"
+   "CoInitializeEx",
+   "IFileOpenDialog",
+   "pFileOpen",
+   "CLSID_FileOpenDialog"
   ],
   "wide": true,
   "dialogs": 2,
@@ -371,7 +360,7 @@
   "com": true,
   "subclass": false,
   "class": "B2",
-  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: IMAGE_BITMAP, LR_DEFAULTSIZE, LR_LOADMAP3DCOLORS, COINIT_APARTMENTTHREADED, COINIT_DISABLE_OLE1DDE, CoInitializeEx",
+  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: COINIT_APARTMENTTHREADED, COINIT_DISABLE_OLE1DDE, CoInitializeEx, IFileOpenDialog, pFileOpen, CLSID_FileOpenDialog",
   "redist": "sí (GPL-2.0)"
  },
  {
@@ -389,11 +378,11 @@
   "stubs": [],
   "symbols": [
    "SHGetKnownFolderPath",
-   "CreateThread",
    "MEM_RESERVE",
    "MEM_COMMIT",
    "PAGE_READWRITE",
-   "VirtualAlloc"
+   "VirtualAlloc",
+   "FOLDERID_RoamingAppData"
   ],
   "wide": true,
   "dialogs": 0,
@@ -402,7 +391,7 @@
   "com": false,
   "subclass": false,
   "class": "B2",
-  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: SHGetKnownFolderPath, CreateThread, MEM_RESERVE, MEM_COMMIT, PAGE_READWRITE, VirtualAlloc",
+  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: SHGetKnownFolderPath, MEM_RESERVE, MEM_COMMIT, PAGE_READWRITE, VirtualAlloc, FOLDERID_RoamingAppData",
   "redist": "sí (GPL-3.0)"
  },
  {
@@ -467,12 +456,12 @@
   "build": "compile",
   "stubs": [],
   "symbols": [
-   "WS_CHILD",
-   "WS_VISIBLE",
-   "WNDCLASSW",
-   "windowClass",
-   "IDC_ARROW",
-   "COLOR_WINDOW"
+   "BITMAPV5HEADER",
+   "bitmapHeader",
+   "BI_BITFIELDS",
+   "BITMAPINFO",
+   "DIB_RGB_COLORS",
+   "ICONINFO"
   ],
   "wide": false,
   "dialogs": 0,
@@ -481,7 +470,7 @@
   "com": false,
   "subclass": true,
   "class": "B2",
-  "reason": "no compila: necesita un port; faltan: WS_CHILD, WS_VISIBLE, WNDCLASSW, windowClass, IDC_ARROW, COLOR_WINDOW",
+  "reason": "no compila: necesita un port; faltan: BITMAPV5HEADER, bitmapHeader, BI_BITFIELDS, BITMAPINFO, DIB_RGB_COLORS, ICONINFO",
   "redist": "no (sin licencia declarada)"
  },
  {
@@ -639,12 +628,12 @@
    "wininet.h"
   ],
   "symbols": [
-   "PS_SOLID",
    "InternetCloseHandle",
    "hConnect",
    "PBM_SETPOS",
    "hInternet",
-   "DLGTEMPLATE"
+   "Edit_SetText",
+   "TCITEM"
   ],
   "wide": true,
   "dialogs": 5,
@@ -653,7 +642,7 @@
   "com": false,
   "subclass": true,
   "class": "B2",
-  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: PS_SOLID, InternetCloseHandle, hConnect, PBM_SETPOS, hInternet, DLGTEMPLATE",
+  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: InternetCloseHandle, hConnect, PBM_SETPOS, hInternet, Edit_SetText, TCITEM",
   "redist": "sí (GPL-3.0)"
  },
  {
@@ -670,12 +659,12 @@
   "build": "compile",
   "stubs": [],
   "symbols": [
-   "DeleteObject",
-   "GET_X_LPARAM",
-   "GetSysColorBrush",
-   "CreateSolidBrush",
-   "GWLP_USERDATA",
-   "SetWindowLongPtr"
+   "FillRect",
+   "FrameRect",
+   "PAINTSTRUCT",
+   "paint",
+   "BeginPaint",
+   "EndPaint"
   ],
   "wide": false,
   "dialogs": 0,
@@ -703,12 +692,12 @@
    "wininet.h"
   ],
   "symbols": [
-   "SendDlgItemMessage",
    "EDITBALLOONTIP",
    "ebt",
    "TTI_NONE",
    "EM_SHOWBALLOONTIP",
-   "WM_NEXTDLGCTL"
+   "COMBOBOXINFO",
+   "cbi"
   ],
   "wide": true,
   "dialogs": 19,
@@ -717,7 +706,7 @@
   "com": false,
   "subclass": true,
   "class": "B2",
-  "reason": "necesita dependencias que no vienen en el repositorio; usa wchar_t (TCHAR Unicode); faltan: SendDlgItemMessage, EDITBALLOONTIP, ebt, TTI_NONE, EM_SHOWBALLOONTIP, WM_NEXTDLGCTL",
+  "reason": "necesita dependencias que no vienen en el repositorio; usa wchar_t (TCHAR Unicode); faltan: EDITBALLOONTIP, ebt, TTI_NONE, EM_SHOWBALLOONTIP, COMBOBOXINFO, cbi",
   "redist": "sí (GPL-3.0)"
  },
  {
@@ -734,12 +723,12 @@
   "build": "compile",
   "stubs": [],
   "symbols": [
-   "GET_X_LPARAM",
-   "MF_CHECKED",
    "MoveToEx",
    "LineTo",
-   "CallWindowProc",
-   "GET_Y_LPARAM"
+   "si",
+   "SIF_POS",
+   "SB_HORZ",
+   "GetScrollInfo"
   ],
   "wide": false,
   "dialogs": 1,
@@ -748,7 +737,7 @@
   "com": false,
   "subclass": false,
   "class": "B2",
-  "reason": "no compila: necesita un port; faltan: GET_X_LPARAM, MF_CHECKED, MoveToEx, LineTo, CallWindowProc, GET_Y_LPARAM",
+  "reason": "no compila: necesita un port; faltan: MoveToEx, LineTo, si, SIF_POS, SB_HORZ, GetScrollInfo",
   "redist": "no (sin licencia declarada)"
  },
  {
@@ -825,10 +814,10 @@
   "symbols": [
    "COMDLG_FILTERSPEC",
    "GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT",
-   "WS_EX_LAYOUTRTL",
-   "GWL_EXSTYLE",
-   "MSG",
-   "msg"
+   "GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS",
+   "PM_REMOVE",
+   "PeekMessageW",
+   "MB_RTLREADING"
   ],
   "wide": true,
   "dialogs": 6,
@@ -859,10 +848,10 @@
   "symbols": [
    "COMDLG_FILTERSPEC",
    "GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT",
-   "WS_EX_LAYOUTRTL",
-   "GWL_EXSTYLE",
-   "MSG",
-   "msg"
+   "GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS",
+   "PM_REMOVE",
+   "PeekMessageW",
+   "MB_RTLREADING"
   ],
   "wide": true,
   "dialogs": 6,
@@ -891,11 +880,11 @@
   ],
   "symbols": [
    "_dialog",
-   "MapWindowPoints",
-   "MONITOR_DEFAULTTOPRIMARY",
-   "GetMonitorInfo",
-   "GetWindowTextLength",
-   "GetWindowText"
+   "STDMETHODIMP",
+   "_customize",
+   "COMBOBOXINFO",
+   "cbi",
+   "GetComboBoxInfo"
   ],
   "wide": true,
   "dialogs": 2,
@@ -904,7 +893,7 @@
   "com": true,
   "subclass": false,
   "class": "B2",
-  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: _dialog, MapWindowPoints, MONITOR_DEFAULTTOPRIMARY, GetMonitorInfo, GetWindowTextLength, GetWindowText",
+  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: _dialog, STDMETHODIMP, _customize, COMBOBOXINFO, cbi, GetComboBoxInfo",
   "redist": "sí (GPL-3.0)"
  },
  {
@@ -1089,14 +1078,11 @@
   "build": "compile",
   "stubs": [],
   "symbols": [
-   "DestroyIcon",
-   "GetClassName",
-   "DeleteObject",
-   "GetDlgCtrlID",
-   "EnumChildWindows",
-   "IMAGE_BITMAP"
+   "EnumThreadWindows",
+   "GetWindowThreadProcessId",
+   "localtime_s"
   ],
-  "wide": true,
+  "wide": false,
   "dialogs": 1,
   "loc": 3546,
   "mfc": false,
@@ -1120,12 +1106,12 @@
   "build": "compile",
   "stubs": [],
   "symbols": [
-   "GetParent",
-   "MF_BYPOSITION",
    "OPENFILENAMEW",
    "ofn",
-   "LB_GETCURSEL",
-   "LB_ERR"
+   "OFN_FILEMUSTEXIST",
+   "OFN_PATHMUSTEXIST",
+   "GetOpenFileNameW",
+   "INITCOMMONCONTROLSEX"
   ],
   "wide": true,
   "dialogs": 7,
@@ -1134,7 +1120,7 @@
   "com": false,
   "subclass": false,
   "class": "B2",
-  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: GetParent, MF_BYPOSITION, OPENFILENAMEW, ofn, LB_GETCURSEL, LB_ERR",
+  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: OPENFILENAMEW, ofn, OFN_FILEMUSTEXIST, OFN_PATHMUSTEXIST, GetOpenFileNameW, INITCOMMONCONTROLSEX",
   "redist": "sí (MIT)"
  },
  {
@@ -1151,12 +1137,12 @@
   "build": "compile",
   "stubs": [],
   "symbols": [
-   "SetFocus",
-   "GetParent",
-   "GetDlgItemTextW",
-   "LB_GETCURSEL",
-   "LB_ERR",
-   "INITCOMMONCONTROLSEX"
+   "INITCOMMONCONTROLSEX",
+   "icc",
+   "InitCommonControlsEx",
+   "TerminateProcess",
+   "OPENFILENAMEW",
+   "ofn"
   ],
   "wide": true,
   "dialogs": 6,
@@ -1165,7 +1151,7 @@
   "com": false,
   "subclass": true,
   "class": "B2",
-  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: SetFocus, GetParent, GetDlgItemTextW, LB_GETCURSEL, LB_ERR, INITCOMMONCONTROLSEX",
+  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: INITCOMMONCONTROLSEX, icc, InitCommonControlsEx, TerminateProcess, OPENFILENAMEW, ofn",
   "redist": "sí (MIT)"
  },
  {
@@ -1215,12 +1201,12 @@
   "build": "deps",
   "stubs": [],
   "symbols": [
-   "IsDlgButtonChecked",
-   "GetParent",
-   "BN_CLICKED",
    "OPENFILENAMEW",
    "ofn",
-   "MF_BYPOSITION"
+   "OFN_OVERWRITEPROMPT",
+   "GetSaveFileNameW",
+   "OFN_FILEMUSTEXIST",
+   "OFN_PATHMUSTEXIST"
   ],
   "wide": false,
   "dialogs": 12,
@@ -1229,7 +1215,7 @@
   "com": false,
   "subclass": false,
   "class": "B2",
-  "reason": "necesita dependencias que no vienen en el repositorio; faltan: IsDlgButtonChecked, GetParent, BN_CLICKED, OPENFILENAMEW, ofn, MF_BYPOSITION",
+  "reason": "necesita dependencias que no vienen en el repositorio; faltan: OPENFILENAMEW, ofn, OFN_OVERWRITEPROMPT, GetSaveFileNameW, OFN_FILEMUSTEXIST, OFN_PATHMUSTEXIST",
   "redist": "sí (MIT)"
  },
  {
@@ -1270,12 +1256,12 @@
   "build": "deps",
   "stubs": [],
   "symbols": [
-   "criticalSection",
-   "INFINITE",
-   "WAIT_OBJECT_0",
-   "LPTHREAD_START_ROUTINE",
    "CreateWaitableTimer",
-   "SetWaitableTimer"
+   "SetWaitableTimer",
+   "ERROR_IO_PENDING",
+   "WaitNamedPipeA",
+   "FILE_FLAG_OVERLAPPED",
+   "SECURITY_SQOS_PRESENT"
   ],
   "wide": false,
   "dialogs": 1,
@@ -1284,7 +1270,7 @@
   "com": false,
   "subclass": true,
   "class": "B2",
-  "reason": "necesita dependencias que no vienen en el repositorio; faltan: criticalSection, INFINITE, WAIT_OBJECT_0, LPTHREAD_START_ROUTINE, CreateWaitableTimer, SetWaitableTimer",
+  "reason": "necesita dependencias que no vienen en el repositorio; faltan: CreateWaitableTimer, SetWaitableTimer, ERROR_IO_PENDING, WaitNamedPipeA, FILE_FLAG_OVERLAPPED, SECURITY_SQOS_PRESENT",
   "redist": "sí (GPL-3.0)"
  },
  {
@@ -1303,12 +1289,12 @@
    "Security.h"
   ],
   "symbols": [
-   "Sci_TextRange",
    "SCI_SETLEXERLANGUAGE",
    "SCI_LOADLEXERLIBRARY",
-   "Sci_TextToFind",
    "Sci_RangeToFormat",
-   "SCI_GETSTYLEDTEXT"
+   "SCI_SETLEXER",
+   "Edit_SetText",
+   "Button_GetCheck"
   ],
   "wide": false,
   "dialogs": 3,
@@ -1317,7 +1303,7 @@
   "com": false,
   "subclass": false,
   "class": "B2",
-  "reason": "no compila: necesita un port; faltan: Sci_TextRange, SCI_SETLEXERLANGUAGE, SCI_LOADLEXERLIBRARY, Sci_TextToFind, Sci_RangeToFormat, SCI_GETSTYLEDTEXT",
+  "reason": "no compila: necesita un port; faltan: SCI_SETLEXERLANGUAGE, SCI_LOADLEXERLIBRARY, Sci_RangeToFormat, SCI_SETLEXER, Edit_SetText, Button_GetCheck",
   "redist": "sí (GPL-2.0)"
  },
  {
@@ -1370,10 +1356,10 @@
   "symbols": [
    "TextPosition",
    "IsCharAlphaNumeric",
-   "BN_CLICKED",
    "s",
    "Edit_SetText",
-   "GWLP_USERDATA"
+   "m_settings",
+   "HWND"
   ],
   "wide": true,
   "dialogs": 11,
@@ -1382,7 +1368,7 @@
   "com": true,
   "subclass": true,
   "class": "B2",
-  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: TextPosition, IsCharAlphaNumeric, BN_CLICKED, s, Edit_SetText, GWLP_USERDATA",
+  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: TextPosition, IsCharAlphaNumeric, s, Edit_SetText, m_settings, HWND",
   "redist": "sí (GPL-2.0)"
  },
  {
@@ -1401,10 +1387,10 @@
   "symbols": [
    "INT_MIN",
    "SCROLLINFO",
-   "WM_MOUSEHWHEEL",
-   "GET_X_LPARAM",
-   "GET_Y_LPARAM",
-   "IDC_ARROW"
+   "PAINTSTRUCT",
+   "paint",
+   "HTCLIENT",
+   "DT_VCENTER"
   ],
   "wide": false,
   "dialogs": 0,
@@ -1413,7 +1399,7 @@
   "com": false,
   "subclass": true,
   "class": "B2",
-  "reason": "no compila: necesita un port; faltan: INT_MIN, SCROLLINFO, WM_MOUSEHWHEEL, GET_X_LPARAM, GET_Y_LPARAM, IDC_ARROW",
+  "reason": "no compila: necesita un port; faltan: INT_MIN, SCROLLINFO, PAINTSTRUCT, paint, HTCLIENT, DT_VCENTER",
   "redist": "no (sin licencia declarada)"
  },
  {
@@ -1464,11 +1450,9 @@
   ],
   "symbols": [
    "__max",
-   "GetMenu",
-   "MF_ENABLED",
-   "MF_GRAYED",
-   "EnableMenuItem",
-   "GWLP_WNDPROC"
+   "USES_CONVERSION",
+   "W2A",
+   "PtInRect"
   ],
   "wide": true,
   "dialogs": 1,
@@ -1476,8 +1460,8 @@
   "mfc": false,
   "com": false,
   "subclass": false,
-  "class": "B2",
-  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: __max, GetMenu, MF_ENABLED, MF_GRAYED, EnableMenuItem, GWLP_WNDPROC",
+  "class": "B1",
+  "reason": "el núcleo compila; solo fallan los archivos de la interfaz (diálogos, ventanas)",
   "redist": "sí (GPL-2.0)"
  },
  {
@@ -1494,12 +1478,12 @@
   "build": "compile",
   "stubs": [],
   "symbols": [
-   "DLGTEMPLATE",
-   "GWLP_USERDATA",
-   "BM_GETCHECK",
-   "BM_SETCHECK",
-   "WS_EX_LAYOUTRTL",
-   "g_fail"
+   "g_fail",
+   "GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS",
+   "GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT",
+   "dst",
+   "parseTable",
+   "widen"
   ],
   "wide": true,
   "dialogs": 2,
@@ -1508,7 +1492,7 @@
   "com": false,
   "subclass": false,
   "class": "B2",
-  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: DLGTEMPLATE, GWLP_USERDATA, BM_GETCHECK, BM_SETCHECK, WS_EX_LAYOUTRTL, g_fail",
+  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: g_fail, GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS, GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT, dst, parseTable, widen",
   "redist": "sí (GPL-2.0)"
  },
  {
@@ -1706,12 +1690,12 @@
    "winhttp.h"
   ],
   "symbols": [
-   "DLGTEMPLATE",
-   "GWLP_USERDATA",
    "hRequest",
-   "SendDlgItemMessage",
-   "LB_GETCURSEL",
-   "SetFocus"
+   "hConnect",
+   "WinHttpCloseHandle",
+   "hook",
+   "mbstowcs_s",
+   "CreatePipe"
   ],
   "wide": true,
   "dialogs": 5,
@@ -1739,12 +1723,12 @@
    "ShlObj_core.h"
   ],
   "symbols": [
-   "LB_ERR",
-   "USER_DEFAULT_SCREEN_DPI",
-   "LB_SETCURSEL",
-   "LOGFONT",
-   "LB_ADDSTRING",
-   "EnableWindow"
+   "REFKNOWNFOLDERID",
+   "DPI_AWARENESS_CONTEXT",
+   "SetWindowTheme",
+   "DefSubclassProc",
+   "SetWindowSubclass",
+   "CDRF_DODEFAULT"
   ],
   "wide": true,
   "dialogs": 10,
@@ -1753,7 +1737,7 @@
   "com": false,
   "subclass": true,
   "class": "B2",
-  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: LB_ERR, USER_DEFAULT_SCREEN_DPI, LB_SETCURSEL, LOGFONT, LB_ADDSTRING, EnableWindow",
+  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: REFKNOWNFOLDERID, DPI_AWARENESS_CONTEXT, SetWindowTheme, DefSubclassProc, SetWindowSubclass, CDRF_DODEFAULT",
   "redist": "sí (GPL-3.0)"
  },
  {
@@ -1811,10 +1795,10 @@
   "symbols": [
    "item",
    "IShellItem",
-   "SetWindowTextW",
    "TabCtrl_SetCurSel",
-   "KillTimer",
-   "TabCtrl_GetCurSel"
+   "TabCtrl_GetCurSel",
+   "COINIT_APARTMENTTHREADED",
+   "CoInitializeEx"
   ],
   "wide": true,
   "dialogs": 2,
@@ -1927,10 +1911,10 @@
   "symbols": [
    "LPCITEMIDLIST",
    "LPITEMIDLIST",
-   "DLGTEMPLATE",
-   "BM_GETCHECK",
-   "BM_SETCHECK",
-   "LPCONTEXTMENU"
+   "LPCONTEXTMENU",
+   "_psfFolder",
+   "_pidlArray",
+   "TBBUTTON"
   ],
   "wide": true,
   "dialogs": 2,
@@ -1958,12 +1942,12 @@
    "ShlObj_core.h"
   ],
   "symbols": [
-   "USER_DEFAULT_SCREEN_DPI",
-   "LOGFONT",
-   "GWL_STYLE",
    "SetWindowTheme",
-   "MulDiv",
-   "REFKNOWNFOLDERID"
+   "REFKNOWNFOLDERID",
+   "CDRF_DODEFAULT",
+   "DPI_AWARENESS_CONTEXT",
+   "ps",
+   "DefSubclassProc"
   ],
   "wide": true,
   "dialogs": 3,
@@ -1972,7 +1956,7 @@
   "com": false,
   "subclass": true,
   "class": "B2",
-  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: USER_DEFAULT_SCREEN_DPI, LOGFONT, GWL_STYLE, SetWindowTheme, MulDiv, REFKNOWNFOLDERID",
+  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: SetWindowTheme, REFKNOWNFOLDERID, CDRF_DODEFAULT, DPI_AWARENESS_CONTEXT, ps, DefSubclassProc",
   "redist": "sí (GPL-3.0)"
  },
  {
@@ -2015,12 +1999,12 @@
    "zmouse.h"
   ],
   "symbols": [
-   "LOGFONT",
    "LPINT",
-   "GWLP_USERDATA",
-   "BM_SETCHECK",
    "LVIR_BOUNDS",
-   "BM_GETCHECK"
+   "ListView_GetItemCount",
+   "ListView_GetItemRect",
+   "DPI_AWARENESS_CONTEXT",
+   "ListView_SetItemCountEx"
   ],
   "wide": true,
   "dialogs": 9,
@@ -2029,7 +2013,7 @@
   "com": false,
   "subclass": true,
   "class": "B2",
-  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: LOGFONT, LPINT, GWLP_USERDATA, BM_SETCHECK, LVIR_BOUNDS, BM_GETCHECK",
+  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: LPINT, LVIR_BOUNDS, ListView_GetItemCount, ListView_GetItemRect, DPI_AWARENESS_CONTEXT, ListView_SetItemCountEx",
   "redist": "sí (GPL-2.0)"
  },
  {
@@ -2049,21 +2033,19 @@
    "wininet.h"
   ],
   "symbols": [
-   "PS_SOLID",
-   "GWLP_WNDPROC",
-   "SetWindowLongPtr",
-   "CallWindowProc",
-   "GetParent",
-   "GetProp"
+   "PathCchFindExtension",
+   "PathCchRemoveFileSpec",
+   "Edit_SetText",
+   "PtInRect"
   ],
-  "wide": true,
+  "wide": false,
   "dialogs": 1,
   "loc": 30710,
   "mfc": false,
   "com": false,
   "subclass": false,
   "class": "B2",
-  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: PS_SOLID, GWLP_WNDPROC, SetWindowLongPtr, CallWindowProc, GetParent, GetProp",
+  "reason": "no compila: necesita un port; faltan: PathCchFindExtension, PathCchRemoveFileSpec, Edit_SetText, PtInRect",
   "redist": "sí (GPL-3.0)"
  },
  {
@@ -2194,14 +2176,7 @@
   "stubs": [
    "version_git.h"
   ],
-  "symbols": [
-   "GWLP_WNDPROC",
-   "SetCursor",
-   "SetWindowLongPtrW",
-   "IDC_WAIT",
-   "LoadCursor",
-   "Sci_TextRange"
-  ],
+  "symbols": [],
   "wide": false,
   "dialogs": 0,
   "loc": 3842,
@@ -2209,7 +2184,7 @@
   "com": false,
   "subclass": false,
   "class": "B2",
-  "reason": "no compila: necesita un port; faltan: GWLP_WNDPROC, SetCursor, SetWindowLongPtrW, IDC_WAIT, LoadCursor, Sci_TextRange",
+  "reason": "no compila: necesita un port",
   "redist": "sí (GPL-2.0)"
  },
  {
@@ -2228,10 +2203,10 @@
   "symbols": [
    "LLONG_MAX",
    "ULLONG_MAX",
-   "GetWindowTextW",
-   "CreateWindowExW",
    "LLONG_MIN",
-   "CW_USEDEFAULT"
+   "GetMessageW",
+   "TranslateMessage",
+   "DispatchMessageW"
   ],
   "wide": true,
   "dialogs": 0,
@@ -2240,7 +2215,7 @@
   "com": false,
   "subclass": true,
   "class": "B2",
-  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: LLONG_MAX, ULLONG_MAX, GetWindowTextW, CreateWindowExW, LLONG_MIN, CW_USEDEFAULT",
+  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: LLONG_MAX, ULLONG_MAX, LLONG_MIN, GetMessageW, TranslateMessage, DispatchMessageW",
   "redist": "no (sin licencia declarada)"
  },
  {
@@ -2260,11 +2235,11 @@
   ],
   "symbols": [
    "PROCESS_INFORMATION",
-   "DLGTEMPLATE",
-   "BM_GETCHECK",
-   "BM_SETCHECK",
    "piProcInfo",
-   "consoleLogger"
+   "consoleLogger",
+   "commandCompletionHandler",
+   "CHARFORMAT",
+   "charFormat"
   ],
   "wide": true,
   "dialogs": 2,
@@ -2273,7 +2248,7 @@
   "com": false,
   "subclass": false,
   "class": "B2",
-  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: PROCESS_INFORMATION, DLGTEMPLATE, BM_GETCHECK, BM_SETCHECK, piProcInfo, consoleLogger",
+  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: PROCESS_INFORMATION, piProcInfo, consoleLogger, commandCompletionHandler, CHARFORMAT, charFormat",
   "redist": "sí (GPL-2.0)"
  },
  {
@@ -2465,11 +2440,11 @@
   ],
   "symbols": [
    "TVITEM",
-   "GWLP_USERDATA",
-   "CheckDlgButton",
-   "DLGTEMPLATE",
    "LPTVHITTESTINFO",
-   "buf"
+   "buf",
+   "tvi",
+   "tvinsert",
+   "TVI_ROOT"
   ],
   "wide": true,
   "dialogs": 3,
@@ -2478,7 +2453,7 @@
   "com": false,
   "subclass": false,
   "class": "B2",
-  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: TVITEM, GWLP_USERDATA, CheckDlgButton, DLGTEMPLATE, LPTVHITTESTINFO, buf",
+  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: TVITEM, LPTVHITTESTINFO, buf, tvi, tvinsert, TVI_ROOT",
   "redist": "sí (GPL-2.0)"
  },
  {
@@ -2495,12 +2470,12 @@
   "build": "compile",
   "stubs": [],
   "symbols": [
-   "CB_GETITEMDATA",
-   "DeleteObject",
-   "SelectObject",
-   "CreateSolidBrush",
-   "CB_ADDSTRING",
-   "CB_SETITEMDATA"
+   "CB_SETTOPINDEX",
+   "FillRect",
+   "PAINTSTRUCT",
+   "ps",
+   "BeginPaint",
+   "MoveToEx"
   ],
   "wide": true,
   "dialogs": 2,
@@ -2509,7 +2484,7 @@
   "com": false,
   "subclass": true,
   "class": "B2",
-  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: CB_GETITEMDATA, DeleteObject, SelectObject, CreateSolidBrush, CB_ADDSTRING, CB_SETITEMDATA",
+  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: CB_SETTOPINDEX, FillRect, PAINTSTRUCT, ps, BeginPaint, MoveToEx",
   "redist": "sí (MIT)"
  },
  {
@@ -2557,7 +2532,7 @@
    "uptr_t",
    "SCNotification",
    "SCI_GETSTATUS",
-   "Sci_Position"
+   "SC_STATUS_OK"
   ],
   "wide": true,
   "dialogs": 0,
@@ -2566,7 +2541,7 @@
   "com": false,
   "subclass": true,
   "class": "B2",
-  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: sptr_t, NppData, uptr_t, SCNotification, SCI_GETSTATUS, Sci_Position",
+  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: sptr_t, NppData, uptr_t, SCNotification, SCI_GETSTATUS, SC_STATUS_OK",
   "redist": "sí (MIT)"
  },
  {
@@ -2697,21 +2672,21 @@
    "wininet.h"
   ],
   "symbols": [
-   "IsWindow",
-   "KillTimer",
    "InternetCloseHandle",
    "connection",
-   "GetDlgItemText",
-   "RegQueryValueEx"
+   "RegQueryValueEx",
+   "internet",
+   "request",
+   "HKEY_CURRENT_USER"
   ],
-  "wide": true,
+  "wide": false,
   "dialogs": 2,
   "loc": 2226,
   "mfc": false,
   "com": false,
   "subclass": true,
   "class": "B2",
-  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: IsWindow, KillTimer, InternetCloseHandle, connection, GetDlgItemText, RegQueryValueEx",
+  "reason": "no compila: necesita un port; faltan: InternetCloseHandle, connection, RegQueryValueEx, internet, request, HKEY_CURRENT_USER",
   "redist": "no (sin licencia declarada)"
  },
  {
@@ -2776,12 +2751,12 @@
   "build": "compile",
   "stubs": [],
   "symbols": [
-   "DLGTEMPLATE",
-   "SetWindowLongPtr",
-   "SetFocus",
-   "GWLP_WNDPROC",
-   "GetWindowLongPtr",
-   "CallWindowProc"
+   "binary_find",
+   "MENUITEMINFO",
+   "mi",
+   "DefSubclassProc",
+   "SCI_SETLEXER",
+   "PtInRect"
   ],
   "wide": true,
   "dialogs": 2,
@@ -2790,7 +2765,7 @@
   "com": false,
   "subclass": false,
   "class": "B2",
-  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: DLGTEMPLATE, SetWindowLongPtr, SetFocus, GWLP_WNDPROC, GetWindowLongPtr, CallWindowProc",
+  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: binary_find, MENUITEMINFO, mi, DefSubclassProc, SCI_SETLEXER, PtInRect",
   "redist": "sí (GPL-2.0)"
  },
  {
@@ -2814,12 +2789,12 @@
    "wrl.h"
   ],
   "symbols": [
-   "WS_CHILD",
    "cmark_parser_free",
    "TVIF_PARAM",
-   "WS_VISIBLE",
-   "GWLP_USERDATA",
-   "cmark_node"
+   "cmark_node",
+   "Microsoft",
+   "TVINSERTSTRUCT",
+   "insert"
   ],
   "wide": true,
   "dialogs": 0,
@@ -2828,7 +2803,7 @@
   "com": false,
   "subclass": true,
   "class": "B2",
-  "reason": "necesita dependencias que no vienen en el repositorio; usa wchar_t (TCHAR Unicode); faltan: WS_CHILD, cmark_parser_free, TVIF_PARAM, WS_VISIBLE, GWLP_USERDATA, cmark_node",
+  "reason": "necesita dependencias que no vienen en el repositorio; usa wchar_t (TCHAR Unicode); faltan: cmark_parser_free, TVIF_PARAM, cmark_node, Microsoft, TVINSERTSTRUCT, insert",
   "redist": "sí (MIT)"
  },
  {
@@ -2869,12 +2844,12 @@
   "build": "compile",
   "stubs": [],
   "symbols": [
-   "DLGTEMPLATE",
-   "GWLP_USERDATA",
-   "CREATESTRUCT",
-   "WS_VISIBLE",
-   "BM_GETCHECK",
-   "info"
+   "info",
+   "MENUITEMINFO",
+   "MIIM_STRING",
+   "MIIM_FTYPE",
+   "MFT_SEPARATOR",
+   "BITMAPINFO"
   ],
   "wide": true,
   "dialogs": 1,
@@ -2883,7 +2858,7 @@
   "com": false,
   "subclass": true,
   "class": "B2",
-  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: DLGTEMPLATE, GWLP_USERDATA, CREATESTRUCT, WS_VISIBLE, BM_GETCHECK, info",
+  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: info, MENUITEMINFO, MIIM_STRING, MIIM_FTYPE, MFT_SEPARATOR, BITMAPINFO",
   "redist": "sí (GPL-3.0)"
  },
  {
@@ -2909,9 +2884,9 @@
    "image",
    "view",
    "IID",
-   "KillTimer",
-   "SetTimer",
-   "guid"
+   "guid",
+   "GUID",
+   "CoCreateGuid"
   ],
   "wide": true,
   "dialogs": 0,
@@ -2920,7 +2895,7 @@
   "com": false,
   "subclass": true,
   "class": "B2",
-  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: image, view, IID, KillTimer, SetTimer, guid",
+  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: image, view, IID, guid, GUID, CoCreateGuid",
   "redist": "sí (MIT)"
  },
  {
@@ -2938,15 +2913,8 @@
   "stubs": [
    "WebView2.h"
   ],
-  "symbols": [
-   "DLGTEMPLATE",
-   "GWLP_USERDATA",
-   "BM_GETCHECK",
-   "BM_SETCHECK",
-   "WS_EX_LAYOUTRTL",
-   "SPI_GETWORKAREA"
-  ],
-  "wide": true,
+  "symbols": [],
+  "wide": false,
   "dialogs": 1,
   "loc": 7555,
   "mfc": false,
@@ -3114,12 +3082,11 @@
   "build": "compile",
   "stubs": [],
   "symbols": [
-   "SetTimer",
-   "KillTimer",
-   "IMAGE_ICON",
-   "LR_DEFAULTCOLOR",
-   "LoadImage",
-   "GetDC"
+   "CreateCompatibleDC",
+   "CreateCompatibleBitmap",
+   "FillRect",
+   "DI_NORMAL",
+   "DrawIconEx"
   ],
   "wide": false,
   "dialogs": 0,
@@ -3172,12 +3139,12 @@
    "winioctl.h"
   ],
   "symbols": [
-   "IsDlgButtonChecked",
-   "InvalidateRect",
-   "MulDiv",
    "HHOOK",
-   "IsWindow",
-   "POINTL"
+   "POINTL",
+   "NMITEMACTIVATE",
+   "LVIS_SELECTED",
+   "LVSICF_NOINVALIDATEALL",
+   "ListView_SetItemCountEx"
   ],
   "wide": true,
   "dialogs": 3,
@@ -3186,7 +3153,7 @@
   "com": true,
   "subclass": true,
   "class": "B2",
-  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: IsDlgButtonChecked, InvalidateRect, MulDiv, HHOOK, IsWindow, POINTL",
+  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: HHOOK, POINTL, NMITEMACTIVATE, LVIS_SELECTED, LVSICF_NOINVALIDATEALL, ListView_SetItemCountEx",
   "redist": "sí (GPL-3.0)"
  },
  {
@@ -3227,12 +3194,12 @@
   "build": "compile",
   "stubs": [],
   "symbols": [
-   "DLGTEMPLATE",
-   "GWLP_USERDATA",
-   "WS_EX_LAYOUTRTL",
-   "RT_DIALOG",
-   "pDlgTemplate",
-   "pMyDlgTemplate"
+   "SHELLEXECUTEINFO",
+   "sei",
+   "SEE_MASK_NOCLOSEPROCESS",
+   "ShellExecuteEx",
+   "GetExitCodeProcess",
+   "IsCharAlphaNumeric"
   ],
   "wide": false,
   "dialogs": 1,
@@ -3241,7 +3208,7 @@
   "com": false,
   "subclass": false,
   "class": "B2",
-  "reason": "no compila: necesita un port; faltan: DLGTEMPLATE, GWLP_USERDATA, WS_EX_LAYOUTRTL, RT_DIALOG, pDlgTemplate, pMyDlgTemplate",
+  "reason": "no compila: necesita un port; faltan: SHELLEXECUTEINFO, sei, SEE_MASK_NOCLOSEPROCESS, ShellExecuteEx, GetExitCodeProcess, IsCharAlphaNumeric",
   "redist": "sí (GPL-3.0)"
  },
  {
@@ -3284,12 +3251,12 @@
    "ShlObj_core.h"
   ],
   "symbols": [
-   "LB_ERR",
-   "USER_DEFAULT_SCREEN_DPI",
-   "LB_SETCURSEL",
-   "LOGFONT",
-   "LB_ADDSTRING",
-   "EnableWindow"
+   "REFKNOWNFOLDERID",
+   "DPI_AWARENESS_CONTEXT",
+   "SetWindowTheme",
+   "DefSubclassProc",
+   "SetWindowSubclass",
+   "CDRF_DODEFAULT"
   ],
   "wide": true,
   "dialogs": 10,
@@ -3298,7 +3265,7 @@
   "com": false,
   "subclass": true,
   "class": "B2",
-  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: LB_ERR, USER_DEFAULT_SCREEN_DPI, LB_SETCURSEL, LOGFONT, LB_ADDSTRING, EnableWindow",
+  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: REFKNOWNFOLDERID, DPI_AWARENESS_CONTEXT, SetWindowTheme, DefSubclassProc, SetWindowSubclass, CDRF_DODEFAULT",
   "redist": "sí (GPL-3.0)"
  },
  {
@@ -3341,8 +3308,7 @@
    "yvals.h"
   ],
   "symbols": [
-   "PostQuitMessage",
-   "DefWindowProc"
+   "PostQuitMessage"
   ],
   "wide": false,
   "dialogs": 1,
@@ -3368,14 +3334,12 @@
   "build": "compile",
   "stubs": [],
   "symbols": [
-   "DLGTEMPLATE",
-   "BM_GETCHECK",
-   "BM_SETCHECK",
-   "GWLP_USERDATA",
-   "WS_EX_LAYOUTRTL",
-   "SPI_GETWORKAREA"
+   "IsCharAlphaNumeric",
+   "DATE_SHORTDATE",
+   "DATE_LONGDATE",
+   "TIME_NOSECONDS"
   ],
-  "wide": true,
+  "wide": false,
   "dialogs": 1,
   "loc": 5305,
   "mfc": false,
@@ -3396,17 +3360,10 @@
   "archived": false,
   "pushed": "2026-10-13",
   "stars": 135,
-  "build": "compile",
+  "build": "ok",
   "stubs": [],
-  "symbols": [
-   "DLGTEMPLATE",
-   "GWLP_USERDATA",
-   "BM_GETCHECK",
-   "BM_SETCHECK",
-   "WS_EX_LAYOUTRTL",
-   "SPI_GETWORKAREA"
-  ],
-  "wide": true,
+  "symbols": [],
+  "wide": false,
   "dialogs": 1,
   "loc": 4810,
   "mfc": false,
@@ -3464,12 +3421,7 @@
   "build": "compile",
   "stubs": [],
   "symbols": [
-   "DLGTEMPLATE",
-   "GWLP_USERDATA",
-   "WS_EX_LAYOUTRTL",
-   "RT_DIALOG",
-   "pDlgTemplate",
-   "pMyDlgTemplate"
+   "itoa"
   ],
   "wide": false,
   "dialogs": 1,
@@ -3477,8 +3429,8 @@
   "mfc": false,
   "com": false,
   "subclass": false,
-  "class": "B2",
-  "reason": "no compila: necesita un port; faltan: DLGTEMPLATE, GWLP_USERDATA, WS_EX_LAYOUTRTL, RT_DIALOG, pDlgTemplate, pMyDlgTemplate",
+  "class": "B1",
+  "reason": "el núcleo compila; solo fallan los archivos de la interfaz (diálogos, ventanas)",
   "redist": "revisar"
  },
  {
@@ -3618,12 +3570,12 @@
    "wincrypt.h"
   ],
   "symbols": [
-   "CB_ADDSTRING",
-   "CB_SETCURSEL",
-   "CB_RESETCONTENT",
-   "CB_GETCURSEL",
-   "BN_CLICKED",
-   "CBN_SELCHANGE"
+   "hConnect",
+   "WinHttpCloseHandle",
+   "INTERNET_PORT",
+   "hRequest",
+   "CHARRANGE",
+   "EM_EXSETSEL"
   ],
   "wide": true,
   "dialogs": 6,
@@ -3632,7 +3584,7 @@
   "com": false,
   "subclass": true,
   "class": "B2",
-  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: CB_ADDSTRING, CB_SETCURSEL, CB_RESETCONTENT, CB_GETCURSEL, BN_CLICKED, CBN_SELCHANGE",
+  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: hConnect, WinHttpCloseHandle, INTERNET_PORT, hRequest, CHARRANGE, EM_EXSETSEL",
   "redist": "revisar"
  },
  {
@@ -3648,14 +3600,7 @@
   "stars": 3,
   "build": "compile",
   "stubs": [],
-  "symbols": [
-   "DLGTEMPLATE",
-   "GWLP_USERDATA",
-   "BM_GETCHECK",
-   "BM_SETCHECK",
-   "WS_EX_LAYOUTRTL",
-   "SPI_GETWORKAREA"
-  ],
+  "symbols": [],
   "wide": true,
   "dialogs": 1,
   "loc": 6963,
@@ -3663,7 +3608,7 @@
   "com": false,
   "subclass": false,
   "class": "B2",
-  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: DLGTEMPLATE, GWLP_USERDATA, BM_GETCHECK, BM_SETCHECK, WS_EX_LAYOUTRTL, SPI_GETWORKAREA",
+  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode)",
   "redist": "sí (GPL-2.0)"
  },
  {
@@ -3683,9 +3628,9 @@
    "byte",
    "Encoding",
    "EOL",
-   "BM_GETCHECK",
    "options",
-   "Hash"
+   "Hash",
+   "data"
   ],
   "wide": true,
   "dialogs": 15,
@@ -3694,7 +3639,7 @@
   "com": false,
   "subclass": true,
   "class": "B2",
-  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: byte, Encoding, EOL, BM_GETCHECK, options, Hash",
+  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: byte, Encoding, EOL, options, Hash, data",
   "redist": "no (sin licencia declarada)"
  },
  {
@@ -3734,11 +3679,7 @@
   "stars": 25,
   "build": "deps",
   "stubs": [],
-  "symbols": [
-   "MF_BYCOMMAND",
-   "MF_GRAYED",
-   "EnableMenuItem"
-  ],
+  "symbols": [],
   "wide": false,
   "dialogs": 4,
   "loc": 11246,
@@ -3746,7 +3687,7 @@
   "com": false,
   "subclass": true,
   "class": "B2",
-  "reason": "necesita dependencias que no vienen en el repositorio; faltan: MF_BYCOMMAND, MF_GRAYED, EnableMenuItem",
+  "reason": "necesita dependencias que no vienen en el repositorio",
   "redist": "sí (GPL-3.0)"
  },
  {
@@ -3766,12 +3707,12 @@
    "HtmlHelp.h"
   ],
   "symbols": [
-   "m_cs",
-   "LOGFONT",
    "CFM_EFFECTS",
-   "MF_BYCOMMAND",
-   "MF_CHECKED",
-   "MF_UNCHECKED"
+   "PROCESS_INFORMATION",
+   "LPPROC_THREAD_ATTRIBUTE_LIST",
+   "SCF_SELECTION",
+   "COORD",
+   "PSIZE_T"
   ],
   "wide": true,
   "dialogs": 11,
@@ -3828,12 +3769,7 @@
   "build": "compile",
   "stubs": [],
   "symbols": [
-   "DLGTEMPLATE",
-   "GWLP_USERDATA",
-   "WS_EX_LAYOUTRTL",
-   "SCI_GETTEXTRANGE",
-   "IsCharAlphaNumeric",
-   "RT_DIALOG"
+   "IsCharAlphaNumeric"
   ],
   "wide": false,
   "dialogs": 0,
@@ -3842,7 +3778,7 @@
   "com": false,
   "subclass": false,
   "class": "B2",
-  "reason": "no compila: necesita un port; faltan: DLGTEMPLATE, GWLP_USERDATA, WS_EX_LAYOUTRTL, SCI_GETTEXTRANGE, IsCharAlphaNumeric, RT_DIALOG",
+  "reason": "no compila: necesita un port; faltan: IsCharAlphaNumeric",
   "redist": "no (sin licencia declarada)"
  },
  {
@@ -3859,12 +3795,12 @@
   "build": "compile",
   "stubs": [],
   "symbols": [
-   "InvalidateRect",
-   "DeleteObject",
    "tool",
    "DefSubclassProc",
-   "IsWindow",
-   "TTM_DELTOOLW"
+   "TTM_DELTOOLW",
+   "TTM_POP",
+   "PtInRect",
+   "TTM_ADDTOOLW"
   ],
   "wide": false,
   "dialogs": 0,
@@ -3873,7 +3809,7 @@
   "com": false,
   "subclass": true,
   "class": "B2",
-  "reason": "no compila: necesita un port; faltan: InvalidateRect, DeleteObject, tool, DefSubclassProc, IsWindow, TTM_DELTOOLW",
+  "reason": "no compila: necesita un port; faltan: tool, DefSubclassProc, TTM_DELTOOLW, TTM_POP, PtInRect, TTM_ADDTOOLW",
   "redist": "sí (MIT)"
  },
  {
@@ -3950,12 +3886,12 @@
    "richedit.h"
   ],
   "symbols": [
-   "SetFocus",
-   "GetFocus",
-   "EnableWindow",
-   "UpdateWindow",
    "PROCESS_INFORMATION",
-   "TabCtrl_GetItemCount"
+   "TabCtrl_GetItemCount",
+   "EM_SETBKGNDCOLOR",
+   "Button_GetCheck",
+   "Edit_Enable",
+   "Edit_SetText"
   ],
   "wide": true,
   "dialogs": 0,
@@ -4012,8 +3948,8 @@
    "WICPixelFormatGUID",
    "IWICImagingFactory",
    "m_pFactory",
-   "DeleteObject",
-   "IWICBitmapDecoder"
+   "IWICBitmapDecoder",
+   "pDecoder"
   ],
   "wide": true,
   "dialogs": 1,
@@ -4022,7 +3958,7 @@
   "com": true,
   "subclass": true,
   "class": "B2",
-  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: IWICBitmapSource, WICPixelFormatGUID, IWICImagingFactory, m_pFactory, DeleteObject, IWICBitmapDecoder",
+  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: IWICBitmapSource, WICPixelFormatGUID, IWICImagingFactory, m_pFactory, IWICBitmapDecoder, pDecoder",
   "redist": "sí (MIT)"
  },
  {
@@ -4165,9 +4101,9 @@
    "SOCKET",
    "WSAGetLastError",
    "hostent",
-   "LPTHREAD_START_ROUTINE",
-   "pHandle",
-   "_outputSection"
+   "m_hSocket",
+   "closesocket",
+   "INADDR_ANY"
   ],
   "wide": false,
   "dialogs": 1,
@@ -4176,7 +4112,7 @@
   "com": false,
   "subclass": false,
   "class": "B2",
-  "reason": "no compila: necesita un port; faltan: SOCKET, WSAGetLastError, hostent, LPTHREAD_START_ROUTINE, pHandle, _outputSection",
+  "reason": "no compila: necesita un port; faltan: SOCKET, WSAGetLastError, hostent, m_hSocket, closesocket, INADDR_ANY",
   "redist": "sí (GPL-2.0)"
  },
  {
@@ -4193,21 +4129,21 @@
   "build": "deps",
   "stubs": [],
   "symbols": [
-   "DLGTEMPLATE",
    "PBM_SETMARQUEE",
-   "HWND_TOPMOST",
-   "BM_GETCHECK",
-   "BM_SETCHECK",
-   "GWLP_USERDATA"
+   "TASKDIALOG_BUTTON",
+   "TASKDIALOGCONFIG",
+   "config",
+   "TDF_ALLOW_DIALOG_CANCELLATION",
+   "TaskDialogIndirect"
   ],
-  "wide": true,
+  "wide": false,
   "dialogs": 2,
   "loc": 41264,
   "mfc": false,
   "com": false,
   "subclass": false,
   "class": "B2",
-  "reason": "necesita dependencias que no vienen en el repositorio; usa wchar_t (TCHAR Unicode); faltan: DLGTEMPLATE, PBM_SETMARQUEE, HWND_TOPMOST, BM_GETCHECK, BM_SETCHECK, GWLP_USERDATA",
+  "reason": "necesita dependencias que no vienen en el repositorio; faltan: PBM_SETMARQUEE, TASKDIALOG_BUTTON, TASKDIALOGCONFIG, config, TDF_ALLOW_DIALOG_CANCELLATION, TaskDialogIndirect",
   "redist": "sí (GPL-2.0)"
  },
  {
@@ -4335,11 +4271,11 @@
   ],
   "symbols": [
    "Gdiplus",
-   "CB_SETCURSEL",
-   "CB_GETCURSEL",
    "TVIF_PARAM",
    "TVIF_CHILDREN",
-   "GWLP_USERDATA"
+   "m_hash",
+   "TVINSERTSTRUCTW",
+   "ins"
   ],
   "wide": true,
   "dialogs": 4,
@@ -4348,7 +4284,7 @@
   "com": true,
   "subclass": true,
   "class": "B2",
-  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: Gdiplus, CB_SETCURSEL, CB_GETCURSEL, TVIF_PARAM, TVIF_CHILDREN, GWLP_USERDATA",
+  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: Gdiplus, TVIF_PARAM, TVIF_CHILDREN, m_hash, TVINSERTSTRUCTW, ins",
   "redist": "no (sin licencia declarada)"
  },
  {
@@ -4366,11 +4302,7 @@
   "stubs": [],
   "symbols": [
    "EXTERN_C",
-   "IDC_WAIT",
-   "LoadCursor",
-   "SetCursor",
-   "CheckDlgButton",
-   "IsDlgButtonChecked"
+   "__ImageBase"
   ],
   "wide": false,
   "dialogs": 1,
@@ -4379,7 +4311,7 @@
   "com": false,
   "subclass": false,
   "class": "B2",
-  "reason": "no compila: necesita un port; faltan: EXTERN_C, IDC_WAIT, LoadCursor, SetCursor, CheckDlgButton, IsDlgButtonChecked",
+  "reason": "no compila: necesita un port; faltan: EXTERN_C, __ImageBase",
   "redist": "sí (GPL-2.0)"
  },
  {
@@ -4434,9 +4366,9 @@
    "EXTERNC",
    "edt1",
    "stc1",
-   "BM_GETCHECK",
    "memicmp",
-   "EnableWindow"
+   "chx1",
+   "rad1"
   ],
   "wide": true,
   "dialogs": 1,
@@ -4445,7 +4377,7 @@
   "com": false,
   "subclass": false,
   "class": "B2",
-  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: EXTERNC, edt1, stc1, BM_GETCHECK, memicmp, EnableWindow",
+  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: EXTERNC, edt1, stc1, memicmp, chx1, rad1",
   "redist": "sí (GPL-3.0)"
  },
  {
@@ -4466,10 +4398,10 @@
   "symbols": [
    "CString",
    "cstrSequence",
-   "DLGTEMPLATE",
-   "GWLP_USERDATA",
-   "GetDlgItemInt",
-   "GetWindowTextLength"
+   "csMsg",
+   "TextToClip",
+   "tmpMsg",
+   "OffsetRect"
   ],
   "wide": true,
   "dialogs": 1,
@@ -4478,7 +4410,7 @@
   "com": true,
   "subclass": false,
   "class": "B2",
-  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: CString, cstrSequence, DLGTEMPLATE, GWLP_USERDATA, GetDlgItemInt, GetWindowTextLength",
+  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: CString, cstrSequence, csMsg, TextToClip, tmpMsg, OffsetRect",
   "redist": "sí (GPL-2.0)"
  },
  {
@@ -4524,11 +4456,11 @@
   ],
   "symbols": [
    "hConnect",
-   "GWLP_USERDATA",
    "hSession",
    "hRequest",
    "MIIM_FTYPE",
-   "CB_RESETCONTENT"
+   "HINTERNET",
+   "WINHTTP_NO_ADDITIONAL_HEADERS"
   ],
   "wide": true,
   "dialogs": 4,
@@ -4537,7 +4469,7 @@
   "com": true,
   "subclass": false,
   "class": "B2",
-  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: hConnect, GWLP_USERDATA, hSession, hRequest, MIIM_FTYPE, CB_RESETCONTENT",
+  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: hConnect, hSession, hRequest, MIIM_FTYPE, HINTERNET, WINHTTP_NO_ADDITIONAL_HEADERS",
   "redist": "sí (GPL-3.0)"
  },
  {
@@ -4581,11 +4513,11 @@
   ],
   "symbols": [
    "HKL",
-   "IsWindow",
-   "CallWindowProc",
-   "DeleteObject",
    "targetLayout",
-   "DrawModernButton"
+   "DrawModernButton",
+   "HIMC",
+   "himc",
+   "NI_COMPOSITIONSTR"
   ],
   "wide": false,
   "dialogs": 2,
@@ -4594,7 +4526,7 @@
   "com": false,
   "subclass": false,
   "class": "B2",
-  "reason": "no compila: necesita un port; faltan: HKL, IsWindow, CallWindowProc, DeleteObject, targetLayout, DrawModernButton",
+  "reason": "no compila: necesita un port; faltan: HKL, targetLayout, DrawModernButton, HIMC, himc, NI_COMPOSITIONSTR",
   "redist": "sí (MIT)"
  },
  {
@@ -4640,7 +4572,7 @@
    "ii",
    "CPINFO",
    "MAX_LEADBYTES",
-   "IMAGE_ICON"
+   "ICONINFO"
   ],
   "wide": false,
   "dialogs": 0,
@@ -4649,7 +4581,7 @@
   "com": false,
   "subclass": false,
   "class": "B2",
-  "reason": "no compila: necesita un port; faltan: info, SIZE_MAX, ii, CPINFO, MAX_LEADBYTES, IMAGE_ICON",
+  "reason": "no compila: necesita un port; faltan: info, SIZE_MAX, ii, CPINFO, MAX_LEADBYTES, ICONINFO",
   "redist": "sí (MIT)"
  },
  {
@@ -4690,14 +4622,14 @@
   "build": "compile",
   "stubs": [],
   "symbols": [
-   "DLGTEMPLATE",
-   "BM_GETCHECK",
-   "BM_SETCHECK",
-   "GWLP_USERDATA",
-   "WS_EX_LAYOUTRTL",
-   "TVIF_PARAM"
+   "TVIF_PARAM",
+   "TVITEM",
+   "tvItem",
+   "TreeView_GetRoot",
+   "TreeView_DeleteItem",
+   "TVINSERTSTRUCT"
   ],
-  "wide": true,
+  "wide": false,
   "dialogs": 2,
   "loc": 6420,
   "mfc": false,
@@ -4812,12 +4744,12 @@
   "build": "compile",
   "stubs": [],
   "symbols": [
-   "GWLP_USERDATA",
-   "Sci_CharacterRange",
    "_locale_t",
-   "GWL_STYLE",
-   "BM_GETCHECK",
-   "DLGTEMPLATE"
+   "SetWindowTheme",
+   "CDRF_DODEFAULT",
+   "ps",
+   "DefSubclassProc",
+   "SetWindowSubclass"
   ],
   "wide": true,
   "dialogs": 9,
@@ -4826,7 +4758,7 @@
   "com": false,
   "subclass": true,
   "class": "B2",
-  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: GWLP_USERDATA, Sci_CharacterRange, _locale_t, GWL_STYLE, BM_GETCHECK, DLGTEMPLATE",
+  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: _locale_t, SetWindowTheme, CDRF_DODEFAULT, ps, DefSubclassProc, SetWindowSubclass",
   "redist": "sí (GPL-3.0)"
  },
  {
@@ -4892,11 +4824,11 @@
   "stubs": [],
   "symbols": [
    "EVENT_ALL_ACCESS",
-   "STILL_ACTIVE",
-   "FORMAT_MESSAGE_ALLOCATE_BUFFER",
-   "FORMAT_MESSAGE_FROM_SYSTEM",
-   "FORMAT_MESSAGE_IGNORE_INSERTS",
-   "LANG_NEUTRAL"
+   "byte",
+   "STARTUPINFO",
+   "PROCESS_INFORMATION",
+   "startup",
+   "STARTF_USESHOWWINDOW"
   ],
   "wide": true,
   "dialogs": 1,
@@ -4905,7 +4837,7 @@
   "com": false,
   "subclass": false,
   "class": "B2",
-  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: EVENT_ALL_ACCESS, STILL_ACTIVE, FORMAT_MESSAGE_ALLOCATE_BUFFER, FORMAT_MESSAGE_FROM_SYSTEM, FORMAT_MESSAGE_IGNORE_INSERTS, LANG_NEUTRAL",
+  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: EVENT_ALL_ACCESS, byte, STARTUPINFO, PROCESS_INFORMATION, startup, STARTF_USESHOWWINDOW",
   "redist": "sí (GPL-2.0)"
  },
  {
@@ -4951,9 +4883,9 @@
    "Py_DECREF",
    "PyObject",
    "jthread",
-   "KillTimer",
    "RegCloseKey",
-   "PyThreadState"
+   "PyThreadState",
+   "PyImport_ImportModule"
   ],
   "wide": false,
   "dialogs": 1,
@@ -4962,7 +4894,7 @@
   "com": false,
   "subclass": false,
   "class": "B2",
-  "reason": "no compila: necesita un port; faltan: Py_DECREF, PyObject, jthread, KillTimer, RegCloseKey, PyThreadState",
+  "reason": "no compila: necesita un port; faltan: Py_DECREF, PyObject, jthread, RegCloseKey, PyThreadState, PyImport_ImportModule",
   "redist": "sí (Apache-2.0)"
  },
  {
@@ -5007,11 +4939,11 @@
   ],
   "symbols": [
    "DPI_AWARENESS_CONTEXT",
-   "LOGFONT",
-   "DLGTEMPLATE",
-   "GWLP_USERDATA",
-   "LR_DEFAULTCOLOR",
-   "MulDiv"
+   "_locale_t",
+   "WIN32_FILE_ATTRIBUTE_DATA",
+   "TOOLINFO",
+   "COINIT_APARTMENTTHREADED",
+   "RPC_E_CHANGED_MODE"
   ],
   "wide": true,
   "dialogs": 4,
@@ -5039,12 +4971,12 @@
    "intsafe.h"
   ],
   "symbols": [
-   "BM_GETCHECK",
-   "CB_GETCURSEL",
-   "LBN_SELCHANGE",
-   "BN_CLICKED",
-   "LB_RESETCONTENT",
-   "LB_ADDSTRING"
+   "EM_SETTABSTOPS",
+   "ULongPtrToInt",
+   "NM_CLICK",
+   "NM_RETURN",
+   "PNMLINK",
+   "LITEM"
   ],
   "wide": true,
   "dialogs": 1,
@@ -5306,21 +5238,21 @@
    "shobjidl.h"
   ],
   "symbols": [
-   "DLGTEMPLATE",
-   "BM_GETCHECK",
-   "BM_SETCHECK",
-   "GWLP_USERDATA",
-   "HMONITOR",
-   "hMon"
+   "LoadLibrary",
+   "COINIT_APARTMENTTHREADED",
+   "COINIT_DISABLE_OLE1DDE",
+   "CoInitializeEx",
+   "IFileDialog",
+   "pfd"
   ],
-  "wide": true,
+  "wide": false,
   "dialogs": 1,
   "loc": 7810,
   "mfc": false,
   "com": true,
   "subclass": true,
   "class": "B2",
-  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: DLGTEMPLATE, BM_GETCHECK, BM_SETCHECK, GWLP_USERDATA, HMONITOR, hMon",
+  "reason": "no compila: necesita un port; faltan: LoadLibrary, COINIT_APARTMENTTHREADED, COINIT_DISABLE_OLE1DDE, CoInitializeEx, IFileDialog, pfd",
   "redist": "sí (MIT)"
  },
  {
@@ -5391,9 +5323,9 @@
    "append_new_ptr",
    "GetFileType",
    "PROC",
-   "DLGTEMPLATE",
    "DoAll",
-   "ptr_to_fun_memory"
+   "ptr_to_fun_memory",
+   "PIMAGE_IMPORT_DESCRIPTOR"
   ],
   "wide": true,
   "dialogs": 2,
@@ -5402,7 +5334,7 @@
   "com": false,
   "subclass": false,
   "class": "B2",
-  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: append_new_ptr, GetFileType, PROC, DLGTEMPLATE, DoAll, ptr_to_fun_memory",
+  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: append_new_ptr, GetFileType, PROC, DoAll, ptr_to_fun_memory, PIMAGE_IMPORT_DESCRIPTOR",
   "redist": "no (sin licencia declarada)"
  },
  {
@@ -5420,11 +5352,11 @@
   "stubs": [],
   "symbols": [
    "DRAWITEMSTRUCT",
-   "DWLP_USER",
-   "LOGPIXELSY",
-   "SM_CXVSCROLL",
    "STATE_SYSTEM_INVISIBLE",
-   "STATE_SYSTEM_OFFSCREEN"
+   "STATE_SYSTEM_OFFSCREEN",
+   "SCROLLBARINFO",
+   "OBJID_VSCROLL",
+   "info"
   ],
   "wide": true,
   "dialogs": 6,
@@ -5450,21 +5382,21 @@
   "build": "compile",
   "stubs": [],
   "symbols": [
-   "DLGTEMPLATE",
-   "GetForegroundWindow",
    "cryptkey",
    "MEM_RELEASE",
    "VirtualFree",
-   "GWLP_USERDATA"
+   "MAX_CRYPT_KEY",
+   "IDD_DLGKEY",
+   "MEM_COMMIT"
   ],
-  "wide": true,
+  "wide": false,
   "dialogs": 1,
   "loc": 4925,
   "mfc": false,
   "com": false,
   "subclass": false,
   "class": "B2",
-  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: DLGTEMPLATE, GetForegroundWindow, cryptkey, MEM_RELEASE, VirtualFree, GWLP_USERDATA",
+  "reason": "no compila: necesita un port; faltan: cryptkey, MEM_RELEASE, VirtualFree, MAX_CRYPT_KEY, IDD_DLGKEY, MEM_COMMIT",
   "redist": "sí (MIT)"
  },
  {
@@ -5509,10 +5441,7 @@
   "symbols": [
    "CString",
    "TextToClip",
-   "SCI_GETTEXTRANGE",
-   "GetMenu",
-   "MF_BYCOMMAND",
-   "MF_CHECKED"
+   "aboutMsg"
   ],
   "wide": false,
   "dialogs": 0,
@@ -5521,7 +5450,7 @@
   "com": true,
   "subclass": false,
   "class": "B2",
-  "reason": "no compila: necesita un port; faltan: CString, TextToClip, SCI_GETTEXTRANGE, GetMenu, MF_BYCOMMAND, MF_CHECKED",
+  "reason": "no compila: necesita un port; faltan: CString, TextToClip, aboutMsg",
   "redist": "sí (GPL-2.0)"
  },
  {
@@ -5569,11 +5498,11 @@
   "stubs": [],
   "symbols": [
    "L__FUNCTION__",
-   "BN_CLICKED",
-   "LPMINMAXINFO",
-   "CBN_KILLFOCUS",
-   "CBN_EDITCHANGE",
-   "CBN_SELCHANGE"
+   "WM_VKEYTOITEM",
+   "LB_SETTABSTOPS",
+   "LPMALLOC",
+   "pShellMalloc",
+   "BROWSEINFOW"
   ],
   "wide": true,
   "dialogs": 5,
@@ -5650,13 +5579,13 @@
   ],
   "symbols": [
    "LPCWCH",
-   "SendDlgItemMessage",
-   "LB_GETITEMDATA",
-   "LB_GETCURSEL",
-   "LB_ERR",
-   "IsDlgButtonChecked"
+   "ListView_GetItemCount",
+   "LVITEM",
+   "lvitem",
+   "LVIF_PARAM",
+   "ListView_GetItem"
   ],
-  "wide": true,
+  "wide": false,
   "dialogs": 7,
   "loc": 258454,
   "mfc": false,
@@ -5814,7 +5743,7 @@
    "converter",
    "COINIT_APARTMENTTHREADED",
    "CoInitializeEx",
-   "MF_BYCOMMAND"
+   "pVoice"
   ],
   "wide": true,
   "dialogs": 0,
@@ -5823,7 +5752,7 @@
   "com": true,
   "subclass": false,
   "class": "B2",
-  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: mVoice, ISpVoice, converter, COINIT_APARTMENTTHREADED, CoInitializeEx, MF_BYCOMMAND",
+  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: mVoice, ISpVoice, converter, COINIT_APARTMENTTHREADED, CoInitializeEx, pVoice",
   "redist": "sí (GPL-2.0)"
  },
  {
@@ -5837,21 +5766,17 @@
   "archived": false,
   "pushed": "2026-10-22",
   "stars": 1,
-  "build": "compile",
+  "build": "ok",
   "stubs": [],
-  "symbols": [
-   "Sci_TextRange",
-   "tr",
-   "SCI_GETTEXTRANGE"
-  ],
+  "symbols": [],
   "wide": false,
   "dialogs": 0,
   "loc": 908,
   "mfc": false,
   "com": false,
   "subclass": false,
-  "class": "B2",
-  "reason": "no compila: necesita un port; faltan: Sci_TextRange, tr, SCI_GETTEXTRANGE",
+  "class": "A",
+  "reason": "compila con la capa de compatibilidad; como mucho pierde el «Acerca de»",
   "redist": "sí (MIT)"
  },
  {
@@ -5897,12 +5822,12 @@
    "wtsapi32.h"
   ],
   "symbols": [
-   "DLGTEMPLATE",
    "INPUT",
    "input",
    "SendInput",
-   "SetWindowText",
-   "SetDlgItemInt"
+   "KEYEVENTF_EXTENDEDKEY",
+   "INPUT_KEYBOARD",
+   "KEYEVENTF_KEYUP"
   ],
   "wide": true,
   "dialogs": 3,
@@ -5911,7 +5836,7 @@
   "com": true,
   "subclass": true,
   "class": "B2",
-  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: DLGTEMPLATE, INPUT, input, SendInput, SetWindowText, SetDlgItemInt",
+  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: INPUT, input, SendInput, KEYEVENTF_EXTENDEDKEY, INPUT_KEYBOARD, KEYEVENTF_KEYUP",
   "redist": "sí (GPL-3.0)"
  },
  {
@@ -5928,12 +5853,12 @@
   "build": "compile",
   "stubs": [],
   "symbols": [
-   "GWLP_WNDPROC",
-   "SetWindowLongPtr",
    "hook",
-   "CallWindowProc",
-   "GetProp",
-   "RemoveProp"
+   "SCI_SETLEXERLANGUAGE",
+   "SCI_LOADLEXERLIBRARY",
+   "byte",
+   "UnhookWindowsHookEx",
+   "WH_KEYBOARD"
   ],
   "wide": false,
   "dialogs": 1,
@@ -5942,7 +5867,7 @@
   "com": false,
   "subclass": false,
   "class": "B2",
-  "reason": "no compila: necesita un port; faltan: GWLP_WNDPROC, SetWindowLongPtr, hook, CallWindowProc, GetProp, RemoveProp",
+  "reason": "no compila: necesita un port; faltan: hook, SCI_SETLEXERLANGUAGE, SCI_LOADLEXERLIBRARY, byte, UnhookWindowsHookEx, WH_KEYBOARD",
   "redist": "sí (GPL-2.0)"
  },
  {
@@ -6007,12 +5932,12 @@
   "build": "compile",
   "stubs": [],
   "symbols": [
-   "USER_DEFAULT_SCREEN_DPI",
-   "LOGFONT",
-   "DLGTEMPLATE",
-   "GWLP_USERDATA",
    "DPI_AWARENESS_CONTEXT",
-   "LR_DEFAULTCOLOR"
+   "_locale_t",
+   "WIN32_FILE_ATTRIBUTE_DATA",
+   "converterX",
+   "DM_REPOSITION",
+   "CreateCompatibleDC"
   ],
   "wide": true,
   "dialogs": 2,
@@ -6021,7 +5946,7 @@
   "com": false,
   "subclass": true,
   "class": "B2",
-  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: USER_DEFAULT_SCREEN_DPI, LOGFONT, DLGTEMPLATE, GWLP_USERDATA, DPI_AWARENESS_CONTEXT, LR_DEFAULTCOLOR",
+  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: DPI_AWARENESS_CONTEXT, _locale_t, WIN32_FILE_ATTRIBUTE_DATA, converterX, DM_REPOSITION, CreateCompatibleDC",
   "redist": "no (sin licencia declarada)"
  },
  {
@@ -6039,11 +5964,11 @@
   "stubs": [],
   "symbols": [
    "CompareFileTime",
-   "TIMERPROC",
    "COINIT_APARTMENTTHREADED",
    "COINIT_DISABLE_OLE1DDE",
    "CoInitializeEx",
-   "IFileDialog"
+   "IFileDialog",
+   "pFileDialog"
   ],
   "wide": false,
   "dialogs": 0,
@@ -6052,7 +5977,7 @@
   "com": true,
   "subclass": false,
   "class": "B2",
-  "reason": "no compila: necesita un port; faltan: CompareFileTime, TIMERPROC, COINIT_APARTMENTTHREADED, COINIT_DISABLE_OLE1DDE, CoInitializeEx, IFileDialog",
+  "reason": "no compila: necesita un port; faltan: CompareFileTime, COINIT_APARTMENTTHREADED, COINIT_DISABLE_OLE1DDE, CoInitializeEx, IFileDialog, pFileDialog",
   "redist": "sí (GPL-2.0)"
  },
  {
@@ -6182,9 +6107,9 @@
    "uintmax_t",
    "intmax_t",
    "Duration",
-   "SIZE_MAX",
-   "file_time_type",
-   "nano"
+   "nano",
+   "micro",
+   "milli"
   ],
   "wide": true,
   "dialogs": 0,
@@ -6193,7 +6118,7 @@
   "com": false,
   "subclass": false,
   "class": "B2",
-  "reason": "necesita dependencias que no vienen en el repositorio; usa wchar_t (TCHAR Unicode); faltan: uintmax_t, intmax_t, Duration, SIZE_MAX, file_time_type, nano",
+  "reason": "necesita dependencias que no vienen en el repositorio; usa wchar_t (TCHAR Unicode); faltan: uintmax_t, intmax_t, Duration, nano, micro, milli",
   "redist": "no (sin licencia declarada)"
  },
  {
@@ -6234,12 +6159,12 @@
   "build": "compile",
   "stubs": [],
   "symbols": [
-   "GWLP_USERDATA",
-   "DLGTEMPLATE",
    "TCM_GETCURSEL",
    "DRAWITEMSTRUCT",
-   "BM_GETCHECK",
-   "TCM_DELETEALLITEMS"
+   "TCM_DELETEALLITEMS",
+   "TCM_SETIMAGELIST",
+   "TCM_GETROWCOUNT",
+   "TCHITTESTINFO"
   ],
   "wide": true,
   "dialogs": 2,
@@ -6248,7 +6173,7 @@
   "com": false,
   "subclass": true,
   "class": "B2",
-  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: GWLP_USERDATA, DLGTEMPLATE, TCM_GETCURSEL, DRAWITEMSTRUCT, BM_GETCHECK, TCM_DELETEALLITEMS",
+  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: TCM_GETCURSEL, DRAWITEMSTRUCT, TCM_DELETEALLITEMS, TCM_SETIMAGELIST, TCM_GETROWCOUNT, TCHITTESTINFO",
   "redist": "sí (GPL-2.0)"
  },
  {
@@ -6268,12 +6193,12 @@
    "winioctl.h"
   ],
   "symbols": [
-   "MapWindowPoints",
-   "GetWindowTextLength",
-   "GetWindowText",
-   "MONITOR_DEFAULTTOPRIMARY",
-   "GetMonitorInfo",
-   "SetWindowText"
+   "TVITEM",
+   "COMBOBOXINFO",
+   "cbi",
+   "GetComboBoxInfo",
+   "MOVEFILE_WRITE_THROUGH",
+   "MAPVK_VK_TO_VSC"
   ],
   "wide": true,
   "dialogs": 5,
@@ -6282,7 +6207,7 @@
   "com": false,
   "subclass": true,
   "class": "B2",
-  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: MapWindowPoints, GetWindowTextLength, GetWindowText, MONITOR_DEFAULTTOPRIMARY, GetMonitorInfo, SetWindowText",
+  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: TVITEM, COMBOBOXINFO, cbi, GetComboBoxInfo, MOVEFILE_WRITE_THROUGH, MAPVK_VK_TO_VSC",
   "redist": "sí (GPL-3.0)"
  },
  {
@@ -6347,12 +6272,11 @@
   "build": "compile",
   "stubs": [],
   "symbols": [
-   "GWLP_WNDPROC",
    "g_messageHook",
-   "WM_SYSKEYDOWN",
-   "MSG",
    "HHOOK",
-   "VK_NUMPAD0"
+   "VK_NUMPAD0",
+   "PM_REMOVE",
+   "WH_GETMESSAGE"
   ],
   "wide": false,
   "dialogs": 0,
@@ -6361,7 +6285,7 @@
   "com": false,
   "subclass": false,
   "class": "B2",
-  "reason": "no compila: necesita un port; faltan: GWLP_WNDPROC, g_messageHook, WM_SYSKEYDOWN, MSG, HHOOK, VK_NUMPAD0",
+  "reason": "no compila: necesita un port; faltan: g_messageHook, HHOOK, VK_NUMPAD0, PM_REMOVE, WH_GETMESSAGE",
   "redist": "no (sin licencia declarada)"
  },
  {
@@ -6426,12 +6350,9 @@
   "build": "compile",
   "stubs": [],
   "symbols": [
-   "m_cs",
    "uint8_t",
-   "CRITICAL_SECTION",
-   "GWLP_WNDPROC",
-   "INFINITE",
-   "WAIT_OBJECT_0"
+   "FILE_NOTIFY_CHANGE_LAST_WRITE",
+   "USER_TIMER_MINIMUM"
   ],
   "wide": false,
   "dialogs": 1,
@@ -6440,7 +6361,7 @@
   "com": false,
   "subclass": false,
   "class": "B2",
-  "reason": "no compila: necesita un port; faltan: m_cs, uint8_t, CRITICAL_SECTION, GWLP_WNDPROC, INFINITE, WAIT_OBJECT_0",
+  "reason": "no compila: necesita un port; faltan: uint8_t, FILE_NOTIFY_CHANGE_LAST_WRITE, USER_TIMER_MINIMUM",
   "redist": "no (sin licencia declarada)"
  },
  {
@@ -6526,12 +6447,12 @@
   "build": "compile",
   "stubs": [],
   "symbols": [
-   "SetFocus",
-   "DeleteObject",
-   "InvalidateRect",
-   "KillTimer",
-   "MulDiv",
-   "GetFocus"
+   "info",
+   "DT_NOPREFIX",
+   "DrawTextW",
+   "DT_SINGLELINE",
+   "DefSubclassProc",
+   "item"
   ],
   "wide": true,
   "dialogs": 3,
@@ -6540,7 +6461,7 @@
   "com": false,
   "subclass": true,
   "class": "B2",
-  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: SetFocus, DeleteObject, InvalidateRect, KillTimer, MulDiv, GetFocus",
+  "reason": "no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: info, DT_NOPREFIX, DrawTextW, DT_SINGLELINE, DefSubclassProc, item",
   "redist": "sí (GPL-3.0)"
  }
 ]
