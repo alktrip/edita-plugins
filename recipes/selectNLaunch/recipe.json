@@ -1,0 +1,35 @@
+{
+	"folder-name": "selectNLaunch",
+	"display-name": "Select N' Launch",
+	"version": "2.2",
+	"npp-compatible-versions": "[0.0.1,]",
+	"description": "Guarda la selección en un archivo temporal con la extensión que se elija y lo abre con la aplicación del sistema asociada a esa extensión. Es el código original del plugin de Notepad++ (npp-plugins/selectnlaunch, v2.2), sin cambios.",
+	"author": "Don HO (port a Edita: Edita contributors)",
+	"homepage": "https://github.com/npp-plugins/selectnlaunch",
+	"license": "GPL-2.0-or-later",
+	"license-files": [
+		"license.txt"
+	],
+	"source": {
+		"url": "https://github.com/npp-plugins/selectnlaunch/archive/refs/tags/v2.2.zip",
+		"sha256": "4ab7651b1b2c3cd9ab819c0a8a969c64cb01b154a9636398556d309a2d22dcea",
+		"strip-components": 1
+	},
+	"remove": [
+		"src/Scintilla.h",
+		"src/Sci_Position.h"
+	],
+	"overlay": "overlay",
+	"build-dir": "edita",
+	"requires": [
+		"cmake",
+		"c++"
+	],
+	"check": {
+		"commands": [
+			"Selection to PDF",
+			"Base64 to PDF",
+			"Edit User Commands"
+		]
+	}
+}

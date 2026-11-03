@@ -1,0 +1,69 @@
+{
+	"folder-name": "SimplifyJson",
+	"display-name": "Simplify Json",
+	"version": "1.0.1",
+	"npp-compatible-versions": "[0.0.1,]",
+	"description": "Herramientas de JSON: escapar y desescapar cadenas, dar formato con sangría y minificar. Trabajan sobre la selección o el documento. Es el código original del plugin de Notepad++ (analystvipul/SimplifyJson, v1.0.1) con un parche de tres líneas: lee la selección con la regla de Scintilla 5, que no cuenta el NUL final (el original pierde el último carácter de la selección).",
+	"author": "Vipul Patil (port a Edita: Edita contributors)",
+	"homepage": "https://github.com/analystvipul/SimplifyJson",
+	"license": "GPL-2.0-only",
+	"license-files": [
+		"license.txt"
+	],
+	"source": {
+		"url": "https://github.com/analystvipul/SimplifyJson/archive/refs/tags/v1.0.1.zip",
+		"sha256": "bec16cdf0553108855b95665edb25831539df3d7baab85be696bcc5c0cf3f682",
+		"strip-components": 1
+	},
+	"remove": [
+		"src/Scintilla.h",
+		"src/Sci_Position.h"
+	],
+	"patches": [
+		"scintilla5-getseltext.patch"
+	],
+	"overlay": "overlay",
+	"build-dir": "edita",
+	"requires": [
+		"cmake",
+		"c++",
+		"patch"
+	],
+	"check": {
+		"commands": [
+			"Escape JSON String",
+			"Unescape JSON String",
+			"Beautify JSON",
+			"Minify JSON"
+		],
+		"cases": [
+			{
+				"command": "Beautify JSON",
+				"select": "none",
+				"text": "{\"a\":1,\"b\":[true,null]}",
+				"expect": "{\n  \"a\": 1,\n  \"b\": [\n    true,\n    null\n  ]\n}"
+			},
+			{
+				"command": "Minify JSON",
+				"select": "none",
+				"text": "{\n  \"a\": 1,\n  \"b\": [ true, null ]\n}",
+				"expect": "{\"a\":1,\"b\":[true,null]}"
+			},
+			{
+				"command": "Minify JSON",
+				"text": "[ 1, 2 ]",
+				"expect": "[1,2]"
+			},
+			{
+				"command": "Escape JSON String",
+				"text": "dijo \"hola\"\n",
+				"expect": "\"dijo \\\"hola\\\"\\n\""
+			},
+			{
+				"command": "Unescape JSON String",
+				"text": "\"dijo \\\"hola\\\"\\n\"",
+				"expect": "dijo \"hola\"\n"
+			}
+		]
+	}
+}

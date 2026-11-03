@@ -1,0 +1,18 @@
+--- a/src/SendToAI.cpp
++++ b/src/SendToAI.cpp
+@@ -90,13 +90,13 @@
+         return;
+ 
+     Sci_Position len = (Sci_Position)::SendMessage(sci, SCI_GETSELTEXT, 0, (LPARAM)NULL);
+-    if (len <= 1) // just the terminating NUL, i.e. empty selection
++    if (len <= 0) // Edita: Scintilla 5 no cuenta el NUL final
+     {
+         ::MessageBox(nppData._nppHandle, TEXT("No text selected."), TEXT("TidyText"), MB_OK | MB_ICONINFORMATION);
+         return;
+     }
+ 
+-    std::vector<char> utf8Buf((size_t)len);
++    std::vector<char> utf8Buf((size_t)len + 1);
+     ::SendMessage(sci, SCI_GETSELTEXT, 0, (LPARAM)utf8Buf.data());
+ 
+     int wideLen = ::MultiByteToWideChar(CP_UTF8, 0, utf8Buf.data(), -1, NULL, 0);

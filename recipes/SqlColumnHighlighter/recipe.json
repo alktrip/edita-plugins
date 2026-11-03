@@ -1,0 +1,33 @@
+{
+	"folder-name": "SqlColumnHighlighter",
+	"display-name": "SQL Column Highlighter",
+	"version": "1.0.0.0",
+	"npp-compatible-versions": "[0.0.1,]",
+	"description": "En una sentencia INSERT de SQL, un clic en el nombre de una columna resalta sus valores y un doble clic en un valor resalta su columna, en todas las filas. Es el código original del plugin de Notepad++ (zhgao/npp-sql-column-highlighter, v1.0.0), sin cambios.",
+	"author": "zhgao (port a Edita: Edita contributors)",
+	"homepage": "https://github.com/zhgao/npp-sql-column-highlighter",
+	"license": "MIT",
+	"license-files": [
+		"LICENSE"
+	],
+	"source": {
+		"url": "https://github.com/zhgao/npp-sql-column-highlighter/archive/refs/tags/v1.0.0.zip",
+		"sha256": "bf4395609952304786901d9c4ab9aaf1cc48d3138fe14406d0e4835bf40f60d6",
+		"strip-components": 1
+	},
+	"remove": [
+		"src/Scintilla.h"
+	],
+	"overlay": "overlay",
+	"build-dir": "edita",
+	"requires": [
+		"cmake",
+		"c++"
+	],
+	"check": {
+		"commands": [
+			"Enable/Disable highlighting",
+			"About..."
+		]
+	}
+}

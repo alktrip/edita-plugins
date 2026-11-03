@@ -1,0 +1,11 @@
+--- a/src/PluginDefinition.h
++++ b/src/PluginDefinition.h
+@@ -23,7 +23,7 @@
+ //
+ #include "PluginInterface.h"
+ //Def emplacement fichier à ouvrir
+-const TCHAR iniFilePath[128]= TEXT("C:\\Windows\\system32\\drivers\\etc\\hosts");
++const TCHAR iniFilePath[128]= TEXT("/etc/hosts"); // Edita: el archivo hosts de Linux y macOS
+ //-------------------------------------//
+ //-- STEP 1. DEFINE YOUR PLUGIN NAME --//
+ //-------------------------------------//

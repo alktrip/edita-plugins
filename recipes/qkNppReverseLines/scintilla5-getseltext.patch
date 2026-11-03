@@ -1,0 +1,11 @@
+--- a/src/PluginDefinition.cpp
++++ b/src/PluginDefinition.cpp
+@@ -179,7 +179,7 @@
+ 		return;
+ 
+ 	// Store text selection in selectedText
+-	char* selectedText = new char[bufLength];
++	char* selectedText = new char[bufLength + 1]; // Edita: Scintilla 5 no cuenta el NUL final
+ 	char* reversedText = new char[bufLength];
+ 	sendScintilla(hCurrScintilla, SCI_GETSELTEXT, 0, (LPARAM)selectedText);
+ 

@@ -1,0 +1,50 @@
+{
+	"folder-name": "qkNppReverseLines",
+	"display-name": "Reverse Lines",
+	"version": "1.0.0.0",
+	"npp-compatible-versions": "[0.0.1,]",
+	"description": "Invierte el orden de las líneas de la selección o del documento, como la orden tac de Unix. Es el código original del plugin de Notepad++ (querykuma/qkNppReverseLines, v1.0.0.0) con un parche de una línea: reserva el byte del NUL final que Scintilla 5 escribe y ya no cuenta (el original escribe un byte fuera de su búfer).",
+	"author": "Query Kuma (port a Edita: Edita contributors)",
+	"homepage": "https://github.com/querykuma/qkNppReverseLines",
+	"license": "GPL-3.0-or-later",
+	"license-files": [
+		"LICENSE"
+	],
+	"source": {
+		"url": "https://github.com/querykuma/qkNppReverseLines/archive/refs/tags/v1.0.0.0.zip",
+		"sha256": "60b0951cfb7d47403c91472aacef30f8e50b066fa20fbff9d4140b23e42647d4",
+		"strip-components": 1
+	},
+	"remove": [
+		"src/Scintilla.h"
+	],
+	"patches": [
+		"scintilla5-getseltext.patch"
+	],
+	"overlay": "overlay",
+	"build-dir": "edita",
+	"requires": [
+		"cmake",
+		"c++",
+		"patch"
+	],
+	"check": {
+		"commands": [
+			"Selection",
+			"Document"
+		],
+		"cases": [
+			{
+				"command": "Document",
+				"select": "none",
+				"text": "uno\ndos\ntres\n",
+				"expect": "\ntres\ndos\nuno"
+			},
+			{
+				"command": "Selection",
+				"text": "a\nb\nc",
+				"expect": "c\nb\na"
+			}
+		]
+	}
+}

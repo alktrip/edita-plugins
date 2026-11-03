@@ -1,0 +1,42 @@
+{
+	"folder-name": "nppAutoDetectIndent",
+	"display-name": "Auto Detect Indention",
+	"version": "2.3",
+	"npp-compatible-versions": "[0.0.1,]",
+	"description": "Detecta la sangría de cada documento (tabulaciones o espacios, y cuántos) y ajusta la tecla Tab a ella. Es el código original del plugin de Notepad++ (Chocobo1/nppAutoDetectIndent, 2.3), sin cambios, con su submódulo (la plantilla de plugins de N++ en el commit que fija).",
+	"author": "Mike Tzou (Chocobo1) (port a Edita: Edita contributors)",
+	"homepage": "https://github.com/Chocobo1/nppAutoDetectIndent",
+	"license": "GPL-3.0-or-later",
+	"license-files": [
+		"LICENSE"
+	],
+	"source": {
+		"url": "https://github.com/Chocobo1/nppAutoDetectIndent/archive/refs/tags/2.3.zip",
+		"sha256": "5efa3dee75cbeae2e22000896d1f3b96a457880765bcf1a9e470f5c6f56ac782",
+		"strip-components": 1
+	},
+	"extra-sources": [
+		{
+			"url": "https://github.com/npp-plugins/plugintemplate/archive/e699e2dd94866f72eab05d6ba9f84b79538014f9.zip",
+			"sha256": "409bb8c0db320d8843400eb8f33bc157437312eef4a21d802541fef12b33e968",
+			"strip-components": 1,
+			"dest": "plugintemplate"
+		}
+	],
+	"remove": [
+		"plugintemplate/src/Scintilla.h",
+		"plugintemplate/src/Sci_Position.h"
+	],
+	"overlay": "overlay",
+	"build-dir": "edita",
+	"requires": [
+		"cmake",
+		"c++"
+	],
+	"check": {
+		"commands": [
+			"Disable plugin",
+			"Goto website..."
+		]
+	}
+}

@@ -1,0 +1,17 @@
+--- a/src/PluginDefinition.cpp
++++ b/src/PluginDefinition.cpp
+@@ -61,11 +61,11 @@
+ 
+ static std::string getSelectedText(HWND sci)
+ {
+-    Sci_Position len = (Sci_Position)::SendMessage(sci, SCI_GETSELTEXT, 0, 0); // includes null terminator
++    Sci_Position len = (Sci_Position)::SendMessage(sci, SCI_GETSELTEXT, 0, 0); // Edita: Scintilla 5 no cuenta el NUL final
+     if (len <= 0) return std::string();
+-    std::string buf(static_cast<size_t>(len), '\0');
++    std::string buf(static_cast<size_t>(len) + 1, '\0');
+     ::SendMessage(sci, SCI_GETSELTEXT, 0, (LPARAM)&buf[0]);
+-    buf.resize(static_cast<size_t>(len - 1)); // drop the trailing NUL
++    buf.resize(static_cast<size_t>(len)); // drop the trailing NUL
+     return buf;
+ }
+ 
