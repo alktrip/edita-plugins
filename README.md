@@ -86,6 +86,6 @@ Simplify JSON no tiene binario, y se compila en el equipo del usuario. Se public
 | Capa de compatibilidad v2, parte 4: controles comunes, bucles de mensajes y dibujo | Pendiente |
 | Recetas del primer lote y su prueba (`--build-recipe`, `--check-plugin`) | ✅ [fase 54 de Edita](https://github.com/alktrip/edita/blob/main/docs/fase54.md): los 7 plugins de la clase A con una licencia que permite redistribuirlos |
 | CI: compilar las recetas y publicar la lista firmada (Linux x86_64) | ✅ [fase 55 de Edita](https://github.com/alktrip/edita/blob/main/docs/fase55.md): 6 plugins con binario y Simplify JSON como receta |
-| Edita: descargar la lista remota, verificar la firma e instalar los binarios | Pendiente |
+| Edita: descargar la lista remota, verificar la firma e instalar los binarios | ✅ [fase 56 de Edita](https://github.com/alktrip/edita/blob/main/docs/fase56.md): sin volver a listas anteriores, y con la receta si el binario no sirve en el equipo |
 | Mudar las recetas de MIME Tools y XML Tools desde el repositorio de Edita | Pendiente |
 | Siguientes lotes: los plugins de la clase B1, según avance la capa | Pendiente |
