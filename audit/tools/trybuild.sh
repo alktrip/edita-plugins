@@ -14,13 +14,15 @@ SRCEXCL='/(plugintemplate|npp_plugintemplate|notepad-plus-plus|gtest|googletest)
 SRCS=$(find $W/code \( -name '*.cpp' -o -name '*.c' -o -name '*.cc' -o -name '*.cxx' \) | grep -viE "$EXCL" | grep -viE "$SRCEXCL" | sort)
 [ -z "$SRCS" ] && { echo "nosrc" > $W/result; exit; }
 INCS=$(find $W/code \( -name '*.h' -o -name '*.hpp' \) -printf '%h\n' | grep -viE "$EXCL" | sort -u)
+# Los .rc del plugin (sin los de las bibliotecas): edita_rc los convierte (fase 53)
+RCS=$(find $W/code -iname '*.rc' | grep -viE "$EXCL" | sort)
 cat > $W/CMakeLists.txt <<CM
 cmake_minimum_required(VERSION 3.20)
 project(Try C CXX)
 set(EDITA_PLUGIN_SDK $ED/plugin-sdk)
 set(EDITA_SCINTILLA_INCLUDE $ED/third_party/scintilla/include)
 include(\${EDITA_PLUGIN_SDK}/cmake/EditaNppPlugin.cmake)
-edita_npp_plugin(try UNICODE SOURCES $(echo $SRCS) INCLUDES $(echo $INCS) $W/stubs $ED/third_party/lexilla/include)
+edita_npp_plugin(try UNICODE SOURCES $(echo $SRCS) $( [ -n "$RCS" ] && echo RESOURCES $RCS ) INCLUDES $(echo $INCS) $W/stubs $ED/third_party/lexilla/include)
 target_link_options(try PRIVATE -Wl,--no-undefined)
 CM
 cd $W

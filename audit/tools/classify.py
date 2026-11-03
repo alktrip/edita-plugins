@@ -89,10 +89,12 @@ for p in pl:
     elif e['lang'] == '(sin código)' or result == 'nosrc':
         cls, why = 'D', 'el repositorio solo tiene binarios'
     elif result in ('ok', 'stubs'):
-        simple = (e['dialogs'] or 0) <= 1 and not e['subclass'] and not e['mfc']
+        # Desde la fase 53 de Edita, los diálogos de los .rc funcionan: si compila (sin
+        # MFC), compila entero, con su interfaz
+        simple = not e['mfc']
         cls = 'A' if simple else 'B1'
-        why = ('compila con la capa de compatibilidad; como mucho pierde el «Acerca de»' if simple
-               else 'compila, pero sus diálogos o ventanas hay que portarlos a Qt')
+        why = ('compila entero con la capa de compatibilidad, interfaz incluida (ventanas y diálogos del .rc)' if simple
+               else 'compila, pero usa MFC: su interfaz hay que portarla a Qt')
         if stubs:
             why += ' (con cabeceras vacías: ' + ', '.join(stubs) + ')'
     elif core.get(key, {}).get('failed') and not core[key]['core_failed']:
