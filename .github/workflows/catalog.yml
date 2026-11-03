@@ -1,0 +1,136 @@
+# El catálogo de plugins de Edita: compila y prueba las recetas con el Edita en desarrollo
+# (el AppImage del release «continuous» de alktrip/edita), genera la lista y, si algo
+# cambió, la firma y publica un release con los paquetes.
+#
+# Edita encuentra siempre la última lista en
+#   https://github.com/alktrip/edita-plugins/releases/latest/download/plugins.json
+# (y su firma en plugins.json.minisig). Los paquetes de cada lista están en su propio
+# release, que no cambia.
+#
+# En los pull requests solo compila y prueba. Los lunes recompila con el Edita más
+# reciente: si el SDK cambió, cambian los paquetes y se publica un catálogo nuevo.
+name: Catálogo
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: '17 6 * * 1'
+
+permissions:
+  contents: write # para publicar los releases del catálogo
+
+concurrency:
+  group: catalog-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  CC: gcc-12
+  CXX: g++-12
+  TZ: UTC
+  QT_QPA_PLATFORM: offscreen
+
+jobs:
+  catalogo:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Paquetes
+        # Compilar las recetas (con el Qt y el SDK del AppImage) y ejecutar Edita sin
+        # pantalla; minisign, para comprobar la firma con la herramienta original
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends g++-12 ninja-build pkg-config patch \
+            python3-cryptography minisign \
+            libgl1 libegl1 libopengl0 libglx0 libxkbcommon0 libfontconfig1 libfreetype6 libdbus-1-3 libglib2.0-0
+
+      - name: Pruebas de los scripts
+        run: /usr/bin/python3 -m unittest discover -s scripts -v
+
+      - name: Edita
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p "$RUNNER_TEMP/edita"
+          cd "$RUNNER_TEMP/edita"
+          gh release download continuous -R alktrip/edita -p '*.AppImage'
+          chmod +x ./*.AppImage
+          ./*.AppImage --appimage-extract >/dev/null
+          echo "EDITA=$PWD/squashfs-root/AppRun" >> "$GITHUB_ENV"
+          echo "EDITA_SDK=$PWD/squashfs-root/usr/share/edita/plugin-sdk" >> "$GITHUB_ENV"
+          echo "EDITA_APPIMAGE=$(ls ./*.AppImage)" >> "$GITHUB_ENV"
+          gh release view continuous -R alktrip/edita --json targetCommitish,tagName -q '"Edita: \(.tagName) \(.targetCommitish)"' || true
+
+      - name: Compilar y probar las recetas
+        run: scripts/build-all.sh "$EDITA" "$RUNNER_TEMP/paquetes"
+
+      - name: Lista
+        id: lista
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          version="$(date -u +%Y.%m.%d).${{ github.run_number }}"
+          tag="catalog-$version"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          out="$RUNNER_TEMP/catalogo"
+          mkdir -p "$out"
+          cp "$RUNNER_TEMP"/paquetes/*.zip "$RUNNER_TEMP"/paquetes/*.zip.sha256 "$out/"
+          /usr/bin/python3 scripts/catalog.py pack-recipes --recipes recipes --out "$out/recipes.zip"
+          /usr/bin/python3 scripts/catalog.py list --recipes recipes --packages "$out" --sdk "$EDITA_SDK" \
+            --base-url "https://github.com/${{ github.repository }}/releases/download/$tag" \
+            --catalog-version "$version" --recipes-zip "$out/recipes.zip" --out "$out/plugins.json"
+          # ¿Cambió algo respecto al último catálogo publicado?
+          gh release download -R "${{ github.repository }}" -p plugins.json -O "$RUNNER_TEMP/anterior.json" 2>/dev/null || true
+          if /usr/bin/python3 scripts/catalog.py changed "$RUNNER_TEMP/anterior.json" "$out/plugins.json"; then
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Subir los paquetes (artefacto)
+        uses: actions/upload-artifact@v4
+        with:
+          name: catalogo-linux-x86_64
+          path: |
+            ${{ runner.temp }}/catalogo
+            ${{ runner.temp }}/paquetes/*.log
+          if-no-files-found: error
+
+      - name: Firmar y publicar
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && steps.lista.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          EDITA_CATALOG_KEY: ${{ secrets.EDITA_CATALOG_KEY }}
+          VERSION: ${{ steps.lista.outputs.version }}
+          TAG: ${{ steps.lista.outputs.tag }}
+        run: |
+          if [ -z "$EDITA_CATALOG_KEY" ]; then
+            echo "::error::Falta el secreto EDITA_CATALOG_KEY (la clave de firma del catálogo): no se publica"
+            exit 1
+          fi
+          out="$RUNNER_TEMP/catalogo"
+          /usr/bin/python3 scripts/catalog.py sign "$out/plugins.json" \
+            --trusted-comment "$(printf 'timestamp:%s\tfile:plugins.json\tcatalog:%s' "$(date -u +%s)" "$VERSION")"
+          # La firma, con este script y con minisign
+          /usr/bin/python3 scripts/catalog.py verify --public keys/catalog.pub "$out/plugins.json"
+          minisign -Vm "$out/plugins.json" -p keys/catalog.pub
+          {
+            echo "Catálogo de plugins de Edita para Linux x86_64, compilado con $(basename "$EDITA_APPIMAGE")."
+            echo
+            echo "| Plugin | Versión | Licencia | Instalación |"
+            echo "|---|---|---|---|"
+            /usr/bin/python3 -c 'import json,sys
+          for p in json.load(open(sys.argv[1]))["npp-plugins"]:
+              how = "binario" if p["edita-build"] == "binary" else "se compila en el equipo"
+              print("| %s | %s | %s | %s |" % (p["display-name"], p["version"], p["license"], how))' "$out/plugins.json"
+            echo
+            echo "Comprobar la firma: \`minisign -Vm plugins.json -p catalog.pub\` (la clave está en [keys/catalog.pub](https://github.com/${{ github.repository }}/blob/main/keys/catalog.pub))."
+          } > "$RUNNER_TEMP/notas.md"
+          gh release create "$TAG" --target "$GITHUB_SHA" --title "Catálogo $VERSION" --latest \
+            --notes-file "$RUNNER_TEMP/notas.md" \
+            "$out"/*.zip "$out"/*.zip.sha256 "$out/plugins.json" "$out/plugins.json.minisig" keys/catalog.pub

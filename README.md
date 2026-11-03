@@ -5,7 +5,7 @@ Catálogo de plugins de [Edita](https://github.com/alktrip/edita), el editor par
 Este repositorio está separado de la aplicación por tres motivos:
 
 - Los plugins tienen su propio ritmo: una versión nueva de un plugin no obliga a publicar una versión de Edita, y al revés.
-- La compilación de los plugins para cada plataforma (Linux x86_64, Linux aarch64 y macOS) no pesa en la CI de la aplicación.
+- La compilación de los plugins no pesa en la CI de la aplicación. Por ahora es solo para Linux x86_64: macOS se retoma cuando Edita esté completo en Linux.
 - Los binarios se publican en los *Releases* de este repositorio, no en git, así que el historial de la aplicación no crece con cada paquete.
 
 ## Cómo funciona
@@ -30,7 +30,32 @@ Cada plugin conserva la licencia de su autor. Los parches y los *overlays* de un
 | [`audit/`](audit/) | **Auditoría de la lista oficial de N++** (225 plugins): qué se puede compilar para Edita, qué hay que portar, qué no se puede traer y por qué. Incluye las herramientas para repetirla |
 | [`recipes/`](recipes/) | Las recetas, una carpeta por plugin |
 | [`scripts/build-all.sh`](scripts/build-all.sh) | Compila y prueba las recetas con Edita: `scripts/build-all.sh ruta/a/edita salida/` |
-| `.github/workflows/` | Compilación y publicación (pendiente) |
+| [`scripts/catalog.py`](scripts/catalog.py) | Genera la lista de plugins, la firma y la verifica |
+| [`keys/catalog.pub`](keys/catalog.pub) | La clave pública con la que se firma la lista |
+| [`.github/workflows/catalog.yml`](.github/workflows/catalog.yml) | Compila, prueba y publica el catálogo |
+
+## El catálogo publicado
+
+La CI compila las recetas para **Linux x86_64** con el AppImage de Edita en desarrollo. Así los binarios usan el mismo Qt (6.8) y la misma glibc (2.35) que el AppImage. Si algo cambió respecto al último catálogo, publica un *release* `catalog-<fecha>.<n>` con:
+
+- un `.zip` por plugin y su `.sha256`;
+- `recipes.zip`, con todas las recetas;
+- `plugins.json`, la lista, con el formato de `nppPluginList.json` de Notepad++;
+- `plugins.json.minisig`, su firma.
+
+La última lista está siempre en <https://github.com/alktrip/edita-plugins/releases/latest/download/plugins.json>. El formato está en [la fase 55 de Edita](https://github.com/alktrip/edita/blob/main/docs/fase55.md).
+
+**Comprobar la firma** (Ed25519, formato [minisign](https://jedisct1.github.io/minisign/)):
+
+```sh
+minisign -Vm plugins.json -p keys/catalog.pub
+# o, sin minisign:
+python3 scripts/catalog.py verify --public keys/catalog.pub plugins.json
+```
+
+**Comprobar un binario.** Los paquetes son reproducibles: con el mismo AppImage de Edita (el que indica el *release*), `scripts/build-all.sh` da los mismos SHA-256 que la lista.
+
+**Licencias.** La capa de compatibilidad de Edita va dentro de cada `.so` y es GPL-3.0-or-later. Por eso solo se publican binarios de plugins con una licencia compatible con la GPL-3. Los demás se listan igual, y el administrador de plugins los compila en el equipo del usuario a partir de su receta.
 
 ## Recetas
 
@@ -48,6 +73,8 @@ Todas compilan el código de la etiqueta que publicó el autor, sin cambios salv
 
 Los tres parches de `SCI_GETSELTEXT` corrigen fallos que también tienen en Notepad++: en la Scintilla actual (la serie 5, la de Notepad++ y la de Edita), el valor que devuelve no cuenta el NUL final, pero sí lo escribe. Los plugins se escribieron con la regla anterior.
 
+Simplify JSON no tiene binario, y se compila en el equipo del usuario. Se publica como «GPLv2» sin «o posterior», pero incluye los archivos de la interfaz de Notepad++, que son GPL-3 o posterior: su autor creyó que la plantilla de N++ era GPLv2. Si aclara la licencia, pasa a binario.
+
 ## Estado
 
 | Paso | Estado |
@@ -58,7 +85,7 @@ Los tres parches de `SCI_GETSELTEXT` corrigen fallos que también tienen en Note
 | Capa de compatibilidad v2, parte 3: diálogos, menús y cadenas de los `.rc` | ✅ [fase 53 de Edita](https://github.com/alktrip/edita/blob/main/docs/fase53.md): compilan 12 plugins con su interfaz (9 que Edita no tiene) y otros 6 salvo la interfaz |
 | Capa de compatibilidad v2, parte 4: controles comunes, bucles de mensajes y dibujo | Pendiente |
 | Recetas del primer lote y su prueba (`--build-recipe`, `--check-plugin`) | ✅ [fase 54 de Edita](https://github.com/alktrip/edita/blob/main/docs/fase54.md): los 7 plugins de la clase A con una licencia que permite redistribuirlos |
-| CI: compilar las recetas por plataforma y publicar la lista firmada | Pendiente |
+| CI: compilar las recetas y publicar la lista firmada (Linux x86_64) | ✅ [fase 55 de Edita](https://github.com/alktrip/edita/blob/main/docs/fase55.md): 6 plugins con binario y Simplify JSON como receta |
 | Edita: descargar la lista remota, verificar la firma e instalar los binarios | Pendiente |
 | Mudar las recetas de MIME Tools y XML Tools desde el repositorio de Edita | Pendiente |
 | Siguientes lotes: los plugins de la clase B1, según avance la capa | Pendiente |

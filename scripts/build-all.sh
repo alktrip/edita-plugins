@@ -6,7 +6,8 @@
 # EDITA es el ejecutable de Edita (con su SDK de plugins al lado o instalado); SALIDA, la
 # carpeta donde quedan los paquetes (<plugin>-<versión>.zip y su .sha256) y un registro
 # por receta. Sin recetas, todas las de recipes/. Termina con error si alguna receta no
-# compila o no pasa su prueba.
+# compila o no pasa su prueba. Con el mismo Edita, los paquetes son idénticos byte a byte
+# a los que publica la CI: así se puede comprobar un binario del catálogo.
 set -u
 
 if [ $# -lt 2 ]; then
@@ -20,6 +21,10 @@ root=$(cd "$(dirname "$0")/.." && pwd)
 mkdir -p "$output"
 output=$(cd "$output" && pwd)
 export QT_QPA_PLATFORM=${QT_QPA_PLATFORM:-offscreen}
+# Paquetes reproducibles: el mismo código con el mismo Edita da el mismo .zip (la fecha de
+# sus entradas es fija; el .zip guarda la hora local, de ahí UTC)
+export SOURCE_DATE_EPOCH=${SOURCE_DATE_EPOCH:-315532800}
+export TZ=UTC
 
 recipes=("$@")
 if [ ${#recipes[@]} -eq 0 ]; then
