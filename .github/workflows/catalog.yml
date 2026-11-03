@@ -66,8 +66,11 @@ jobs:
           ./*.AppImage --appimage-extract >/dev/null
           echo "EDITA=$PWD/squashfs-root/AppRun" >> "$GITHUB_ENV"
           echo "EDITA_SDK=$PWD/squashfs-root/usr/share/edita/plugin-sdk" >> "$GITHUB_ENV"
-          echo "EDITA_APPIMAGE=$(ls ./*.AppImage)" >> "$GITHUB_ENV"
-          gh release view continuous -R alktrip/edita --json targetCommitish,tagName -q '"Edita: \(.tagName) \(.targetCommitish)"' || true
+          echo "EDITA_APPIMAGE=$PWD/$(ls ./*.AppImage)" >> "$GITHUB_ENV"
+          # El commit de Edita de ese AppImage: el release continuo cambia con cada push
+          commit=$(gh api repos/alktrip/edita/git/ref/tags/continuous -q .object.sha)
+          echo "EDITA_COMMIT=$commit" >> "$GITHUB_ENV"
+          echo "Edita $commit, $(sha256sum ./*.AppImage)"
 
       - name: Compilar y probar las recetas
         run: scripts/build-all.sh "$EDITA" "$RUNNER_TEMP/paquetes"
@@ -111,10 +114,13 @@ jobs:
           /usr/bin/python3 scripts/catalog.py sign "$out/plugins.json" \
             --trusted-comment "$(printf 'timestamp:%s\tfile:plugins.json\tcatalog:%s' "$(date -u +%s)" "$VERSION")"
           /usr/bin/python3 scripts/catalog.py verify --public keys/catalog.pub "$out/plugins.json"
-          echo "Compilado con $(basename "$EDITA_APPIMAGE")" > "$out/edita.txt"
+          # Para reproducir los paquetes hace falta ese mismo AppImage: va en el release
+          cp "$EDITA_APPIMAGE" "$out/"
+          echo "Compilado con $(basename "$EDITA_APPIMAGE") (Edita $EDITA_COMMIT, SHA-256 $(sha256sum "$EDITA_APPIMAGE" | cut -d' ' -f1))" > "$out/edita.txt"
           echo "publish=true" >> "$GITHUB_OUTPUT"
 
       - name: Subir el catálogo (artefacto)
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: catalogo-linux-x86_64
@@ -173,7 +179,10 @@ jobs:
               print("| %s | %s | %s | %s |" % (p["display-name"], p["version"], p["license"], how))' "$out/plugins.json"
             echo
             echo "Comprobar la firma: \`minisign -Vm plugins.json -p catalog.pub\` (la clave está en [keys/catalog.pub](https://github.com/${{ github.repository }}/blob/main/keys/catalog.pub))."
+            echo
+            echo "Comprobar un paquete: con el AppImage de este release, \`scripts/build-all.sh Edita-*.AppImage salida/\` da los mismos SHA-256 (los paquetes son reproducibles)."
           } > "$RUNNER_TEMP/notas.md"
           gh release create "$TAG" --target "$GITHUB_SHA" --title "Catálogo $VERSION" --latest \
             --notes-file "$RUNNER_TEMP/notas.md" \
-            "$out"/*.zip "$out"/*.zip.sha256 "$out/plugins.json" "$out/plugins.json.minisig" keys/catalog.pub
+            "$out"/*.zip "$out"/*.zip.sha256 "$out/plugins.json" "$out/plugins.json.minisig" "$out"/*.AppImage \
+            keys/catalog.pub
