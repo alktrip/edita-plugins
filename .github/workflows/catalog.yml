@@ -36,16 +36,20 @@ jobs:
   catalogo:
     runs-on: ubuntu-22.04
     timeout-minutes: 90
+    outputs:
+      version: ${{ steps.lista.outputs.version }}
+      tag: ${{ steps.lista.outputs.tag }}
+      publish: ${{ steps.firma.outputs.publish }}
     steps:
       - uses: actions/checkout@v4
 
       - name: Paquetes
         # Compilar las recetas (con el Qt y el SDK del AppImage) y ejecutar Edita sin
-        # pantalla; minisign, para comprobar la firma con la herramienta original
+        # pantalla
         run: |
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends g++-12 ninja-build pkg-config patch \
-            python3-cryptography minisign \
+            python3-cryptography \
             libgl1 libegl1 libopengl0 libglx0 libxkbcommon0 libfontconfig1 libfreetype6 libdbus-1-3 libglib2.0-0
 
       - name: Pruebas de los scripts
@@ -92,22 +96,12 @@ jobs:
             echo "changed=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Subir los paquetes (artefacto)
-        uses: actions/upload-artifact@v4
-        with:
-          name: catalogo-linux-x86_64
-          path: |
-            ${{ runner.temp }}/catalogo
-            ${{ runner.temp }}/paquetes/*.log
-          if-no-files-found: error
-
-      - name: Firmar y publicar
+      - name: Firmar
+        id: firma
         if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && steps.lista.outputs.changed == 'true'
         env:
-          GH_TOKEN: ${{ github.token }}
           EDITA_CATALOG_KEY: ${{ secrets.EDITA_CATALOG_KEY }}
           VERSION: ${{ steps.lista.outputs.version }}
-          TAG: ${{ steps.lista.outputs.tag }}
         run: |
           if [ -z "$EDITA_CATALOG_KEY" ]; then
             echo "::error::Falta el secreto EDITA_CATALOG_KEY (la clave de firma del catálogo): no se publica"
@@ -116,11 +110,60 @@ jobs:
           out="$RUNNER_TEMP/catalogo"
           /usr/bin/python3 scripts/catalog.py sign "$out/plugins.json" \
             --trusted-comment "$(printf 'timestamp:%s\tfile:plugins.json\tcatalog:%s' "$(date -u +%s)" "$VERSION")"
-          # La firma, con este script y con minisign
           /usr/bin/python3 scripts/catalog.py verify --public keys/catalog.pub "$out/plugins.json"
+          echo "Compilado con $(basename "$EDITA_APPIMAGE")" > "$out/edita.txt"
+          echo "publish=true" >> "$GITHUB_OUTPUT"
+
+      - name: Subir el catálogo (artefacto)
+        uses: actions/upload-artifact@v4
+        with:
+          name: catalogo-linux-x86_64
+          path: |
+            ${{ runner.temp }}/catalogo
+            ${{ runner.temp }}/paquetes/*.log
+          if-no-files-found: error
+
+  # Aparte, en Ubuntu 24.04 (la 22.04 no tiene minisign): la firma se comprueba con la
+  # herramienta original antes de publicar
+  publicar:
+    needs: catalogo
+    if: needs.catalogo.outputs.publish == 'true'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: catalogo-linux-x86_64
+          path: ${{ runner.temp }}/artefacto
+
+      - name: Comprobar la firma
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends minisign python3-cryptography
+          out="$RUNNER_TEMP/artefacto/catalogo"
           minisign -Vm "$out/plugins.json" -p keys/catalog.pub
+          /usr/bin/python3 scripts/catalog.py verify --public keys/catalog.pub "$out/plugins.json"
+          # Cada paquete, con el SHA-256 de la lista
+          /usr/bin/python3 - "$out" <<'PY'
+          import hashlib, json, os, sys
+          out = sys.argv[1]
+          for p in json.load(open(os.path.join(out, "plugins.json")))["npp-plugins"]:
+              if p["edita-build"] == "binary":
+                  name = p["repository"].rsplit("/", 1)[1]
+                  assert hashlib.sha256(open(os.path.join(out, name), "rb").read()).hexdigest() == p["id"], name
+          PY
+
+      - name: Publicar
+        env:
+          GH_TOKEN: ${{ github.token }}
+          VERSION: ${{ needs.catalogo.outputs.version }}
+          TAG: ${{ needs.catalogo.outputs.tag }}
+        run: |
+          out="$RUNNER_TEMP/artefacto/catalogo"
           {
-            echo "Catálogo de plugins de Edita para Linux x86_64, compilado con $(basename "$EDITA_APPIMAGE")."
+            echo "Catálogo de plugins de Edita para Linux x86_64. $(cat "$out/edita.txt")."
             echo
             echo "| Plugin | Versión | Licencia | Instalación |"
             echo "|---|---|---|---|"
