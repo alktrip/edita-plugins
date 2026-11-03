@@ -53,7 +53,7 @@ minisign -Vm plugins.json -p keys/catalog.pub
 python3 scripts/catalog.py verify --public keys/catalog.pub plugins.json
 ```
 
-**Comprobar un binario.** Los paquetes son reproducibles. Cada *release* incluye el AppImage de Edita con el que se compiló, y con él `scripts/build-all.sh Edita-*.AppImage salida/` da los mismos SHA-256 que la lista. Sin FUSE, hay que ejecutarlo con `APPIMAGE_EXTRACT_AND_RUN=1`.
+**Comprobar un binario.** Los paquetes son reproducibles. Cada *release* incluye el AppImage de Edita con el que se compiló. Con él y el mismo compilador que la CI (Ubuntu 22.04 con GCC 12: `CC=gcc-12 CXX=g++-12`), `scripts/build-all.sh Edita-*.AppImage salida/` da los mismos SHA-256 que la lista. Se comprobó con dos compilaciones de la CI en máquinas distintas. Sin FUSE, hay que ejecutarlo con `APPIMAGE_EXTRACT_AND_RUN=1`.
 
 **Licencias.** La capa de compatibilidad de Edita va dentro de cada `.so` y es GPL-3.0-or-later. Por eso solo se publican binarios de plugins con una licencia compatible con la GPL-3. Los demás se listan igual, y el administrador de plugins los compila en el equipo del usuario a partir de su receta.
 

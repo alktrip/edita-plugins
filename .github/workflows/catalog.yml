@@ -180,7 +180,7 @@ jobs:
             echo
             echo "Comprobar la firma: \`minisign -Vm plugins.json -p catalog.pub\` (la clave está en [keys/catalog.pub](https://github.com/${{ github.repository }}/blob/main/keys/catalog.pub))."
             echo
-            echo "Comprobar un paquete: con el AppImage de este release, \`scripts/build-all.sh Edita-*.AppImage salida/\` da los mismos SHA-256 (los paquetes son reproducibles)."
+            echo "Comprobar un paquete: con el AppImage de este release, en Ubuntu 22.04 con GCC 12 (\`CC=gcc-12 CXX=g++-12\`), \`scripts/build-all.sh Edita-*.AppImage salida/\` da los mismos SHA-256 (los paquetes son reproducibles)."
           } > "$RUNNER_TEMP/notas.md"
           gh release create "$TAG" --target "$GITHUB_SHA" --title "Catálogo $VERSION" --latest \
             --notes-file "$RUNNER_TEMP/notas.md" \
