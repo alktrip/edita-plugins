@@ -77,7 +77,7 @@ Todas compilan el código de la etiqueta que publicó el autor, sin cambios salv
 | [NppStripIpAndHost](recipes/NppStripIpAndHost/) | 1.0.0 | GPL-2.0-or-later | Enmascara direcciones IP y nombres de host | — |
 | [ElasticTabstops](recipes/ElasticTabstops/) | 1.5.0 | GPL-2.0-or-later | Tabulaciones elásticas; convierte entre tabulaciones y espacios | — |
 | [MZC8051](recipes/MZC8051/) | 0.0.1 | GPL-3.0-or-later | Compila C para 8051 con el compilador MZC8051 | — (dos fuentes pasan de GBK a UTF-8 con `recode`) |
-| [Datamodder SQL Formatter](recipes/FormatSQL/) | 1.3.2.18 | MIT | Da formato a SQL en varios dialectos, o lo minifica | — |
+| [Datamodder SQL Formatter](recipes/FormatSQL/) | 1.3.2.18 | MIT | Da formato a SQL en varios dialectos, o lo minifica | 1 línea: `<stddef.h>` para `ptrdiff_t` (el `<string>` de MSVC lo trae) |
 | [NppCrossCheck](recipes/NppCrossCheck/) | 1.3.0.0 | GPL-2.0-or-later | Compara dos listas | 1 línea: `std::ifstream` con `std::filesystem::path` (con `wchar_t*` es de MSVC) |
 | [Pork to Sausage](recipes/pork2sausage/) | 2.6 | GPL-2.0-or-later | Transforma la selección con un programa externo | 1 línea: la misma; su `.ini` va en el paquete con el nombre que busca (`package-files`) |
 

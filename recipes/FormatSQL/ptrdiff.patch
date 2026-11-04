@@ -1,0 +1,10 @@
+--- a/src/formatter.cpp
++++ b/src/formatter.cpp
+@@ -6,6 +6,7 @@
+ #include <algorithm>
+ #include <cctype>
+ #include <cstring>
++#include <stddef.h> // ::ptrdiff_t, que el <string> de MSVC trae y el de GCC no
+ 
+ static const int KW = 6;  // "select" width — reference for right-aligning keywords
+ 
