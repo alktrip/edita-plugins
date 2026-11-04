@@ -1,6 +1,6 @@
 # Auditoría de la lista oficial de plugins de Notepad++
 
-Fecha: 2026-10-30 · Lista: [`nppPluginList/src/pl.x64.json`](https://github.com/notepad-plus-plus/nppPluginList/blob/master/src/pl.x64.json) · SDK: `plugin-sdk/` de Edita en la fase 49 y, repetida, en la [fase 51](https://github.com/alktrip/edita/blob/main/docs/fase51.md) (modo Unicode y Win32 sin ventanas) en la [fase 52](https://github.com/alktrip/edita/blob/main/docs/fase52.md) (ventanas) y en la [fase 53](https://github.com/alktrip/edita/blob/main/docs/fase53.md) (los `.rc`; código descargado de nuevo el 2026-10-31)
+Fecha: 2026-10-30 · Lista: [`nppPluginList/src/pl.x64.json`](https://github.com/notepad-plus-plus/nppPluginList/blob/master/src/pl.x64.json) · SDK: `plugin-sdk/` de Edita en la fase 49 y, repetida, en la [fase 51](https://github.com/alktrip/edita/blob/main/docs/fase51.md) (modo Unicode y Win32 sin ventanas) en la [fase 52](https://github.com/alktrip/edita/blob/main/docs/fase52.md) (ventanas), en la [fase 53](https://github.com/alktrip/edita/blob/main/docs/fase53.md) (los `.rc`; código descargado de nuevo el 2026-10-31) y en la [fase 58](https://github.com/alktrip/edita/blob/main/docs/fase58.md) (controles comunes, bucles de mensajes y dibujo; 2026-11-04, mismo código)
 
 **Pregunta:** ¿cuántos plugins de Notepad++ se pueden recompilar para Edita y distribuir desde este repositorio?
 
@@ -9,33 +9,40 @@ Fecha: 2026-10-30 · Lista: [`nppPluginList/src/pl.x64.json`](https://github.com
 - **[Fase 51](https://github.com/alktrip/edita/blob/main/docs/fase51.md):** modo Unicode y Win32 sin ventanas.
 - **[Fase 52](https://github.com/alktrip/edita/blob/main/docs/fase52.md):** las ventanas, con las clases de la plantilla de N++ funcionando sin cambios.
 - **[Fase 53](https://github.com/alktrip/edita/blob/main/docs/fase53.md):** los diálogos, menús y cadenas de los `.rc`.
+- **[Fase 58](https://github.com/alktrip/edita/blob/main/docs/fase58.md):** controles comunes (pestañas, listas con columnas, árboles…), bucles de mensajes propios y dibujo con GDI.
 
-**Compilan 12, con su interfaz:** 9 que Edita no tiene y 3 que ya cubre, entre ellos la plantilla oficial. En otros 6 compila todo salvo la interfaz.
+**Compilan 13, con su interfaz:** 10 que Edita no tiene y 3 que ya cubre, entre ellos la plantilla oficial. En otros 4 compila todo salvo la interfaz.
 
 | SDK de Edita | A (compila) | B1 (falta la interfaz) | B2 (port) |
 |---|---:|---:|---:|
 | Fase 49 | 2 | 2 | 103 |
 | Fase 51 | 5 | 4 | 98 |
 | Fase 52 | 7 | 7 | 93 |
-| Fase 53 | **9** | **6** | 92 |
+| Fase 53 | 9 | 6 | 92 |
+| Fase 58 | **10** | **4** | 93 |
 
 En la fase 53 cambió el criterio de la clase A: como los diálogos de los `.rc` ya funcionan, basta con que el plugin compile entero (sin MFC). Ver las [clases](#clases).
 
-Lo que frena ahora a los 92 de la clase B2 (cada uno puede tener varios bloqueos):
+En la fase 58, lo que se buscaba desaparece de los errores: `NM_CLICK` faltaba en 33 plugins, `PAINTSTRUCT` en 23, `FillRect` en 17, `ListView_InsertColumn` en 16, `TabCtrl_GetCurSel` en 14 y `PM_REMOVE` en 12, y ahora en ninguno. Los errores de compilación bajan de 59 039 a 54 932, y 68 plugins tienen menos errores que antes. Pero casi todos tienen varios bloqueos, así que solo uno más compila entero (NX ASCII Database Helper, que no declara licencia). NppBplistPlugin pasa de B1 a B2 porque ahora su interfaz compila y falla después, al enlazar: le falta `libplist`, que no viene en su repositorio.
+
+Lo que frena ahora a los 93 de la clase B2 (cada uno puede tener varios bloqueos; plugins en cuyos errores aparece):
 
 | Qué falta | Plugins |
 |---|---:|
-| Controles comunes: pestañas, listas con columnas, *tooltips* (`NM_CLICK`) | unos 25 |
-| Dibujo propio (`BeginPaint`, `FillRect`, `DrawText`) | unos 22 |
-| Hooks (`SetWindowsHookEx`) | 15 |
-| COM (`CoCreateInstance`) | 14 |
-| `GetProcAddress` | 13 |
-| Bucles de mensajes propios (`TranslateMessage`) | 13 |
-| Dependencias que no vienen en su repositorio | 17 |
+| Hooks (`SetWindowsHookEx`, `HHOOK`) | 18 |
+| SysLink y otros controles que la capa no tiene (`PNMLINK`, `TOOLBARCLASSNAME`, listas de imágenes) | 16 |
+| COM (`CoCreateInstance`, `IShellItem`, el diálogo de archivos de Vista) | 14 |
+| Dibujo propio de los controles (`DRAWITEMSTRUCT`, `NM_CUSTOMDRAW`) | 12 |
+| Información de versión (`GetFileVersionInfo`, `VerQueryValue`) | 12 |
+| WinINet y WinHTTP (`HINTERNET`) | 12 |
+| Temas de Windows (`EnableThemeDialogTexture`, `SetWindowTheme`) | 11 |
+| `GetComboBoxInfo`, `TrackMouseEvent`, `SCROLLINFO`, el área no cliente (`WM_NCCALCSIZE`) | 8 a 11 |
+| `GetProcAddress` | 10 |
+| Dependencias que no vienen en su repositorio | 18 |
 
 | | Plugins |
 |---|---:|
-| Nativos (C/C++) que se podrían traer con una capa de compatibilidad más completa (B2) | 92, de ellos 68 con una licencia que permite redistribuirlos |
+| Nativos (C/C++) que se podrían traer con una capa de compatibilidad más completa (B2) | 93, de ellos 69 con una licencia que permite redistribuirlos |
 | Escritos en .NET o Delphi: solo reescribiéndolos (C) | 58 |
 | Sin código o sin revisar (D, R) | 22 |
 | Ya cubiertos por Edita (E) | 38 |
@@ -88,16 +95,16 @@ Lista analizada: `pl.x64.json` versión 1.9.9, 225 plugins.
 
 | Clase | Qué significa | Plugins | Con licencia que permite redistribuir |
 |---|---|---:|---:|
-| A | Compila sin cambios | 9 | 7 |
-| B1 | Compila; hay que portar su interfaz | 6 | 3 |
-| B2 | No compila: necesita un port | 92 | 68 |
+| A | Compila sin cambios | 10 | 7 |
+| B1 | Compila; hay que portar su interfaz | 4 | 2 |
+| B2 | No compila: necesita un port | 93 | 69 |
 | C | Tecnología exclusiva de Windows: reescribir | 58 | 34 |
 | D | Sin código fuente | 15 | 1 |
 | R | Fuera de GitHub: revisar a mano | 7 | 0 |
 | E | Ya cubierto por Edita | 38 | 30 |
 | | **Total** | **225** | **143** |
 
-### A. Compila sin cambios (9)
+### A. Compila sin cambios (10)
 
 | Plugin | Versión | Licencia | Lenguaje | Líneas | Diálogos | Detalle |
 |---|---|---|---|---:|---:|---|
@@ -105,71 +112,71 @@ Lista analizada: `pl.x64.json` versión 1.9.9, 225 plugins.
 | [BAT Path IntelliSense](https://github.com/nicehero/NppBatPathIntelliSense) | 0.1.0 | no (sin licencia declarada) | C++ | 5096 | 0 | compila entero con la capa de compatibilidad, interfaz incluida (ventanas y diálogos del .rc) (ventanas Win32) |
 | [NppExport](https://github.com/chcg/NPP_ExportPlugin) | 0.4.0.0 | no (sin licencia declarada) | C | 3565 | 0 | compila entero con la capa de compatibilidad, interfaz incluida (ventanas y diálogos del .rc) |
 | [NppPluginOpenHost](https://github.com/jejemorg/NppPluginOpenHost) | 1.1.0.0 | sí (Apache-2.0) | C | 2687 | 0 | compila entero con la capa de compatibilidad, interfaz incluida (ventanas y diálogos del .rc) |
+| [NX ASCII Database Helper](https://github.com/ZhuXuefengGitHub/NX_ASCII_Database_Helper) | 3.0.0 | no (sin licencia declarada) | C | 6420 | 2 | compila entero con la capa de compatibilidad, interfaz incluida (ventanas y diálogos del .rc) |
 | [Reverse Lines](https://github.com/querykuma/qkNppReverseLines) | 1.0.0.0 | sí (GPL-3.0) | C | 4417 | 0 | compila entero con la capa de compatibilidad, interfaz incluida (ventanas y diálogos del .rc) |
 | [Select N' Launch](https://github.com/npp-plugins/selectnlaunch) | 2.2 | sí (GPL-2.0) | C++ | 4157 | 1 | compila entero con la capa de compatibilidad, interfaz incluida (ventanas y diálogos del .rc) |
 | [Simplify Json](https://github.com/analystvipul/SimplifyJson) | 1.0.1 | sí (GPL-2.0) | C++ | 3756 | 0 | compila entero con la capa de compatibilidad, interfaz incluida (ventanas y diálogos del .rc) |
 | [SQL Column Highlighter](https://github.com/zhgao/npp-sql-column-highlighter) | 1.0.0.0 | sí (MIT) | C++ | 908 | 0 | compila entero con la capa de compatibilidad, interfaz incluida (ventanas y diálogos del .rc) |
 | [TidyText](https://github.com/gonzalu/TidyText) | 1.2.0.0 | sí (GPL-2.0) | C++ | 4730 | 0 | compila entero con la capa de compatibilidad, interfaz incluida (ventanas y diálogos del .rc) |
 
-### B1. Compila; hay que portar su interfaz (6)
+### B1. Compila; hay que portar su interfaz (4)
 
 | Plugin | Versión | Licencia | Lenguaje | Líneas | Diálogos | Detalle |
 |---|---|---|---|---:|---:|---|
 | [ElasticTabstops](https://github.com/mariusv-github/ElasticTabstops) | 1.5.0 | sí (GPL-2.0) | C++ | 10067 | 1 | el núcleo compila; solo fallan los archivos de la interfaz (diálogos, ventanas) |
-| [Notepad++ bplist plugin](https://github.com/azerg/NppBplistPlugin) | 3.0.0.0 | sí (BSD-3-Clause) | C++ | 2536 | 1 | el núcleo compila; solo fallan los archivos de la interfaz (diálogos, ventanas) |
 | [Npp Converter](https://github.com/npp-plugins/converter) | 4.7 | revisar | C++ | 5547 | 1 | el núcleo compila; solo fallan los archivos de la interfaz (diálogos, ventanas) |
 | [NppJumpList](https://github.com/chcg/JumpList) | 1.2.2 | no (sin licencia declarada) | C++ | 5461 | 2 | el núcleo compila; solo fallan los archivos de la interfaz (diálogos, ventanas) (COM) |
-| [NX ASCII Database Helper](https://github.com/ZhuXuefengGitHub/NX_ASCII_Database_Helper) | 3.0.0 | no (sin licencia declarada) | C | 6420 | 2 | el núcleo compila; solo fallan los archivos de la interfaz (diálogos, ventanas) |
 | [SelectQuotedText](https://github.com/ffes/selectquotedtext) | 1.1.0 | sí (GPL-2.0) | C | 5621 | 1 | el núcleo compila; solo fallan los archivos de la interfaz (diálogos, ventanas) |
 
-### B2. No compila: necesita un port (92)
+### B2. No compila: necesita un port (93)
 
 | Plugin | Versión | Licencia | Lenguaje | Líneas | Diálogos | Detalle |
 |---|---|---|---|---:|---:|---|
-| [AndroidLogger](https://github.com/glandon/AndroidLogger) | 1.4.3.4 | no (sin licencia declarada) | C++ | 4842 | 1 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: STDMETHODIMP, REBARBANDINFO, pAccess, s_, BITMAPINFOHEADER, POINTL |
-| [BetterMultiSelection](https://github.com/dail8859/BetterMultiSelection) | 1.5 | sí (GPL-2.0) | C | 9693 | 1 | no compila: necesita un port; faltan: hook, SCI_SETLEXERLANGUAGE, SCI_LOADLEXERLIBRARY, UnhookWindowsHookEx, PtInRect, Edit_SetText |
+| [AndroidLogger](https://github.com/glandon/AndroidLogger) | 1.4.3.4 | no (sin licencia declarada) | C++ | 4842 | 1 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: STDMETHODIMP, REBARBANDINFO, pAccess, s_, POINTL, BITMAPFILEHEADER |
+| [BetterMultiSelection](https://github.com/dail8859/BetterMultiSelection) | 1.5 | sí (GPL-2.0) | C | 9693 | 1 | no compila: necesita un port; faltan: hook, SCI_SETLEXERLANGUAGE, SCI_LOADLEXERLIBRARY, UnhookWindowsHookEx, Sci_RangeToFormat, SCI_SETLEXER |
 | [BigFiles - Open Very Large Files](https://github.com/superolmo/BigFiles) | 0.1.3 | sí (GPL-2.0) | C | 6196 | 2 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: IFileOpenDialog, pFileOpen, CLSID_FileOpenDialog, CLSCTX_ALL, IID_IFileOpenDialog, CoCreateInstance (COM) |
 | [Blitz Search](https://github.com/Natestah/BlitsNppPlugin) | 1.0.0.6 | sí (GPL-3.0) | C | 3274 | 0 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: SHGetKnownFolderPath, MEM_RESERVE, MEM_COMMIT, PAGE_READWRITE, VirtualAlloc, FOLDERID_RoamingAppData |
-| [Bunyan Log Viewer](https://github.com/jayapalb/notepad-bunyan-plugin) | 1.0.0 | no (sin licencia declarada) | C++ | 1409 | 0 | no compila: necesita un port; faltan: BITMAPV5HEADER, bitmapHeader, BI_BITFIELDS, BITMAPINFO, DIB_RGB_COLORS, ICONINFO (ventanas Win32) |
+| [Bunyan Log Viewer](https://github.com/jayapalb/notepad-bunyan-plugin) | 1.0.0 | no (sin licencia declarada) | C++ | 1409 | 0 | no compila: necesita un port; faltan: BITMAPV5HEADER, bitmapHeader, BI_BITFIELDS, ICONINFO, iconInfo (ventanas Win32) |
 | [Chinese Converter](https://github.com/lkk9898969/Npp_ChineseConverter) | 1.0.3 | sí (GPL-3.0) | C++ | 5953 | 0 | necesita dependencias que no vienen en el repositorio; usa wchar_t (TCHAR Unicode); faltan: uintmax_t, uint64_t, PyObject, intmax_t, UINT32_MAX, vsnprintf |
-| [CollectionInterface](https://github.com/pryrt/NppPlugin-CollectionInterface) | 1.3.0 | sí (GPL-3.0) | C++ | 32724 | 5 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: InternetCloseHandle, hConnect, PBM_SETPOS, hInternet, Edit_SetText, TCITEM (ventanas Win32) |
+| [CollectionInterface](https://github.com/pryrt/NppPlugin-CollectionInterface) | 1.3.0 | sí (GPL-3.0) | C++ | 32724 | 5 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: InternetCloseHandle, hConnect, hInternet, SelectClipRgn, HINTERNET, InternetReadFile (ventanas Win32) |
 | [Columns++](https://github.com/Coises/ColumnsPlusPlus) | 1.3.3 | sí (GPL-3.0) | C++ | 264691 | 19 | necesita dependencias que no vienen en el repositorio; usa wchar_t (TCHAR Unicode); faltan: EDITBALLOONTIP, ebt, TTI_NONE, EM_SHOWBALLOONTIP, COMBOBOXINFO, cbi (ventanas Win32) |
-| [ColumnTools](https://github.com/vinsworldcom/nppColumnTools) | 1.4.5.1 | no (sin licencia declarada) | C | 4280 | 1 | no compila: necesita un port; faltan: MoveToEx, LineTo, si, SIF_POS, SB_HORZ, GetScrollInfo |
+| [ColumnTools](https://github.com/vinsworldcom/nppColumnTools) | 1.4.5.1 | no (sin licencia declarada) | C | 4280 | 1 | no compila: necesita un port; faltan: si, SIF_POS, SB_HORZ, GetScrollInfo, SCROLLINFO, WM_NCLBUTTONDBLCLK |
 | [Comment Toggler](https://github.com/ScienceDiscoverer/CommentToggler) | 1.0.0.0 | sí (GPL-3.0) | C++ | 4322 | 0 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: MEM_RELEASE, VirtualFree, MEM_RESERVE, MEM_COMMIT, PAGE_READWRITE, VirtualAlloc |
 | [Compose](https://github.com/Coises/Compose-for-NotepadPlusPlus) | 1.1.1 | sí (GPL-3.0) | C++ | 38368 | 2 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: _dialog, STDMETHODIMP, _customize, COMBOBOXINFO, cbi, GetComboBoxInfo (COM) |
 | [Datamodder File Tools](https://github.com/dm-utils/filetools) | 1.3.1.7 | sí (MIT) | C++ | 2439 | 7 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: NMLINK, GetStdHandle, SearchPathW, GetTempFileNameW, GetMenuStringW, DisableThreadLibraryCalls |
-| [Datamodder Query Files](https://github.com/dm-utils/queryfiles) | 1.3.1.4 | sí (MIT) | C++ | 2907 | 6 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: NMLINK, LVIS_SELECTED, ListView_SetItemState, CreateJobObjectW, JOBOBJECT_EXTENDED_LIMIT_INFORMATION, li (ventanas Win32) |
-| [Datamodder SQL Formatter](https://github.com/dm-utils/formatsql) | 1.3.2.18 | sí (MIT) | C++ | 5156 | 12 | necesita dependencias que no vienen en el repositorio; faltan: NMLINK, GetMenuStringW, DisableThreadLibraryCalls, CreateDialog, NM_CLICK, NM_RETURN |
+| [Datamodder Query Files](https://github.com/dm-utils/queryfiles) | 1.3.1.4 | sí (MIT) | C++ | 2907 | 6 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: NMLINK, CreateJobObjectW, JOBOBJECT_EXTENDED_LIMIT_INFORMATION, li, JOB_OBJECT_LIMIT_KILL_ON_JOB_CLOSE, JobObjectExtendedLimitInformation (ventanas Win32) |
+| [Datamodder SQL Formatter](https://github.com/dm-utils/formatsql) | 1.3.2.18 | sí (MIT) | C++ | 5156 | 12 | necesita dependencias que no vienen en el repositorio; faltan: NMLINK, GetMenuStringW, DisableThreadLibraryCalls, CreateDialog |
 | [Discord Rich Presence](https://github.com/Zukaritasu/notepadpp_rpc) | 2.1.711.1 | sí (GPL-3.0) | C++ | 31117 | 1 | necesita dependencias que no vienen en el repositorio; faltan: CreateWaitableTimer, SetWaitableTimer, ERROR_IO_PENDING, WaitNamedPipeA, FILE_FLAG_OVERLAPPED, SECURITY_SQOS_PRESENT (ventanas Win32) |
-| [DoxyIt](https://github.com/dail8859/DoxyIt) | 0.4.4 | sí (GPL-2.0) | C++ | 10049 | 3 | no compila: necesita un port; faltan: SCI_SETLEXERLANGUAGE, SCI_LOADLEXERLIBRARY, Sci_RangeToFormat, SCI_SETLEXER, Edit_SetText, Button_GetCheck |
-| [DSpellCheck](https://github.com/Predelnik/DSpellCheck) | 1.5.0 | sí (GPL-2.0) | C++ | 16855 | 11 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: TextPosition, IsCharAlphaNumeric, s, Edit_SetText, m_settings, HWND (COM, ventanas Win32) |
-| [Dual Scrollbars](https://github.com/SaiyajinK/Dual-Scrollbars-for-Notepad-Plus-Plus) | 1.1.0 | no (sin licencia declarada) | C++ | 2529 | 0 | no compila: necesita un port; faltan: INT_MIN, SCROLLINFO, PAINTSTRUCT, paint, HTCLIENT, DT_VCENTER (ventanas Win32) |
-| [EditorConfig](https://github.com/editorconfig/editorconfig-notepad-plus-plus) | 0.4.0 | sí (GPL-2.0) | C++ | 3844 | 0 | no compila: necesita un port; faltan: fileName, NM_CLICK, NM_RETURN, PNMLINK, LITEM, item |
+| [DoxyIt](https://github.com/dail8859/DoxyIt) | 0.4.4 | sí (GPL-2.0) | C++ | 10049 | 3 | no compila: necesita un port; faltan: SCI_SETLEXERLANGUAGE, SCI_LOADLEXERLIBRARY, Sci_RangeToFormat, SCI_SETLEXER, hook, SetWindowFont |
+| [DSpellCheck](https://github.com/Predelnik/DSpellCheck) | 1.5.0 | sí (GPL-2.0) | C++ | 16855 | 11 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: TextPosition, IsCharAlphaNumeric, s, m_settings, HWND, concurrency (COM, ventanas Win32) |
+| [Dual Scrollbars](https://github.com/SaiyajinK/Dual-Scrollbars-for-Notepad-Plus-Plus) | 1.1.0 | no (sin licencia declarada) | C++ | 2529 | 0 | no compila: necesita un port; faltan: INT_MIN, SCROLLINFO, HTCLIENT, SB_CTL, info, SIF_ALL (ventanas Win32) |
+| [EditorConfig](https://github.com/editorconfig/editorconfig-notepad-plus-plus) | 0.4.0 | sí (GPL-2.0) | C++ | 3844 | 0 | no compila: necesita un port; faltan: fileName, PNMLINK, LITEM, item |
 | [Emoji Description](https://github.com/Ruberoid/npp_emoji_description) | 0.4.17 | sí (GPL-2.0) | C++ | 6045 | 2 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: g_fail, GET_MODULE_HANDLE_EX_FLAG_FROM_ADDRESS, GET_MODULE_HANDLE_EX_FLAG_UNCHANGED_REFCOUNT, dst, parseTable, widen |
-| [Fixed-width Data Visualizer](https://github.com/shriprem/FWDataViz) | 2.6.7.0 | sí (GPL-3.0) | C++ | 21528 | 10 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: REFKNOWNFOLDERID, DPI_AWARENESS_CONTEXT, SetWindowTheme, CDRF_DODEFAULT, ps, hTheme (ventanas Win32) |
+| [Fixed-width Data Visualizer](https://github.com/shriprem/FWDataViz) | 2.6.7.0 | sí (GPL-3.0) | C++ | 21528 | 10 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: REFKNOWNFOLDERID, DPI_AWARENESS_CONTEXT, SetWindowTheme, hTheme, PIMAGE_THUNK_DATA, HTHEME (ventanas Win32) |
 | [FixParser](https://github.com/chtaylo3/fix-parser) | 0.1.3 | sí (GPL-2.0) | C++ | 2335 | 1 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: nppData, pugi, PFUNCPLUGINCMD, ShortcutKey, SCNotification, NppData (ventanas Win32) |
-| [GitHub Repo Viewer](https://github.com/ufoptg/GitHubRepoViewer) | 1.1 | sí (AGPL-3.0) | C | 4568 | 1 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: hSession, TVIF_PARAM, hConnect, WinHttpCloseHandle, TVI_ROOT, TVITEMW (ventanas Win32) |
-| [GotoLineCol](https://github.com/shriprem/Goto-Line-Col-NPP-Plugin) | 2.4.5.1 | sí (GPL-3.0) | C++ | 11997 | 3 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: SetWindowTheme, REFKNOWNFOLDERID, CDRF_DODEFAULT, DPI_AWARENESS_CONTEXT, ps, hTheme (ventanas Win32) |
-| [HEX-Editor](https://github.com/chcg/NPP_HexEditor) | 0.9.14.0 | sí (GPL-2.0) | C++ | 21925 | 9 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: LPINT, LVIR_BOUNDS, ListView_GetItemCount, ListView_GetItemRect, DPI_AWARENESS_CONTEXT, ListView_SetItemCountEx (ventanas Win32) |
-| [HiddenLexers](https://github.com/pryrt/NppPlugin-HiddenLexers) | 1.0.0 | sí (GPL-3.0) | C++ | 30710 | 1 | no compila: necesita un port; faltan: PathCchFindExtension, PathCchRemoveFileSpec, Edit_SetText, PtInRect |
+| [GitHub Repo Viewer](https://github.com/ufoptg/GitHubRepoViewer) | 1.1 | sí (AGPL-3.0) | C | 4568 | 1 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: hSession, hConnect, WinHttpCloseHandle, hReq, SHCreateDirectoryExW, HINTERNET (ventanas Win32) |
+| [GotoLineCol](https://github.com/shriprem/Goto-Line-Col-NPP-Plugin) | 2.4.5.1 | sí (GPL-3.0) | C++ | 11997 | 3 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: SetWindowTheme, REFKNOWNFOLDERID, DPI_AWARENESS_CONTEXT, hTheme, PIMAGE_THUNK_DATA, HTHEME (ventanas Win32) |
+| [HEX-Editor](https://github.com/chcg/NPP_HexEditor) | 0.9.14.0 | sí (GPL-2.0) | C++ | 21925 | 9 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: LPINT, DPI_AWARENESS_CONTEXT, ListView_GetSubItemRect, _locale_t, WIN32_FILE_ATTRIBUTE_DATA, LV_HITTESTINFO (ventanas Win32) |
+| [HiddenLexers](https://github.com/pryrt/NppPlugin-HiddenLexers) | 1.0.0 | sí (GPL-3.0) | C++ | 30710 | 1 | no compila: necesita un port; faltan: PathCchFindExtension, PathCchRemoveFileSpec |
 | [HLASM Lexer - Column-Aware Syntax Highlighting](https://github.com/Zaneham/hlasm-npp) | 1.1.1 | sí (Apache-2.0) | C++ | 535 | 0 | no compila: necesita un port; faltan: _stricmp, kConfigXml |
 | [HTML Tag](https://github.com/rdipardo/nppHTMLTag) | 1.6.1.0 | sí (MPL-2.0) | C++ | 4239 | 52 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: NppData, FuncItem, ShortcutKey, LangType, PFUNCPLUGINCMD, _hSelf |
 | [Indent By Fold](https://github.com/ffes/indentbyfold) | 0.7.3 | sí (GPL-2.0) | C | 3842 | 0 | no compila: necesita un port |
-| [Input Sequence](https://github.com/dasu88/NPPInputSequence) | 1.5.2.0 | no (sin licencia declarada) | C++ | 410 | 0 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: LLONG_MAX, ULLONG_MAX, LLONG_MIN, GetMessageW, TranslateMessage, DispatchMessageW (ventanas Win32) |
+| [Input Sequence](https://github.com/dasu88/NPPInputSequence) | 1.5.2.0 | no (sin licencia declarada) | C++ | 410 | 0 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: LLONG_MAX, ULLONG_MAX, LLONG_MIN (ventanas Win32) |
 | [Java Plugin](https://github.com/dominikcebula/npp-java-plugin) | 0.4.1 | sí (GPL-2.0) | C | 7034 | 2 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: consoleLogger, commandCompletionHandler, piProcInfo, CHARFORMAT, charFormat, EM_SETCHARFORMAT |
 | [jN Notepad++ Plugin](https://github.com/sieukrem/jn-npp-plugin) | 2.2.190.21986 | no (sin licencia declarada) | C | 36429 | 0 | necesita dependencias que no vienen en el repositorio; usa wchar_t (TCHAR Unicode); faltan: interface, BSTR, EXTERN_C, m_Str, RPC_IF_HANDLE, c (COM, ventanas Win32) |
 | [JSON Viewer](https://github.com/NPP-JSONViewer/JSON-Viewer) | 2.2.0.0 | sí (MIT) | C++ | 7365 | 3 | necesita dependencias que no vienen en el repositorio; usa wchar_t (TCHAR Unicode); faltan: uintmax_t, uint64_t, intmax_t, int64_t, Duration, uint_fast64_t (ventanas Win32) |
-| [JSTool](https://github.com/sunjw/jstool) | 25.11.16 | sí (GPL-2.0) | JavaScript | 11766 | 3 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: TVITEM, LPTVHITTESTINFO, buf, tvi, tvinsert, TVI_ROOT |
-| [Language Selector](https://github.com/hassaine-abdellah/npp-language-selector) | 1.2.0.0 | sí (MIT) | C++ | 4655 | 2 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: CB_SETTOPINDEX, FillRect, PAINTSTRUCT, ps, BeginPaint, MoveToEx (ventanas Win32) |
+| [JSTool](https://github.com/sunjw/jstool) | 25.11.16 | sí (GPL-2.0) | JavaScript | 11766 | 3 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: buf, buffer, strlen, DRAWITEMSTRUCT, pdis, DI_NORMAL |
+| [Language Selector](https://github.com/hassaine-abdellah/npp-language-selector) | 1.2.0.0 | sí (MIT) | C++ | 4655 | 2 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: CB_SETTOPINDEX, CBEM_GETCOMBOCONTROL, MEASUREITEMSTRUCT, pItemMetrics, LPDRAWITEMSTRUCT, dis (ventanas Win32) |
 | [LDAP Formatter](https://github.com/ignaciojulio/npp-ldap-formatter) | 1.0.0 | sí (MIT) | C++ | 5469 | 0 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: sptr_t, NppData, uptr_t, SCNotification, SCI_GETSTATUS, SC_STATUS_OK (ventanas Win32) |
 | [LLM Assistant](https://github.com/Gvo87/NotepadPlusPlus-LLM-Plugin) | 1.2 | no (sin licencia declarada) | C++ | 2226 | 2 | no compila: necesita un port; faltan: InternetCloseHandle, connection, RegQueryValueEx, internet, request, HKEY_CURRENT_USER (ventanas Win32) |
-| [LuaScript](https://github.com/dail8859/LuaScript) | 0.12 | sí (GPL-2.0) | C | 39256 | 2 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: binary_find, SCI_SETLEXER, PtInRect |
-| [Markdown Features](https://github.com/0langa/npp-markdown-features) | 1.0.1 | sí (MIT) | C++ | 7497 | 0 | necesita dependencias que no vienen en el repositorio; usa wchar_t (TCHAR Unicode); faltan: cmark_parser_free, TVIF_PARAM, cmark_node, Microsoft, TVINSERTSTRUCT, insert (ventanas Win32) |
-| [Markdown Table Editor](https://github.com/krotname/NppMarkdownTableEditor) | 11.2.0 | sí (GPL-3.0) | C++ | 15854 | 1 | no compila: necesita un port; faltan: BITMAPINFO, info, BITMAPINFOHEADER, BI_RGB, DIB_RGB_COLORS, ICONINFO (ventanas Win32) |
+| [LuaScript](https://github.com/dail8859/LuaScript) | 0.12 | sí (GPL-2.0) | C | 39256 | 2 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: binary_find, SCI_SETLEXER |
+| [Markdown Features](https://github.com/0langa/npp-markdown-features) | 1.0.1 | sí (MIT) | C++ | 7497 | 0 | necesita dependencias que no vienen en el repositorio; usa wchar_t (TCHAR Unicode); faltan: cmark_parser_free, cmark_node, Microsoft, cmark_gfm_core_extensions_ensure_registered, cmark_parser, parser (ventanas Win32) |
+| [Markdown Table Editor](https://github.com/krotname/NppMarkdownTableEditor) | 11.2.0 | sí (GPL-3.0) | C++ | 15854 | 1 | no compila: necesita un port; faltan: ICONINFO, iconInfo, TB_CHECKBUTTON, TB_ENABLEBUTTON (ventanas Win32) |
 | [Markdown with Mermaid](https://github.com/rhyots/Markdown_with_Mermaid) | 1.4.1 | sí (MIT) | JavaScript | 2986 | 0 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: image, view, IID, guid, GUID, CoCreateGuid (ventanas Win32) |
-| [MultiReplace](https://github.com/daddel80/notepadpp-multireplace) | 6.2.0.38 | sí (GPL-3.0) | C++ | 99634 | 3 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: HHOOK, POINTL, NMITEMACTIVATE, LVIS_SELECTED, LVSICF_NOINVALIDATEALL, ListView_SetItemCountEx (COM, ventanas Win32) |
-| [MZC8051](https://github.com/Jiangshan00001/npp_MZC8051) | 0.0.1 | sí (GPL-3.0) | C | 5927 | 1 | no compila: necesita un port; faltan: SHELLEXECUTEINFO, sei, SEE_MASK_NOCLOSEPROCESS, ShellExecuteEx, IsCharAlphaNumeric |
-| [NestedDSV Data Visualizer](https://github.com/shriprem/NestedDSV) | 1.1.0.1 | sí (GPL-3.0) | C++ | 20988 | 10 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: REFKNOWNFOLDERID, DPI_AWARENESS_CONTEXT, SetWindowTheme, CDRF_DODEFAULT, ps, hTheme (ventanas Win32) |
+| [MultiReplace](https://github.com/daddel80/notepadpp-multireplace) | 6.2.0.38 | sí (GPL-3.0) | C++ | 99634 | 3 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: HHOOK, POINTL, LVSICF_NOINVALIDATEALL, GetSystemMetricsForDpi, IDataObject, REFIID (COM, ventanas Win32) |
+| [MZC8051](https://github.com/Jiangshan00001/npp_MZC8051) | 0.0.1 | sí (GPL-3.0) | C | 5927 | 1 | no compila: necesita un port; faltan: IsCharAlphaNumeric, SHELLEXECUTEINFO, sei, SEE_MASK_NOCLOSEPROCESS, ShellExecuteEx |
+| [NestedDSV Data Visualizer](https://github.com/shriprem/NestedDSV) | 1.1.0.1 | sí (GPL-3.0) | C++ | 20988 | 10 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: REFKNOWNFOLDERID, DPI_AWARENESS_CONTEXT, SetWindowTheme, hTheme, PIMAGE_THUNK_DATA, HTHEME (ventanas Win32) |
+| [Notepad++ bplist plugin](https://github.com/azerg/NppBplistPlugin) | 3.0.0.0 | sí (BSD-3-Clause) | C++ | 2536 | 1 | compila, pero usa funciones de Win32 que la capa no tiene; faltan: plist_from_bin, plist_to_xml, plist_from_xml, plist_to_bin, plist_free |
 | [NotepadStarterPlugin](https://github.com/lygstate/NotepadStarter) | 2.3.3.0 | revisar | C++ | 5366 | 0 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: m_tnd, Shell_NotifyIcon, errorCode, NIM_MODIFY, LSTATUS, RegCloseKey (ventanas Win32) |
 | [Npp Highlighter](https://github.com/michaelxzhang/Npp-Highlighter) | 1.0.0.1 | no (sin licencia declarada) | C | 38732 | 0 | necesita dependencias que no vienen en el repositorio; usa wchar_t (TCHAR Unicode); faltan: interface, BSTR, EXTERN_C, m_Str, RPC_IF_HANDLE, c (COM, ventanas Win32) |
 | [NppAIAssistant](https://github.com/pingqLIN/NppAIAssistant) | 0.2.0.6 | revisar | C++ | 13557 | 6 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: hConnect, WinHttpCloseHandle, INTERNET_PORT, hRequest, CHARRANGE, EM_EXSETSEL (ventanas Win32) |
@@ -177,14 +184,14 @@ Lista analizada: `pl.x64.json` versión 1.9.9, 225 plugins.
 | [NppCrypt](https://github.com/chcg/nppcrypt) | 1.0.1.6 | no (sin licencia declarada) | C++ | 170206 | 15 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: byte, Encoding, EOL, options, Hash, data (ventanas Win32) |
 | [NppEventExec](https://github.com/MIvanchev/NppEventExec) | 0.9.0 | sí (GPL-3.0) | C | 11246 | 4 | necesita dependencias que no vienen en el repositorio (ventanas Win32) |
 | [NppFavorites](https://github.com/heldersepu/nppfavorites) | 1.0.0.1 | no (sin licencia declarada) | C | 3382 | 0 | no compila: necesita un port; faltan: IsCharAlphaNumeric |
-| [NppFoldTail](https://github.com/seantw/NppFoldTail) | 0.9.0 | sí (MIT) | C++ | 1186 | 0 | no compila: necesita un port; faltan: tool, TTM_DELTOOLW, TTM_POP, PtInRect, TTM_ADDTOOLW, CreateCompatibleDC (ventanas Win32) |
+| [NppFoldTail](https://github.com/seantw/NppFoldTail) | 0.9.0 | sí (MIT) | C++ | 1186 | 0 | no compila: necesita un port; faltan: tool, TTM_POP, positions, TOOLINFOW, TTM_SETDELAYTIME, TTDT_INITIAL (ventanas Win32) |
 | [NppFTP](https://github.com/ashkulz/NppFTP) | 0.29.15 | no (sin licencia declarada) | C++ | 40515 | 13 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: SOCKET, POINTL, LPDATAOBJECT, SOCK_STREAM, LPFORMATETC, AF_INET (ventanas Win32) |
 | [NppImagePreview](https://github.com/bdgeek/NppImagePreview) | 1.0.0 | sí (MIT) | C++ | 2849 | 1 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: IWICBitmapSource, WICPixelFormatGUID, IWICImagingFactory, m_pFactory, IWICBitmapDecoder, pDecoder (COM, ventanas Win32) |
 | [NppMenuScripts](https://github.com/seantw/NppMenuScripts) | 1.0.5.0 | sí (MIT) | C++ | 5476 | 0 | necesita dependencias que no vienen en el repositorio (ventanas Win32) |
 | [NppNetNote](https://github.com/chcg/NppDocShare) | 0.2.0.0 | sí (GPL-2.0) | C++ | 8715 | 1 | no compila: necesita un port; faltan: SOCKET, WSAGetLastError, hostent, m_hSocket, closesocket, INADDR_ANY |
-| [NppOpenAI](https://github.com/Krazal/nppopenai) | 0.5.0.0 | sí (GPL-2.0) | C++ | 41264 | 2 | necesita dependencias que no vienen en el repositorio; faltan: PBM_SETMARQUEE, TASKDIALOG_BUTTON, TASKDIALOGCONFIG, config, TDF_ALLOW_DIALOG_CANCELLATION, TaskDialogIndirect |
+| [NppOpenAI](https://github.com/Krazal/nppopenai) | 0.5.0.0 | sí (GPL-2.0) | C++ | 41264 | 2 | necesita dependencias que no vienen en el repositorio; faltan: TASKDIALOG_BUTTON, TASKDIALOGCONFIG, config, TDF_ALLOW_DIALOG_CANCELLATION, TaskDialogIndirect |
 | [NppRestoreCursorPosition](https://github.com/RivieraSystems/NppRestoreCursorPosition) | 1.0.0 | sí (MIT) | C++ | 3819 | 0 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: MOVEFILE_WRITE_THROUGH, SYNCHRONIZE, ERROR_SHARING_VIOLATION, ERROR_LOCK_VIOLATION, LOCALE_NAME_INVARIANT, LCMAP_UPPERCASE (ventanas Win32) |
-| [NppS3](https://github.com/bsy0318/NppS3) | 1.0.0 | no (sin licencia declarada) | C++ | 16196 | 4 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: Gdiplus, TVIF_PARAM, TVIF_CHILDREN, m_hash, TVINSERTSTRUCTW, ins (COM, ventanas Win32) |
+| [NppS3](https://github.com/bsy0318/NppS3) | 1.0.0 | no (sin licencia declarada) | C++ | 16196 | 4 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: Gdiplus, m_hash, HINTERNET, cred, CRED_TYPE_GENERIC, info (COM, ventanas Win32) |
 | [NppStripIpAndHost](https://github.com/larreblarsson/NppStripIpAndHost) | 1.0.0 | sí (GPL-2.0) | C++ | 5632 | 1 | no compila: necesita un port; faltan: EXTERN_C, __ImageBase |
 | [NppTextFX2](https://github.com/rainman74/NPPTextFX2) | 2.0.3 | sí (GPL-3.0) | C++ | 25552 | 1 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: EXTERNC, edt1, stc1, memicmp, chx1, rad1 |
 | [NppTextViz](https://github.com/chcg/NppTextViz) | 0.4.3 | sí (GPL-2.0) | C++ | 4688 | 1 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: CString, cstrSequence, csMsg, TextToClip, tmpMsg, VK_CAPITAL (COM) |
@@ -194,11 +201,11 @@ Lista analizada: `pl.x64.json` versión 1.9.9, 225 plugins.
 | [NWScript Tools](https://github.com/Leonard-The-Wise/NWScript-Npp) | 1.2.0.2300 | sí (GPL-3.0) | C++ | 69223 | 12 | no compila: necesita un port (COM, ventanas Win32) |
 | [OCaml Lexer](https://github.com/Zaneham/ocaml-npp) | 1.0.0 | sí (Apache-2.0) | C++ | 807 | 0 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: _stricmp, GetStdHandle, GetModuleHandleExW, kConfigXml |
 | [Open File In Solution](https://github.com/incrediblejr/nppplugins) | 3.0.1 | no (sin licencia declarada) | C++ | 40783 | 0 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: BOOL, __END_DECLS, mbstate_t, __BEGIN_DECLS, __c_locale, size_t (ventanas Win32) |
-| [Papyrus Script Lexer](https://github.com/blu3mania/npp-papyrus) | 1.2.2.354 | sí (GPL-3.0) | C++ | 8507 | 9 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: _locale_t, SetWindowTheme, CDRF_DODEFAULT, ps, PAINTSTRUCT, DT_SINGLELINE (ventanas Win32) |
-| [Pork to Sausage](https://github.com/npp-plugins/pork2sausage) | 2.6 | sí (GPL-2.0) | C++ | 4539 | 1 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: EVENT_ALL_ACCESS, PM_REMOVE, byte |
+| [Papyrus Script Lexer](https://github.com/blu3mania/npp-papyrus) | 1.2.2.354 | sí (GPL-3.0) | C++ | 8507 | 9 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: _locale_t, SetWindowTheme, funcs, PIMAGE_THUNK_DATA, PathMatchSpec, CDIS_HOT (ventanas Win32) |
+| [Pork to Sausage](https://github.com/npp-plugins/pork2sausage) | 2.6 | sí (GPL-2.0) | C++ | 4539 | 1 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: EVENT_ALL_ACCESS, byte |
 | [pycalc](https://github.com/pycalc-plugin/notepad-plus-plus) | 1.0.0 | sí (Apache-2.0) | C++ | 3412 | 1 | no compila: necesita un port; faltan: Py_DECREF, PyObject, jthread, RegCloseKey, PyThreadState, PyImport_ImportModule |
 | [RAScript](https://github.com/joshraphael/npp-rascript) | 0.4.1 | sí (MIT) | C++ | 214421 | 70 | necesita dependencias que no vienen en el repositorio; usa wchar_t (TCHAR Unicode); faltan: module, perl_matcher, match_results, m, regex, wregex (COM, ventanas Win32) |
-| [RestApiToText](https://github.com/eljefe7000/RestApiToText) | 1.4.0.1 | sí (GPL-3.0) | C++ | 3475 | 2 | no compila: necesita un port; faltan: HINTERNET, INTERNET_DEFAULT_HTTPS_PORT, NM_CLICK, NM_RETURN, PNMLINK, LITEM |
+| [RestApiToText](https://github.com/eljefe7000/RestApiToText) | 1.4.0.1 | sí (GPL-3.0) | C++ | 3475 | 2 | no compila: necesita un port; faltan: HINTERNET, INTERNET_DEFAULT_HTTPS_PORT, PNMLINK, LITEM, item, rsize_t |
 | [RGA ISA Compiler](https://github.com/DIMOSUS/NppRgaIsaPlugin) | 1.0.0.0 | sí (MIT) | C++ | 7810 | 1 | no compila: necesita un port; faltan: LoadLibrary, IFileDialog, pfd, CLSID_FileOpenDialog, CLSCTX_INPROC_SERVER, IID_PPV_ARGS (COM, ventanas Win32) |
 | [Save as admin](https://github.com/Hsilgos/nppsaveasadmin) | 1.0.211 | no (sin licencia declarada) | C++ | 6389 | 2 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: append_new_ptr, GetFileType, PROC, DoAll, ptr_to_fun_memory, PIMAGE_IMPORT_DESCRIPTOR |
 | [SecurePad](https://github.com/dominictobias/SecurePad) | 2.4 | sí (MIT) | C | 4925 | 1 | no compila: necesita un port; faltan: cryptkey, MEM_RELEASE, VirtualFree, MAX_CRYPT_KEY, IDD_DLGKEY, MEM_COMMIT |
@@ -209,15 +216,15 @@ Lista analizada: `pl.x64.json` versión 1.9.9, 225 plugins.
 | [SpeechPlugin](https://github.com/chcg/SpeechPlugin) | 0.4.0.0 | sí (GPL-2.0) | C++ | 2700 | 0 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: mVoice, ISpVoice, converter, pVoice, CLSID_SpVoice, CLSCTX_ALL (COM) |
 | [StayAwake](https://github.com/shriprem/StayAwake_NPP_Plugin) | 1.5.0.0 | sí (GPL-3.0) | C++ | 7384 | 3 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: INPUT, input, SendInput, KEYEVENTF_EXTENDEDKEY, INPUT_KEYBOARD, KEYEVENTF_KEYUP (COM, ventanas Win32) |
 | [SurroundSelection](https://github.com/dail8859/SurroundSelection) | 1.4.1 | sí (GPL-2.0) | C++ | 6785 | 1 | no compila: necesita un port; faltan: hook, SCI_SETLEXERLANGUAGE, SCI_LOADLEXERLIBRARY, byte, UnhookWindowsHookEx, WH_KEYBOARD |
-| [Task List](https://github.com/Megabyteceer/npp-task-list) | 2.7 | no (sin licencia declarada) | C++ | 6714 | 2 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: DPI_AWARENESS_CONTEXT, _locale_t, WIN32_FILE_ATTRIBUTE_DATA, converterX, DM_REPOSITION, CreateCompatibleDC (ventanas Win32) |
+| [Task List](https://github.com/Megabyteceer/npp-task-list) | 2.7 | no (sin licencia declarada) | C++ | 6714 | 2 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: DPI_AWARENESS_CONTEXT, _locale_t, WIN32_FILE_ATTRIBUTE_DATA, converterX, DM_REPOSITION, GetPixel (ventanas Win32) |
 | [TC Syslog Finder](https://github.com/bsagarzazu/npp-tc-syslog-finder) | 1.1.0 | sí (GPL-2.0) | C++ | 4169 | 0 | no compila: necesita un port; faltan: CompareFileTime, IFileDialog, pFileDialog, CLSID_FileOpenDialog, CLSCTX_ALL, IID_IFileDialog (COM) |
 | [Tortoise SVN](https://github.com/incrediblejr/nppplugins) | 3.0.1 | no (sin licencia declarada) | C++ | 40783 | 0 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: BOOL, __END_DECLS, mbstate_t, __BEGIN_DECLS, __c_locale, size_t (ventanas Win32) |
 | [TreeSitter](https://github.com/Thorium/NppTreeSitter) | 1.4.3 | no (sin licencia declarada) | C++ | 4095 | 0 | necesita dependencias que no vienen en el repositorio; usa wchar_t (TCHAR Unicode); faltan: uintmax_t, intmax_t, Duration, file_time_type, nano, micro |
-| [URL Encode/Decode Plugin](https://github.com/SinghRajenM/nppURLPlugin) | 1.2.0.0 | sí (GPL-2.0) | C++ | 2134 | 2 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: TCM_GETCURSEL, DRAWITEMSTRUCT, TCM_DELETEALLITEMS, TCM_SETIMAGELIST, TCM_GETROWCOUNT, TCHITTESTINFO (ventanas Win32) |
-| [Virtual Folders](https://github.com/FatihC/VirtualFolders) | 1.0.4 | sí (GPL-3.0) | C++ | 49298 | 5 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: TVITEM, COMBOBOXINFO, cbi, GetComboBoxInfo, MOVEFILE_WRITE_THROUGH, MAPVK_VK_TO_VSC (ventanas Win32) |
-| [VSCode Keymap NPP](https://github.com/14ag/vscode-to-notepadpp) | 0.2.0 | no (sin licencia declarada) | C++ | 4084 | 0 | no compila: necesita un port; faltan: g_messageHook, HHOOK, VK_NUMPAD0, PM_REMOVE, WH_GETMESSAGE |
+| [URL Encode/Decode Plugin](https://github.com/SinghRajenM/nppURLPlugin) | 1.2.0.0 | sí (GPL-2.0) | C++ | 2134 | 2 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: DRAWITEMSTRUCT, TCM_SETIMAGELIST, TCM_GETROWCOUNT, TCHITTESTINFO, hitInfo, TCM_HITTEST (ventanas Win32) |
+| [Virtual Folders](https://github.com/FatihC/VirtualFolders) | 1.0.4 | sí (GPL-3.0) | C++ | 49298 | 5 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: COMBOBOXINFO, cbi, GetComboBoxInfo, MOVEFILE_WRITE_THROUGH, MAPVK_VK_TO_VSC, MapVirtualKey (ventanas Win32) |
+| [VSCode Keymap NPP](https://github.com/14ag/vscode-to-notepadpp) | 0.2.0 | no (sin licencia declarada) | C++ | 4084 | 0 | no compila: necesita un port; faltan: g_messageHook, HHOOK, VK_NUMPAD0, WH_GETMESSAGE |
 | [XBrackets Lite](https://github.com/d0vgan/npp-XBracketsLite) | 2.0.4 | no (sin licencia declarada) | C++ | 12182 | 1 | no compila: necesita un port; faltan: uint8_t, FILE_NOTIFY_CHANGE_LAST_WRITE, USER_TIMER_MINIMUM |
-| [xsvViewer++](https://github.com/mgalhu/xsvViewer) | 1.0.1.0 | sí (GPL-3.0) | C++ | 11352 | 3 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: info, DT_NOPREFIX, DrawTextW, DT_SINGLELINE, item, DT_VCENTER (ventanas Win32) |
+| [xsvViewer++](https://github.com/mgalhu/xsvViewer) | 1.0.1.0 | sí (GPL-3.0) | C++ | 11352 | 3 | no compila: necesita un port; usa wchar_t (TCHAR Unicode); faltan: info, WC_BUTTONW, TOOLINFOW, SCROLLINFO, SetWindowTheme, CreateRectRgn (ventanas Win32) |
 
 ### C. Tecnología exclusiva de Windows: reescribir (58)
 
@@ -361,11 +368,11 @@ Lista analizada: `pl.x64.json` versión 1.9.9, 225 plugins.
 
 Cabeceras de Windows que no existen en `plugin-sdk/compat/` (la compilación de prueba las creó vacías), por número de plugins que las incluyen:
 
-`plugininterface.h` (8), `shobjidl.h` (7), `wininet.h` (7), `winsock2.h` (5), `winhttp.h` (5), `xutility` (5), `shlobj_core.h` (4), `python.h` (3), `atlstr.h` (3), `objbase.h` (3), `napi.h` (2), `pathcch.h` (2), `comdef.h` (2), `dbghelp.h` (2), `atlbase.h` (2), `aclapi.h` (2), `richedit.h` (2), `ole2.h` (2), `exdisp.h` (2), `mshtmhst.h` (2), `mshtml.h` (2), `oleauto.h` (2), `dispex.h` (2), `activscp.h` (2), `rpc.h` (2), `oaidl.h` (2), `ocidl.h` (2), `rpcndr.h` (2), `interfaces.h` (2), `webview2.h` (2)
+`plugininterface.h` (8), `shobjidl.h` (7), `wininet.h` (7), `winsock2.h` (5), `winhttp.h` (5), `xutility` (5), `shlobj_core.h` (4), `python.h` (3), `atlstr.h` (3), `objbase.h` (3), `napi.h` (2), `pathcch.h` (2), `atlbase.h` (2), `comdef.h` (2), `aclapi.h` (2), `dbghelp.h` (2), `richedit.h` (2), `exdisp.h` (2), `ocidl.h` (2), `mshtml.h` (2), `rpc.h` (2), `activscp.h` (2), `interfaces.h` (2), `oleauto.h` (2), `oaidl.h` (2), `ole2.h` (2), `rpcndr.h` (2), `mshtmhst.h` (2), `dispex.h` (2), `webview2.h` (2)
 
 Identificadores y funciones que más frenan a los plugins de la clase B2 (los seis más repetidos de cada uno):
 
-`Edit_SetText` (5), `DPI_AWARENESS_CONTEXT` (5), `ps` (5), `BOOL` (5), `__END_DECLS` (5), `mbstate_t` (5), `__BEGIN_DECLS` (5), `__c_locale` (5), `size_t` (5), `PtInRect` (4), `hConnect` (4), `SetWindowTheme` (4), `CDRF_DODEFAULT` (4), `POINTL` (3), `SCI_SETLEXERLANGUAGE` (3), `SCI_LOADLEXERLIBRARY` (3), `CLSID_FileOpenDialog` (3), `CLSCTX_ALL` (3), `MEM_COMMIT` (3), `ICONINFO` (3), `uintmax_t` (3), `intmax_t` (3), `COMBOBOXINFO` (3), `cbi` (3), `NMLINK` (3), `NM_CLICK` (3), `NM_RETURN` (3), `IsCharAlphaNumeric` (3), `PAINTSTRUCT` (3), `REFKNOWNFOLDERID` (3), `hTheme` (3), `NppData` (3), `TVIF_PARAM` (3), `EXTERN_C` (3), `info` (3), `byte` (3), `STDMETHODIMP` (2), `BITMAPINFOHEADER` (2), `hook` (2), `UnhookWindowsHookEx` (2)
+`HINTERNET` (5), `DPI_AWARENESS_CONTEXT` (5), `SetWindowTheme` (5), `BOOL` (5), `__END_DECLS` (5), `mbstate_t` (5), `__BEGIN_DECLS` (5), `__c_locale` (5), `size_t` (5), `hConnect` (4), `info` (4), `PIMAGE_THUNK_DATA` (4), `POINTL` (3), `hook` (3), `SCI_SETLEXERLANGUAGE` (3), `SCI_LOADLEXERLIBRARY` (3), `SCI_SETLEXER` (3), `CLSID_FileOpenDialog` (3), `CLSCTX_ALL` (3), `MEM_COMMIT` (3), `ICONINFO` (3), `uintmax_t` (3), `intmax_t` (3), `COMBOBOXINFO` (3), `cbi` (3), `SCROLLINFO` (3), `NMLINK` (3), `IsCharAlphaNumeric` (3), `REFKNOWNFOLDERID` (3), `hTheme` (3), `HTHEME` (3), `NppData` (3), `_locale_t` (3), `EXTERN_C` (3), `byte` (3), `STDMETHODIMP` (2), `UnhookWindowsHookEx` (2), `Sci_RangeToFormat` (2), `MEM_RESERVE` (2), `PAGE_READWRITE` (2)
 
 ## Conclusiones
 
@@ -374,7 +381,8 @@ Identificadores y funciones que más frenan a los plugins de la clase B2 (los se
    1. ✅ **Modo Unicode** y **KERNEL32/SHLWAPI/CRT sin ventanas** ([fase 51](https://github.com/alktrip/edita/blob/main/docs/fase51.md)).
    2. ✅ **Ventanas** ([fase 52](https://github.com/alktrip/edita/blob/main/docs/fase52.md)): controles estándar, diálogos, subclassing, paneles acoplables con `tTbData` y `DMN_CLOSE`, temporizadores, menús y GDI sin dibujo.
    3. ✅ **Recursos de los `.rc`** ([fase 53](https://github.com/alktrip/edita/blob/main/docs/fase53.md)): `edita_rc`, diálogos de plantilla y modales, menús y cadenas; además `SetWindowSubclass`, los diálogos comunes y `CreateProcess`.
-   4. **Lo que más frena ahora:** los controles comunes más usados (pestañas y listas con columnas, sobre `QTabBar` y `QTreeWidget`) y los bucles de mensajes propios (`GetMessage`/`TranslateMessage`/`DispatchMessage`). Después, el dibujo básico sobre `QPainter`. El riesgo crece en cada paso: el dibujo propio de cada plugin es lo menos estándar.
+   4. ✅ **Controles comunes, bucles de mensajes y dibujo** ([fase 58](https://github.com/alktrip/edita/blob/main/docs/fase58.md)): pestañas, listas con columnas, árboles, barras de progreso, deslizadores y tooltips; `GetMessage`/`PeekMessage`/`DispatchMessage`; `WM_PAINT` con `BeginPaint`, rellenos, figuras, texto y DC en memoria. Quitó esos bloqueos de todos los plugins, pero como cada plugin tiene varios, solo uno más compila entero.
+   5. **Lo que más frena ahora:** hooks (`SetWindowsHookEx`, 18 plugins), los controles que la capa aún no tiene (SysLink, barras de herramientas, listas de imágenes), COM, el dibujo propio de los controles (`WM_DRAWITEM`, `NM_CUSTOMDRAW`) y la información de versión. Ver la tabla del principio.
 3. **Cada paso se mide repitiendo esta auditoría** (`run-audit.sh`): el número de plugins de las clases A y B1 es el indicador de avance del SDK. La carpeta de trabajo debe quedar fuera de `/tmp`: la medición de la fase 53 se perdió en un reinicio y hubo que repetirla.
 4. **La clase C (58 plugins, 26 % de la lista) no se trae.** Solo se reescribe lo que tenga demanda clara, como se hizo con MarkdownViewer++.
 5. **Licencias:** de los plugins de B2, 22 no declaran licencia y 2 tienen una que hay que revisar a mano. Si alguno es importante, hay que pedirle permiso al autor antes de publicar su binario. De los que ya están en A o B1, no tienen licencia BatPathIntelliSense, NppExport, NppJumpList y NX_ASCII_Database_Helper, y la de nppConverter hay que revisarla.
