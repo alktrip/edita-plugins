@@ -70,6 +70,8 @@ Todas compilan el código de la etiqueta que publicó el autor, sin cambios salv
 | [TidyText](recipes/TidyText/) | 1.2.0 | GPL-2.0-or-later | Resalta y repara caracteres invisibles y mojibake | 2 líneas: el NUL de `SCI_GETSELTEXT`, al enviar la selección a un asistente |
 | [Auto Detect Indention](recipes/nppAutoDetectIndent/) | 2.3 | GPL-3.0-or-later | Ajusta la sangría a la de cada documento | — (su submódulo, la plantilla de N++, va como `extra-sources`) |
 | [SQL Column Highlighter](recipes/SqlColumnHighlighter/) | 1.0.0 | MIT | Resalta las columnas y valores de un `INSERT` | — |
+| [MIME Tools](recipes/mimeTools/) | 3.1 | GPL-3.0-or-later | Base64, quoted-printable, URL y SAML | — (antes venía con Edita) |
+| [XML Tools](recipes/XMLTools/) | 3.1.1.13 | GPL-3.0-or-later | Comprobar, validar, formatear y linealizar XML; XPath; XSLT | 1 línea (`tolower` con GCC); su interfaz es un port a Qt sobre `edita_plugin.h`, con libxml2 y libxslt donde el original usa MSXML (antes venía con Edita) |
 
 Los tres parches de `SCI_GETSELTEXT` corrigen fallos que también tienen en Notepad++: en la Scintilla actual (la serie 5, la de Notepad++ y la de Edita), el valor que devuelve no cuenta el NUL final, pero sí lo escribe. Los plugins se escribieron con la regla anterior.
 
@@ -87,5 +89,5 @@ Simplify JSON no tiene binario, y se compila en el equipo del usuario. Se public
 | Recetas del primer lote y su prueba (`--build-recipe`, `--check-plugin`) | ✅ [fase 54 de Edita](https://github.com/alktrip/edita/blob/main/docs/fase54.md): los 7 plugins de la clase A con una licencia que permite redistribuirlos |
 | CI: compilar las recetas y publicar la lista firmada (Linux x86_64) | ✅ [fase 55 de Edita](https://github.com/alktrip/edita/blob/main/docs/fase55.md): 6 plugins con binario y Simplify JSON como receta |
 | Edita: descargar la lista remota, verificar la firma e instalar los binarios | ✅ [fase 56 de Edita](https://github.com/alktrip/edita/blob/main/docs/fase56.md): sin volver a listas anteriores, y con la receta si el binario no sirve en el equipo |
-| Mudar las recetas de MIME Tools y XML Tools desde el repositorio de Edita | Pendiente |
+| Mudar las recetas de MIME Tools y XML Tools desde el repositorio de Edita | ✅ [fase 59 de Edita](https://github.com/alktrip/edita/blob/main/docs/fase59.md) |
 | Siguientes lotes: los plugins de la clase B1, según avance la capa | Pendiente |
