@@ -72,6 +72,14 @@ Todas compilan el código de la etiqueta que publicó el autor, sin cambios salv
 | [SQL Column Highlighter](recipes/SqlColumnHighlighter/) | 1.0.0 | MIT | Resalta las columnas y valores de un `INSERT` | — |
 | [MIME Tools](recipes/mimeTools/) | 3.1 | GPL-3.0-or-later | Base64, quoted-printable, URL y SAML | — (antes venía con Edita) |
 | [XML Tools](recipes/XMLTools/) | 3.1.1.13 | GPL-3.0-or-later | Comprobar, validar, formatear y linealizar XML; XPath; XSLT | 1 línea (`tolower` con GCC); su interfaz es un port a Qt sobre `edita_plugin.h`, con libxml2 y libxslt donde el original usa MSXML (antes venía con Edita) |
+| [SelectQuotedText](recipes/SelectQuotedText/) | 1.1.0 | GPL-2.0-or-later | Selecciona el texto entre comillas alrededor del cursor | — |
+| [Indent By Fold](recipes/IndentByFold/) | 0.7.3 | GPL-2.0-or-later | Sangra el código según su plegado | — (el overlay trae el `version_git.h` que genera su script de Windows) |
+| [NppStripIpAndHost](recipes/NppStripIpAndHost/) | 1.0.0 | GPL-2.0-or-later | Enmascara direcciones IP y nombres de host | — |
+| [ElasticTabstops](recipes/ElasticTabstops/) | 1.5.0 | GPL-2.0-or-later | Tabulaciones elásticas; convierte entre tabulaciones y espacios | — |
+| [MZC8051](recipes/MZC8051/) | 0.0.1 | GPL-3.0-or-later | Compila C para 8051 con el compilador MZC8051 | — (dos fuentes pasan de GBK a UTF-8 con `recode`) |
+| [Datamodder SQL Formatter](recipes/FormatSQL/) | 1.3.2.18 | MIT | Da formato a SQL en varios dialectos, o lo minifica | — |
+| [NppCrossCheck](recipes/NppCrossCheck/) | 1.3.0.0 | GPL-2.0-or-later | Compara dos listas | 1 línea: `std::ifstream` con `std::filesystem::path` (con `wchar_t*` es de MSVC) |
+| [Pork to Sausage](recipes/pork2sausage/) | 2.6 | GPL-2.0-or-later | Transforma la selección con un programa externo | 1 línea: la misma; su `.ini` va en el paquete con el nombre que busca (`package-files`) |
 
 Los tres parches de `SCI_GETSELTEXT` corrigen fallos que también tienen en Notepad++: en la Scintilla actual (la serie 5, la de Notepad++ y la de Edita), el valor que devuelve no cuenta el NUL final, pero sí lo escribe. Los plugins se escribieron con la regla anterior.
 
@@ -85,9 +93,10 @@ Simplify JSON no tiene binario, y se compila en el equipo del usuario. Se public
 | Capa de compatibilidad v2, parte 1: Unicode y Win32 sin ventanas | ✅ [fase 51 de Edita](https://github.com/alktrip/edita/blob/main/docs/fase51.md): de 3 a 7 plugins que compilan; ahora el bloqueo son las ventanas |
 | Capa de compatibilidad v2, parte 2: ventanas, plantilla de N++ y paneles acoplables | ✅ [fase 52 de Edita](https://github.com/alktrip/edita/blob/main/docs/fase52.md): compilan 11 plugins (8 que Edita no tiene) y otros 6 salvo la interfaz |
 | Capa de compatibilidad v2, parte 3: diálogos, menús y cadenas de los `.rc` | ✅ [fase 53 de Edita](https://github.com/alktrip/edita/blob/main/docs/fase53.md): compilan 12 plugins con su interfaz (9 que Edita no tiene) y otros 6 salvo la interfaz |
-| Capa de compatibilidad v2, parte 4: controles comunes, bucles de mensajes y dibujo | Pendiente |
+| Capa de compatibilidad v2, parte 4: controles comunes, bucles de mensajes y dibujo | ✅ [fase 58 de Edita](https://github.com/alktrip/edita/blob/main/docs/fase58.md) |
 | Recetas del primer lote y su prueba (`--build-recipe`, `--check-plugin`) | ✅ [fase 54 de Edita](https://github.com/alktrip/edita/blob/main/docs/fase54.md): los 7 plugins de la clase A con una licencia que permite redistribuirlos |
 | CI: compilar las recetas y publicar la lista firmada (Linux x86_64) | ✅ [fase 55 de Edita](https://github.com/alktrip/edita/blob/main/docs/fase55.md): 6 plugins con binario y Simplify JSON como receta |
 | Edita: descargar la lista remota, verificar la firma e instalar los binarios | ✅ [fase 56 de Edita](https://github.com/alktrip/edita/blob/main/docs/fase56.md): sin volver a listas anteriores, y con la receta si el binario no sirve en el equipo |
 | Mudar las recetas de MIME Tools y XML Tools desde el repositorio de Edita | ✅ [fase 59 de Edita](https://github.com/alktrip/edita/blob/main/docs/fase59.md) |
+| Ocho plugins más, con lo que cada uno necesitaba (SysLink, ATL, eventos con nombre, `recode`, `package-files`) | ✅ [fase 60 de Edita](https://github.com/alktrip/edita/blob/main/docs/fase60.md): 17 recetas |
 | Siguientes lotes: los plugins de la clase B1, según avance la capa | Pendiente |

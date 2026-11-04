@@ -1,0 +1,40 @@
+{
+	"folder-name": "MZC8051",
+	"display-name": "MZC8051",
+	"version": "0.0.1",
+	"npp-compatible-versions": "[0.0.1,]",
+	"description": "Compila C para microcontroladores 8051 con el compilador MZC8051 desde el editor (hace falta el compilador). Es el código original del plugin de Notepad++ (Jiangshan00001/npp_MZC8051, 0.0.1), sin cambios; la receta pasa de GBK a UTF-8 los dos archivos que lo necesitan.",
+	"author": "Jiangshan00001 (port a Edita: Edita contributors)",
+	"homepage": "https://github.com/Jiangshan00001/npp_MZC8051",
+	"license": "GPL-3.0-or-later",
+	"license-files": [
+		"LICENSE"
+	],
+	"source": {
+		"url": "https://github.com/Jiangshan00001/npp_MZC8051/archive/refs/tags/0.0.1.zip",
+		"sha256": "318ea89227ed7776d77b5a200079149a83e1bf9039a45c2e66e3a0710dcde824",
+		"strip-components": 1
+	},
+	"remove": [
+		"src/Scintilla.h"
+	],
+	"recode": {
+		"from": "GBK",
+		"files": [
+			"src/NppPluginDemo.rc",
+			"src/PluginDefinition.cpp"
+		]
+	},
+	"overlay": "overlay",
+	"build-dir": "edita",
+	"requires": [
+		"cmake",
+		"c++"
+	],
+	"check": {
+		"commands": [
+			"编译项目",
+			"关于"
+		]
+	}
+}

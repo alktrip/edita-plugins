@@ -1,0 +1,35 @@
+{
+	"folder-name": "ElasticTabstops",
+	"display-name": "ElasticTabstops",
+	"version": "1.5.0",
+	"npp-compatible-versions": "[0.0.1,]",
+	"description": "Tabulaciones elásticas: alinea las columnas separadas por tabulaciones aunque sus celdas tengan anchos distintos, y convierte entre tabulaciones y espacios. Es el código original del plugin de Notepad++ (mariusv-github/ElasticTabstops, v1.5.0), sin cambios.",
+	"author": "Marius Vasiliu, Justin Dailey (port a Edita: Edita contributors)",
+	"homepage": "https://github.com/mariusv-github/ElasticTabstops",
+	"license": "GPL-2.0-or-later",
+	"license-files": [
+		"LICENSE"
+	],
+	"source": {
+		"url": "https://github.com/mariusv-github/ElasticTabstops/archive/refs/tags/v1.5.0.zip",
+		"sha256": "af33d428341c0ebcafa7d1a245563d2274513858c0ba996c9fbc9da5c571ef59",
+		"strip-components": 1
+	},
+	"remove": [
+		"src/Sci_Position.h",
+		"src/Scintilla.h"
+	],
+	"overlay": "overlay",
+	"build-dir": "edita",
+	"requires": [
+		"cmake",
+		"c++"
+	],
+	"check": {
+		"commands": [
+			"Enable",
+			"Convert Elastic Tabs to Spaces",
+			"Convert Spaces to Elastic Tabs"
+		]
+	}
+}

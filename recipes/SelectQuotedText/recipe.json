@@ -1,0 +1,34 @@
+{
+	"folder-name": "SelectQuotedText",
+	"display-name": "SelectQuotedText",
+	"version": "1.1.0",
+	"npp-compatible-versions": "[0.0.1,]",
+	"description": "Selecciona el texto entre comillas (simples, dobles o las que se configuren) alrededor del cursor. Es el código original del plugin de Notepad++ (ffes/selectquotedtext, v1.1.0), sin cambios.",
+	"author": "Frank Fesevur (port a Edita: Edita contributors)",
+	"homepage": "https://github.com/ffes/selectquotedtext",
+	"license": "GPL-2.0-or-later",
+	"license-files": [
+		"LICENSE.md"
+	],
+	"source": {
+		"url": "https://github.com/ffes/selectquotedtext/archive/refs/tags/v1.1.0.zip",
+		"sha256": "1d41323adbe5a5bd4fdddea3d148fc9913c10cae2a879f889866f0a823804f9a",
+		"strip-components": 1
+	},
+	"remove": [
+		"NPP/Sci_Position.h",
+		"NPP/Scintilla.h"
+	],
+	"overlay": "overlay",
+	"build-dir": "edita",
+	"requires": [
+		"cmake",
+		"c++"
+	],
+	"check": {
+		"commands": [
+			"Select quoted text",
+			"About..."
+		]
+	}
+}

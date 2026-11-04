@@ -1,0 +1,19 @@
+--- a/src/PluginDefinition.cpp
++++ b/src/PluginDefinition.cpp
+@@ -16,6 +16,7 @@
+ //Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ 
+ #include "PluginDefinition.h"
++#include <filesystem>
+ #include "menuCmdID.h"
+ #include "Scintilla.h"
+ #include "Version.h"
+@@ -400,7 +401,7 @@
+ 
+ void writeFileContentIntoCurrentScintilla_lineByLine(HWND scintilla, const std::wstring& path)
+ {
+-    std::ifstream file(path);
++    std::ifstream file{std::filesystem::path(path)}; // Edita: ifstream(std::wstring) es de MSVC
+     if (!file.is_open()) {
+         showDebugMessage_str("ERROR: Could not open the file from writeFileContentIntoCurrentScintilla_lineByLine");
+         return;

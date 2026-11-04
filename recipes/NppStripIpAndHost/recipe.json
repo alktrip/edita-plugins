@@ -1,0 +1,43 @@
+{
+	"folder-name": "NppStripIpAndHost",
+	"display-name": "NppStripIpAndHost",
+	"version": "1.0.0",
+	"npp-compatible-versions": "[0.0.1,]",
+	"description": "Quita o enmascara las direcciones IP y los nombres de host del documento, para compartir registros sin datos sensibles. Es el código original del plugin de Notepad++ (larreblarsson/NppStripIpAndHost, 1.0.0), sin cambios.",
+	"author": "Tomas Larsson (port a Edita: Edita contributors)",
+	"homepage": "https://github.com/larreblarsson/NppStripIpAndHost",
+	"license": "GPL-2.0-or-later",
+	"license-files": [
+		"LICENSE.txt"
+	],
+	"source": {
+		"url": "https://github.com/larreblarsson/NppStripIpAndHost/archive/refs/tags/1.0.0.zip",
+		"sha256": "fd4d704cd27649e8144c81eac3ba91567e78a4b18a3978e61750913bb8fd9e73",
+		"strip-components": 1
+	},
+	"remove": [
+		"src/Sci_Position.h",
+		"src/Scintilla.h"
+	],
+	"overlay": "overlay",
+	"build-dir": "edita",
+	"requires": [
+		"cmake",
+		"c++"
+	],
+	"check": {
+		"commands": [
+			"Strip IPs and Hostnames",
+			"Undo Last Strip",
+			"Replace Settings..."
+		],
+		"cases": [
+			{
+				"command": "Strip IPs and Hostnames",
+				"select": "none",
+				"text": "ping 192.168.1.10 desde servidor.ejemplo.com\n",
+				"expect": "ping qqq.xxx.yyy.zzz desde hostname.com\n"
+			}
+		]
+	}
+}

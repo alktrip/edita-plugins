@@ -1,0 +1,42 @@
+{
+	"folder-name": "FormatSQL",
+	"display-name": "Datamodder SQL Formatter",
+	"version": "1.3.2.18",
+	"npp-compatible-versions": "[0.0.1,]",
+	"description": "Da formato a SQL con varios dialectos (T-SQL, MySQL, PostgreSQL, Oracle…): mayúsculas de las palabras clave, sangría y saltos de línea configurables. Es el código original del plugin de Notepad++ (dm-utils/formatsql, v1.3.2.18), sin cambios.",
+	"author": "Datamodder (port a Edita: Edita contributors)",
+	"homepage": "https://github.com/dm-utils/formatsql",
+	"license": "MIT",
+	"license-files": [
+		"LICENSE"
+	],
+	"source": {
+		"url": "https://github.com/dm-utils/formatsql/archive/refs/tags/v1.3.2.18.zip",
+		"sha256": "e2a1a78a303d23bb2478e90a5cf83e6697f15c276c1683148ad49dff54b0c114",
+		"strip-components": 1
+	},
+	"overlay": "overlay",
+	"build-dir": "edita",
+	"requires": [
+		"cmake",
+		"c++"
+	],
+	"check": {
+		"commands": [
+			"Minify SQL",
+			"Format and Copy"
+		],
+		"cases": [
+			{
+				"command": "Minify SQL",
+				"text": "SELECT a,\n   b\nFROM t\nWHERE a = 1",
+				"expect": "SELECT a, b FROM t WHERE a = 1"
+			},
+			{
+				"command": "Format SQL\tCtrl+Alt+Shift+F",
+				"text": "select a,b from t where a=1",
+				"expect": "select a\n     , b\n  from t\n where a = 1"
+			}
+		]
+	}
+}

@@ -1,0 +1,34 @@
+{
+	"folder-name": "IndentByFold",
+	"display-name": "Indent By Fold",
+	"version": "0.7.3",
+	"npp-compatible-versions": "[0.0.1,]",
+	"description": "Sangra el código según su plegado (los niveles de plegado del lexer), en lenguajes sin reglas de sangría propias. Es el código original del plugin de Notepad++ (ffes/indentbyfold, v0.7.3), sin cambios; la receta añade el encabezado de versión que genera su script de Windows.",
+	"author": "Ben Bluemel, Frank Fesevur (port a Edita: Edita contributors)",
+	"homepage": "https://github.com/ffes/indentbyfold",
+	"license": "GPL-2.0-or-later",
+	"license-files": [
+		"LICENSE.md"
+	],
+	"source": {
+		"url": "https://github.com/ffes/indentbyfold/archive/refs/tags/v0.7.3.zip",
+		"sha256": "e8f767593f715aa98473488c16cefc992009003ddd1cf1215bca1b2b06d48728",
+		"strip-components": 1
+	},
+	"remove": [
+		"NPP/Sci_Position.h",
+		"NPP/Scintilla.h"
+	],
+	"overlay": "overlay",
+	"build-dir": "edita",
+	"requires": [
+		"cmake",
+		"c++"
+	],
+	"check": {
+		"commands": [
+			"Reindent File",
+			"About..."
+		]
+	}
+}
