@@ -80,6 +80,8 @@ Todas compilan el código de la etiqueta que publicó el autor, sin cambios salv
 | [Datamodder SQL Formatter](recipes/FormatSQL/) | 1.3.2.18 | MIT | Da formato a SQL en varios dialectos, o lo minifica | 1 línea: `<stddef.h>` para `ptrdiff_t` (el `<string>` de MSVC lo trae) |
 | [NppCrossCheck](recipes/NppCrossCheck/) | 1.3.0.0 | GPL-2.0-or-later | Compara dos listas | 1 línea: `std::ifstream` con `std::filesystem::path` (con `wchar_t*` es de MSVC) |
 | [Pork to Sausage](recipes/pork2sausage/) | 2.6 | GPL-2.0-or-later | Transforma la selección con un programa externo | 1 línea: la misma; su `.ini` va en el paquete con el nombre que busca (`package-files`) |
+| [HLASM Lexer](recipes/HLASMLexer/) | 1.1.1 | Apache-2.0 | Colorea HLASM (ensamblador de IBM para mainframe); plugin de lexer: añade el lenguaje | — (el overlay genera el XML incrustado, como su `build.sh`) |
+| [OCaml Lexer](recipes/OCamlLexer/) | 1.0.0 | Apache-2.0 | Colorea OCaml y marca los avisos de `olint`; plugin de lexer | 1 línea: quita su registro de depuración en `C:\dev`, que en Linux sería un archivo en la carpeta actual |
 
 Los tres parches de `SCI_GETSELTEXT` corrigen fallos que también tienen en Notepad++: en la Scintilla actual (la serie 5, la de Notepad++ y la de Edita), el valor que devuelve no cuenta el NUL final, pero sí lo escribe. Los plugins se escribieron con la regla anterior.
 
@@ -99,4 +101,5 @@ Simplify JSON no tiene binario, y se compila en el equipo del usuario. Se public
 | Edita: descargar la lista remota, verificar la firma e instalar los binarios | ✅ [fase 56 de Edita](https://github.com/alktrip/edita/blob/main/docs/fase56.md): sin volver a listas anteriores, y con la receta si el binario no sirve en el equipo |
 | Mudar las recetas de MIME Tools y XML Tools desde el repositorio de Edita | ✅ [fase 59 de Edita](https://github.com/alktrip/edita/blob/main/docs/fase59.md) |
 | Ocho plugins más, con lo que cada uno necesitaba (SysLink, ATL, eventos con nombre, `recode`, `package-files`) | ✅ [fase 60 de Edita](https://github.com/alktrip/edita/blob/main/docs/fase60.md): 17 recetas |
+| Plugins de lexer (los lenguajes «externos» de N++) | ✅ [fase 63 de Edita](https://github.com/alktrip/edita/blob/main/docs/fase63.md): 19 recetas |
 | Siguientes lotes: los plugins de la clase B1, según avance la capa | Pendiente |

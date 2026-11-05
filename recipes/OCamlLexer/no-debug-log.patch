@@ -1,0 +1,11 @@
+--- a/src/ocaml_ilexer.cpp
++++ b/src/ocaml_ilexer.cpp
+@@ -249,7 +249,7 @@
+ 
+ /* Fixed path, since attaching a debugger to Notepad++ is no fun. */
+ static void dbg(const char *fmt, ...) {
+-    FILE *f = fopen("C:\\dev\\ocaml_lexer.log", "a");
++    FILE *f = NULL; /* Edita: en Linux, "C:\\dev\\..." seria un archivo en la carpeta actual */
+     if (!f) return;
+     va_list ap; va_start(ap, fmt); vfprintf(f, fmt, ap); va_end(ap);
+     fputc('\n', f); fclose(f);

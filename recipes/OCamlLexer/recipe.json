@@ -1,0 +1,48 @@
+{
+	"folder-name": "OCamlLexer",
+	"display-name": "OCaml Lexer",
+	"version": "1.0.0",
+	"npp-compatible-versions": "[0.0.1,]",
+	"description": "Resaltado de sintaxis de OCaml: palabras clave, comentarios anidados, cadenas, caracteres, números, operadores, variables de tipo y módulos. Añade el lenguaje OCaml al menú Lenguaje (archivos .ml, .mli, .mll y .mly) y, si está instalado olint, marca sus avisos. Es el código original del plugin de Notepad++ (Zaneham/ocaml-npp, v1.0.0) con un parche de una línea: quita su registro de depuración en C:\\dev, que en Linux sería un archivo en la carpeta actual.",
+	"author": "Zane Hambly (port a Edita: Edita contributors)",
+	"homepage": "https://github.com/Zaneham/ocaml-npp",
+	"license": "Apache-2.0",
+	"license-files": [
+		"LICENSE"
+	],
+	"source": {
+		"url": "https://github.com/Zaneham/ocaml-npp/archive/refs/tags/v1.0.0.zip",
+		"sha256": "da326d5a28b98631316e0a1d1e99adac82e369f5ba4f26f3c3df3a779df7e39c",
+		"strip-components": 1
+	},
+	"patches": [
+		"no-debug-log.patch"
+	],
+	"overlay": "overlay",
+	"build-dir": "edita",
+	"requires": [
+		"cmake",
+		"c++"
+	],
+	"check": {
+		"commands": [
+			"Lint now (olint)"
+		],
+		"languages": [
+			"OCaml"
+		],
+		"cases": [
+			{
+				"language": "OCaml",
+				"text": "let x = 1 (* c *)\nList.map\n",
+				"expect-styles": [[0, 1], [4, 0], [6, 6], [8, 5], [10, 2], [18, 8]]
+			},
+			{
+				"language": "OCaml",
+				"extension": "ml",
+				"text": "let y = 2\n",
+				"expect-styles": [[0, 1]]
+			}
+		]
+	}
+}
