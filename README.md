@@ -71,7 +71,7 @@ Todas compilan el código de la etiqueta que publicó el autor, sin cambios salv
 | [Auto Detect Indention](recipes/nppAutoDetectIndent/) | 2.3 | GPL-3.0-or-later | Ajusta la sangría a la de cada documento | — (su submódulo, la plantilla de N++, va como `extra-sources`) |
 | [SQL Column Highlighter](recipes/SqlColumnHighlighter/) | 1.0.0 | MIT | Resalta las columnas y valores de un `INSERT` | — |
 | [MIME Tools](recipes/mimeTools/) | 3.1 | GPL-3.0-or-later | Base64, quoted-printable, URL y SAML | — (antes venía con Edita) |
-| [XML Tools](recipes/XMLTools/) | 3.1.1.13 | GPL-3.0-or-later | Comprobar, validar, formatear y linealizar XML; XPath; XSLT | 1 línea (`tolower` con GCC); su interfaz es un port a Qt sobre `edita_plugin.h`, con libxml2 y libxslt donde el original usa MSXML (antes venía con Edita) |
+| [XML Tools](recipes/XMLTools/) | 3.1.1.13 | GPL-3.0-or-later | Comprobar, validar, formatear y linealizar XML; XPath; XSLT | 1 línea (`tolower` con GCC); su interfaz es un port a Qt sobre `edita_plugin.h`, con libxml2 2.13 y libxslt 1.1 (dentro del plugin, estáticas: no depende de las de la distribución) donde el original usa MSXML (antes venía con Edita) |
 | [SelectQuotedText](recipes/SelectQuotedText/) | 1.1.0 | GPL-2.0-or-later | Selecciona el texto entre comillas alrededor del cursor | — |
 | [Indent By Fold](recipes/IndentByFold/) | 0.7.3 | GPL-2.0-or-later | Sangra el código según su plegado | — (el overlay trae el `version_git.h` que genera su script de Windows) |
 | [NppStripIpAndHost](recipes/NppStripIpAndHost/) | 1.0.0 | GPL-2.0-or-later | Enmascara direcciones IP y nombres de host | — |
