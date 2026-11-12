@@ -61,7 +61,7 @@ jobs:
         run: |
           mkdir -p "$RUNNER_TEMP/edita"
           cd "$RUNNER_TEMP/edita"
-          gh release download continuous -R alktrip/edita -p '*.AppImage'
+          gh release download continuous -R alktrip/edita -p '*-x86_64.AppImage' # sus binarios son de x86_64 (también hay uno de aarch64)
           chmod +x ./*.AppImage
           ./*.AppImage --appimage-extract >/dev/null
           echo "EDITA=$PWD/squashfs-root/AppRun" >> "$GITHUB_ENV"
