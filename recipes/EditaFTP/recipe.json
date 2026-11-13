@@ -1,0 +1,39 @@
+{
+	"folder-name": "EditaFTP",
+	"display-name": "FTP and SFTP",
+	"version": "1.0.0",
+	"npp-compatible-versions": "[0.0.1,]",
+	"description": "Edita's own plugin, what NppFTP does in Notepad++: a panel with your servers and their folders over SFTP, FTP, FTPES or FTPS. Double-click a file to open it; when you save it, it is uploaded. It uses ssh and sftp (OpenSSH), with your ~/.ssh keys, agent and known_hosts, and curl for FTP. Passwords are never saved to disk.",
+	"description-es": "Plugin propio de Edita, lo que hace NppFTP en Notepad++: un panel con tus servidores y sus carpetas por SFTP, FTP, FTPES o FTPS. Doble clic en un archivo lo abre y, al guardarlo, se sube. Usa ssh y sftp (OpenSSH), con las claves, el agente y el known_hosts de tu ~/.ssh, y curl para FTP. Las contraseñas nunca se guardan en el disco.",
+	"author": "Edita contributors",
+	"homepage": "https://github.com/alktrip/edita/tree/main/plugins/EditaFTP",
+	"license": "GPL-3.0-or-later",
+	"license-files": [
+		"COPYING"
+	],
+	"package-files": [
+		{
+			"from": "plugins/EditaFTP/translations/editaftp_es.qm",
+			"to": "translations/editaftp_es.qm"
+		}
+	],
+	"source": {
+		"url": "https://github.com/alktrip/edita/archive/a5777d0d88972c0d997330467a4e37c1bd4d9149.zip",
+		"sha256": "e5605651e3569811a70f0241ae144618f2447274ddd7858b62c710290416a1ab",
+		"strip-components": 1
+	},
+	"fix-includes": false,
+	"build-dir": "plugins/EditaFTP/sdk",
+	"requires": [
+		"cmake",
+		"c++"
+	],
+	"check": {
+		"commands": [
+			"FTP Panel",
+			"Profiles…",
+			"Upload Current File",
+			"About FTP…"
+		]
+	}
+}

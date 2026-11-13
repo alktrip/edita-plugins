@@ -86,6 +86,14 @@ Todas compilan el código de la etiqueta que publicó el autor, sin cambios salv
 | [Npp Converter](recipes/NppConverter/) | 4.7 | GPL-3.0-or-later | ASCII ↔ hexadecimal y un panel que muestra un valor en ASCII, decimal, hexadecimal, binario y octal | — |
 | [NppExport](recipes/NppExport/) | 0.4.0 | GPL-2.0-only | Exporta la selección o el documento, con su resaltado, a RTF o HTML, en un archivo o en el portapapeles | — |
 
+### Plugins propios de Edita
+
+No vienen de Notepad++: se escribieron para Edita. Su código está en el repositorio de Edita, con sus pruebas, y la receta lo descarga de un commit. No van en los paquetes de Edita.
+
+| Plugin | Versión | Licencia | Qué hace |
+|---|---|---|---|
+| [FTP and SFTP](recipes/EditaFTP/) | 1.0.0 | GPL-3.0-or-later | Lo que NppFTP: servidores por SFTP, FTP, FTPES o FTPS; abrir con doble clic y subir al guardar. Usa `ssh`/`sftp` y `curl` del sistema ([fase 90 de Edita](https://github.com/alktrip/edita/blob/main/docs/fase90.md)) |
+
 Los tres parches de `SCI_GETSELTEXT` corrigen fallos que también tienen en Notepad++: en la Scintilla actual (la serie 5, la de Notepad++ y la de Edita), el valor que devuelve no cuenta el NUL final, pero sí lo escribe. Los plugins se escribieron con la regla anterior.
 
 NppExport tampoco tiene binario: su código no trae licencia, y el proyecto de SourceForge del que viene la declara «GPLv2», sin «o posterior», incompatible con la capa de compatibilidad (GPL-3 o posterior) dentro del `.so`. Se compila en el equipo del usuario.
