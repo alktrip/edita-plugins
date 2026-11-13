@@ -46,6 +46,9 @@ BINARY_LICENSES = {
 }
 
 ARCH = "linux-x86_64"
+# Las arquitecturas del catálogo. La lista de x86_64 conserva su nombre (plugins.json, la que
+# piden las versiones de Edita anteriores a la 1.0); las demás llevan la arquitectura
+ARCHES = ("linux-x86_64", "linux-aarch64")
 LIST_NAME = "Edita plugin catalog"
 SIG_ALG_PREHASHED = b"ED"
 SIG_ALG_LEGACY = b"Ed"
@@ -210,10 +213,40 @@ def sdk_versions(sdk_dir):
     return int(api.group(1)), qt
 
 
-def package_of(packages_dir, folder):
-    """El paquete <carpeta>-<versión>.zip y su SHA-256 (del .sha256 que deja --build-recipe)"""
+def list_name(arch):
+    """El nombre de la lista de una arquitectura: plugins.json o plugins-<arquitectura>.json"""
+    if arch not in ARCHES:
+        raise CatalogError("arquitectura desconocida: %s" % arch)
+    return "plugins.json" if arch == ARCH else "plugins-%s.json" % arch
+
+
+def package_suffix(arch):
+    """Los paquetes de x86_64 son <carpeta>-<versión>.zip; los demás, <carpeta>-<versión>-<arquitectura>.zip"""
+    return "" if arch == ARCH else "-" + arch
+
+
+def rename_packages(packages_dir, arch):
+    """Añade la arquitectura al nombre de los paquetes que deja --build-recipe (y a su .sha256)"""
+    suffix = package_suffix(arch)
+    renamed = []
+    for sha_file in sorted(Path(packages_dir).glob("*.zip.sha256")):
+        sha, name = sha_file.read_text().split()
+        if not suffix or name.endswith(suffix + ".zip"):
+            continue
+        zip_path = sha_file.with_name(name)
+        new_name = name[:-len(".zip")] + suffix + ".zip"
+        zip_path.rename(zip_path.with_name(new_name))
+        sha_file.unlink()
+        Path(str(zip_path.with_name(new_name)) + ".sha256").write_text("%s  %s\n" % (sha, new_name))
+        renamed.append(new_name)
+    return renamed
+
+
+def package_of(packages_dir, folder, arch=ARCH):
+    """El paquete <carpeta>-<versión>[-<arquitectura>].zip y su SHA-256 (del .sha256 que deja --build-recipe)"""
+    suffix = package_suffix(arch)
     found = sorted(Path(packages_dir).glob(folder + "-*.zip.sha256"))
-    found = [p for p in found if re.fullmatch(re.escape(folder) + r"-[^-]+\.zip\.sha256", p.name)]
+    found = [p for p in found if re.fullmatch(re.escape(folder) + r"-[^-]+" + re.escape(suffix) + r"\.zip\.sha256", p.name)]
     if len(found) != 1:
         return None, None
     sha, name = found[0].read_text().split()
@@ -223,7 +256,7 @@ def package_of(packages_dir, folder):
     return zip_path, sha
 
 
-def build_list(recipes_dir, packages_dir, sdk_dir, base_url, catalog_version, recipes_zip, recipes_url):
+def build_list(recipes_dir, packages_dir, sdk_dir, base_url, catalog_version, recipes_zip, recipes_url, arch=ARCH):
     api, qt = sdk_versions(sdk_dir)
     base_url = base_url.rstrip("/") + "/"
     entries = []
@@ -240,7 +273,7 @@ def build_list(recipes_dir, packages_dir, sdk_dir, base_url, catalog_version, re
             if key.startswith("description-") and isinstance(value, str):
                 entry[key] = value
         entry["edita-recipe"] = "recipes/%s/recipe.json" % folder
-        zip_path, sha = package_of(packages_dir, folder) if packages_dir else (None, None)
+        zip_path, sha = package_of(packages_dir, folder, arch) if packages_dir else (None, None)
         if publishable(recipe) and zip_path:
             entry["id"] = sha
             entry["repository"] = base_url + zip_path.name
@@ -251,7 +284,7 @@ def build_list(recipes_dir, packages_dir, sdk_dir, base_url, catalog_version, re
     result = {
         "name": LIST_NAME,
         "version": catalog_version,
-        "arch": ARCH,
+        "arch": arch,
         "edita-plugin-api": api,
         "edita-recipes": recipes_url or (base_url + Path(recipes_zip).name),
         "edita-recipes-sha256": sha256_file(recipes_zip),
@@ -292,7 +325,15 @@ def main(argv=None):
     p.add_argument("--catalog-version", required=True)
     p.add_argument("--recipes-zip", required=True)
     p.add_argument("--recipes-url", help="por defecto, junto a los paquetes")
+    p.add_argument("--arch", default=ARCH, choices=ARCHES)
     p.add_argument("--out", required=True)
+
+    p = sub.add_parser("rename-packages", help="añade la arquitectura al nombre de los paquetes")
+    p.add_argument("--packages", required=True)
+    p.add_argument("--arch", required=True, choices=ARCHES)
+
+    p = sub.add_parser("list-name", help="el nombre de la lista de una arquitectura")
+    p.add_argument("arch", choices=ARCHES)
 
     p = sub.add_parser("changed")
     p.add_argument("old")
@@ -318,10 +359,15 @@ def main(argv=None):
             pack_recipes(args.recipes, args.out)
         elif args.command == "list":
             catalog = build_list(args.recipes, args.packages, args.sdk, args.base_url, args.catalog_version,
-                                 args.recipes_zip, args.recipes_url)
+                                 args.recipes_zip, args.recipes_url, args.arch)
             Path(args.out).write_text(dump_json(catalog), encoding="utf-8")
             for p in catalog["npp-plugins"]:
                 print("%-24s %-10s %s" % (p["folder-name"], p["edita-build"], p["license"]))
+        elif args.command == "rename-packages":
+            for name in rename_packages(args.packages, args.arch):
+                print(name)
+        elif args.command == "list-name":
+            print(list_name(args.arch))
         elif args.command == "changed":
             old = json.loads(Path(args.old).read_text(encoding="utf-8")) if Path(args.old).is_file() else {}
             new = json.loads(Path(args.new).read_text(encoding="utf-8"))

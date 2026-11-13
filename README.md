@@ -5,7 +5,7 @@ Catálogo de plugins de [Edita](https://github.com/alktrip/edita), el editor par
 Este repositorio está separado de la aplicación por tres motivos:
 
 - Los plugins tienen su propio ritmo: una versión nueva de un plugin no obliga a publicar una versión de Edita, y al revés.
-- La compilación de los plugins no pesa en la CI de la aplicación. Por ahora es solo para Linux x86_64: macOS se retoma cuando Edita esté completo en Linux.
+- La compilación de los plugins no pesa en la CI de la aplicación. Es para Linux x86_64 y arm64 (aarch64): macOS se retoma cuando Edita esté completo en Linux.
 - Los binarios se publican en los *Releases* de este repositorio, no en git, así que el historial de la aplicación no crece con cada paquete.
 
 ## Cómo funciona
@@ -36,14 +36,15 @@ Cada plugin conserva la licencia de su autor. Los parches y los *overlays* de un
 
 ## El catálogo publicado
 
-La CI compila las recetas para **Linux x86_64** con el AppImage de Edita en desarrollo. Así los binarios usan el mismo Qt (6.8) y la misma glibc (2.35) que el AppImage. Si algo cambió respecto al último catálogo, publica un *release* `catalog-<fecha>.<n>` con:
+La CI compila las recetas para **Linux x86_64** (en Ubuntu 22.04) y **Linux arm64** (en Ubuntu 24.04 ARM) con el AppImage de Edita en desarrollo de cada arquitectura. Así los binarios usan el mismo Qt (6.8) y la misma glibc que ese AppImage (2.35 en x86_64, 2.39 en arm64). Si algo cambió respecto al último catálogo, publica un *release* `catalog-<fecha>.<n>` con:
 
-- un `.zip` por plugin y su `.sha256`;
-- `recipes.zip`, con todas las recetas;
-- `plugins.json`, la lista, con el formato de `nppPluginList.json` de Notepad++;
-- `plugins.json.minisig`, su firma.
+- un `.zip` por plugin y su `.sha256`; los de arm64 llevan `-linux-aarch64` en el nombre;
+- `recipes.zip`, con todas las recetas (las mismas para las dos arquitecturas);
+- `plugins.json`, la lista de x86_64, con el formato de `nppPluginList.json` de Notepad++, y `plugins-linux-aarch64.json`, la de arm64;
+- `plugins.json.minisig` y `plugins-linux-aarch64.json.minisig`, sus firmas;
+- los dos AppImage con los que se compiló.
 
-La última lista está siempre en <https://github.com/alktrip/edita-plugins/releases/latest/download/plugins.json>. El formato está en [la fase 55 de Edita](https://github.com/alktrip/edita/blob/main/docs/fase55.md).
+Las últimas listas están siempre en <https://github.com/alktrip/edita-plugins/releases/latest/download/plugins.json> y <https://github.com/alktrip/edita-plugins/releases/latest/download/plugins-linux-aarch64.json>. Edita pide la de su arquitectura; si no la encuentra (un catálogo anterior), usa `plugins.json` y compila los plugins en el equipo. El formato está en [la fase 55 de Edita](https://github.com/alktrip/edita/blob/main/docs/fase55.md), y las listas por arquitectura, en [la fase 92](https://github.com/alktrip/edita/blob/main/docs/fase92.md).
 
 **Comprobar la firma** (Ed25519, formato [minisign](https://jedisct1.github.io/minisign/)):
 
@@ -53,7 +54,7 @@ minisign -Vm plugins.json -p keys/catalog.pub
 python3 scripts/catalog.py verify --public keys/catalog.pub plugins.json
 ```
 
-**Comprobar un binario.** Los paquetes son reproducibles. Cada *release* incluye el AppImage de Edita con el que se compiló. Con él y el mismo compilador que la CI (Ubuntu 22.04 con GCC 12: `CC=gcc-12 CXX=g++-12`), `scripts/build-all.sh Edita-*.AppImage salida/` da los mismos SHA-256 que la lista. Se comprobó con dos compilaciones de la CI en máquinas distintas. Sin FUSE, hay que ejecutarlo con `APPIMAGE_EXTRACT_AND_RUN=1`.
+**Comprobar un binario.** Los paquetes son reproducibles. Cada *release* incluye los AppImage de Edita con los que se compiló. Con el de su arquitectura y el mismo entorno que la CI (GCC 12, `CC=gcc-12 CXX=g++-12`, en Ubuntu 22.04 para x86_64 o 24.04 para arm64), `scripts/build-all.sh Edita-*.AppImage salida/` da los mismos SHA-256 que la lista. Se comprobó con dos compilaciones de la CI en máquinas distintas. Sin FUSE, hay que ejecutarlo con `APPIMAGE_EXTRACT_AND_RUN=1`.
 
 **Licencias.** La capa de compatibilidad de Edita va dentro de cada `.so` y es GPL-3.0-or-later. Por eso solo se publican binarios de plugins con una licencia compatible con la GPL-3. Los demás se listan igual, y el administrador de plugins los compila en el equipo del usuario a partir de su receta.
 

@@ -141,6 +141,30 @@ class Lists(unittest.TestCase):
             for key in ("folder-name", "display-name", "author", "description", "id", "version", "repository", "homepage"):
                 self.assertIsInstance(p[key], str)
 
+    def test_list_for_aarch64(self):
+        # Los paquetes de arm64 llevan la arquitectura en el nombre: van en el mismo release
+        renamed = catalog.rename_packages(self.packages, "linux-aarch64")
+        self.assertEqual(sorted(renamed), ["Libre-1.2-linux-aarch64.zip", "SoloDos-1.2-linux-aarch64.zip"])
+        self.assertFalse((self.packages / "Libre-1.2.zip").exists())
+        sha_line = (self.packages / "Libre-1.2-linux-aarch64.zip.sha256").read_text().split()
+        self.assertEqual(sha_line, [catalog.sha256_file(self.packages / "Libre-1.2-linux-aarch64.zip"), "Libre-1.2-linux-aarch64.zip"])
+        result = catalog.build_list(self.recipes, self.packages, self.sdk, "https://example.org/releases/download/c1",
+                                    "2026.11.03.1", self.recipes_zip, None, arch="linux-aarch64")
+        self.assertEqual(result["arch"], "linux-aarch64")
+        libre = {p["folder-name"]: p for p in result["npp-plugins"]}["Libre"]
+        self.assertEqual(libre["edita-build"], "binary")
+        self.assertEqual(libre["repository"], "https://example.org/releases/download/c1/Libre-1.2-linux-aarch64.zip")
+        # Las recetas son las mismas para las dos arquitecturas
+        self.assertEqual(result["edita-recipes"], "https://example.org/releases/download/c1/recipes.zip")
+        # Sin el sufijo, los paquetes de x86_64 no se confunden con los de arm64
+        self.assertEqual(self.build()["npp-plugins"][0]["edita-build"], "recipe")
+
+    def test_list_names(self):
+        self.assertEqual(catalog.list_name("linux-x86_64"), "plugins.json")
+        self.assertEqual(catalog.list_name("linux-aarch64"), "plugins-linux-aarch64.json")
+        with self.assertRaises(catalog.CatalogError):
+            catalog.list_name("windows-x86")
+
     def test_package_must_match_its_sha256(self):
         (self.packages / "Libre-1.2.zip").write_bytes(b"otro contenido")
         with self.assertRaisesRegex(catalog.CatalogError, "no coincide"):

@@ -1,11 +1,13 @@
 # El catálogo de plugins de Edita: compila y prueba las recetas con el Edita en desarrollo
-# (el AppImage del release «continuous» de alktrip/edita), genera la lista y, si algo
-# cambió, la firma y publica un release con los paquetes.
+# (el AppImage del release «continuous» de alktrip/edita), una vez por arquitectura, genera
+# las listas y, si algo cambió, las firma y publica un release con los paquetes.
 #
-# Edita encuentra siempre la última lista en
-#   https://github.com/alktrip/edita-plugins/releases/latest/download/plugins.json
-# (y su firma en plugins.json.minisig). Los paquetes de cada lista están en su propio
-# release, que no cambia.
+# Edita encuentra siempre la última lista de su arquitectura en
+#   https://github.com/alktrip/edita-plugins/releases/latest/download/plugins.json   (x86_64)
+#   https://github.com/alktrip/edita-plugins/releases/latest/download/plugins-linux-aarch64.json
+# (y su firma en <lista>.minisig). plugins.json conserva su nombre: es la que piden las
+# versiones de Edita anteriores a la 1.0. Los paquetes de cada catálogo están en su propio
+# release, que no cambia; los de arm64 llevan -linux-aarch64 en el nombre.
 #
 # En los pull requests solo compila y prueba. Los lunes recompila con el Edita más
 # reciente: si el SDK cambió, cambian los paquetes y se publica un catálogo nuevo.
@@ -33,13 +35,33 @@ env:
   QT_QPA_PLATFORM: offscreen
 
 jobs:
-  catalogo:
-    runs-on: ubuntu-22.04
-    timeout-minutes: 90
+  # La versión del catálogo, la misma para las dos listas
+  preparar:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
     outputs:
-      version: ${{ steps.lista.outputs.version }}
-      tag: ${{ steps.lista.outputs.tag }}
-      publish: ${{ steps.firma.outputs.publish }}
+      version: ${{ steps.v.outputs.version }}
+      tag: ${{ steps.v.outputs.tag }}
+    steps:
+      - id: v
+        run: |
+          version="$(date -u +%Y.%m.%d).${{ github.run_number }}"
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+          echo "tag=catalog-$version" >> "$GITHUB_OUTPUT"
+
+  compilar:
+    needs: preparar
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # x86_64 en Ubuntu 22.04 (glibc 2.35, la del AppImage de x86_64)
+          - {arch: linux-x86_64, appimage: x86_64, runner: ubuntu-22.04, glib: libglib2.0-0}
+          # arm64 en Ubuntu 24.04: el Qt oficial de arm64 pide glibc 2.38, igual que Edita
+          - {arch: linux-aarch64, appimage: aarch64, runner: ubuntu-24.04-arm, glib: libglib2.0-0t64}
+    name: compilar (${{ matrix.arch }})
+    runs-on: ${{ matrix.runner }}
+    timeout-minutes: 90
     steps:
       - uses: actions/checkout@v4
 
@@ -50,7 +72,7 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends g++-12 ninja-build pkg-config patch \
             python3-cryptography \
-            libgl1 libegl1 libopengl0 libglx0 libxkbcommon0 libfontconfig1 libfreetype6 libdbus-1-3 libglib2.0-0
+            libgl1 libegl1 libopengl0 libglx0 libxkbcommon0 libfontconfig1 libfreetype6 libdbus-1-3 ${{ matrix.glib }}
 
       - name: Pruebas de los scripts
         run: /usr/bin/python3 -m unittest discover -s scripts -v
@@ -61,7 +83,7 @@ jobs:
         run: |
           mkdir -p "$RUNNER_TEMP/edita"
           cd "$RUNNER_TEMP/edita"
-          gh release download continuous -R alktrip/edita -p '*-x86_64.AppImage' # sus binarios son de x86_64 (también hay uno de aarch64)
+          gh release download continuous -R alktrip/edita -p '*-${{ matrix.appimage }}.AppImage'
           chmod +x ./*.AppImage
           ./*.AppImage --appimage-extract >/dev/null
           echo "EDITA=$PWD/squashfs-root/AppRun" >> "$GITHUB_ENV"
@@ -76,64 +98,110 @@ jobs:
         run: scripts/build-all.sh "$EDITA" "$RUNNER_TEMP/paquetes"
 
       - name: Lista
-        id: lista
+        env:
+          TAG: ${{ needs.preparar.outputs.tag }}
+          VERSION: ${{ needs.preparar.outputs.version }}
+        run: |
+          out="$RUNNER_TEMP/catalogo"
+          mkdir -p "$out"
+          /usr/bin/python3 scripts/catalog.py rename-packages --packages "$RUNNER_TEMP/paquetes" --arch ${{ matrix.arch }}
+          cp "$RUNNER_TEMP"/paquetes/*.zip "$RUNNER_TEMP"/paquetes/*.zip.sha256 "$out/"
+          /usr/bin/python3 scripts/catalog.py pack-recipes --recipes recipes --out "$out/recipes.zip"
+          name=$(/usr/bin/python3 scripts/catalog.py list-name ${{ matrix.arch }})
+          /usr/bin/python3 scripts/catalog.py list --recipes recipes --packages "$out" --sdk "$EDITA_SDK" \
+            --arch ${{ matrix.arch }} \
+            --base-url "https://github.com/${{ github.repository }}/releases/download/$TAG" \
+            --catalog-version "$VERSION" --recipes-zip "$out/recipes.zip" --out "$out/$name"
+          # Para reproducir los paquetes hace falta ese mismo AppImage: va en el release
+          cp "$EDITA_APPIMAGE" "$out/"
+          echo "$(basename "$EDITA_APPIMAGE") (Edita $EDITA_COMMIT, SHA-256 $(sha256sum "$EDITA_APPIMAGE" | cut -d' ' -f1))" \
+            > "$out/edita-${{ matrix.arch }}.txt"
+
+      - name: Subir (artefacto)
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: catalogo-${{ matrix.arch }}
+          path: |
+            ${{ runner.temp }}/catalogo
+            ${{ runner.temp }}/paquetes/*.log
+          if-no-files-found: error
+
+  # Junta las dos arquitecturas, ve si algo cambió y firma las listas
+  firmar:
+    needs: [preparar, compilar]
+    runs-on: ubuntu-22.04
+    timeout-minutes: 15
+    outputs:
+      publish: ${{ steps.firma.outputs.publish }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: catalogo-*
+          path: ${{ runner.temp }}/artefactos
+
+      - name: Juntar
+        id: juntar
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          version="$(date -u +%Y.%m.%d).${{ github.run_number }}"
-          tag="catalog-$version"
-          echo "version=$version" >> "$GITHUB_OUTPUT"
-          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          sudo apt-get update
+          sudo apt-get install -y --no-install-recommends python3-cryptography
           out="$RUNNER_TEMP/catalogo"
           mkdir -p "$out"
-          cp "$RUNNER_TEMP"/paquetes/*.zip "$RUNNER_TEMP"/paquetes/*.zip.sha256 "$out/"
-          /usr/bin/python3 scripts/catalog.py pack-recipes --recipes recipes --out "$out/recipes.zip"
-          /usr/bin/python3 scripts/catalog.py list --recipes recipes --packages "$out" --sdk "$EDITA_SDK" \
-            --base-url "https://github.com/${{ github.repository }}/releases/download/$tag" \
-            --catalog-version "$version" --recipes-zip "$out/recipes.zip" --out "$out/plugins.json"
-          # ¿Cambió algo respecto al último catálogo publicado?
-          gh release download -R "${{ github.repository }}" -p plugins.json -O "$RUNNER_TEMP/anterior.json" 2>/dev/null || true
-          if /usr/bin/python3 scripts/catalog.py changed "$RUNNER_TEMP/anterior.json" "$out/plugins.json"; then
-            echo "changed=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-          fi
+          for arch in linux-x86_64 linux-aarch64; do
+            cp "$RUNNER_TEMP/artefactos/catalogo-$arch/catalogo/"* "$out/"
+          done
+          # Las recetas son las mismas para las dos (pack-recipes es reproducible)
+          cmp <(sha256sum < "$RUNNER_TEMP/artefactos/catalogo-linux-x86_64/catalogo/recipes.zip") \
+              <(sha256sum < "$RUNNER_TEMP/artefactos/catalogo-linux-aarch64/catalogo/recipes.zip")
+          # ¿Cambió alguna lista respecto al último catálogo publicado?
+          changed=false
+          for arch in linux-x86_64 linux-aarch64; do
+            name=$(/usr/bin/python3 scripts/catalog.py list-name $arch)
+            rm -f "$RUNNER_TEMP/anterior.json"
+            gh release download -R "${{ github.repository }}" -p "$name" -O "$RUNNER_TEMP/anterior.json" 2>/dev/null || true
+            if /usr/bin/python3 scripts/catalog.py changed "$RUNNER_TEMP/anterior.json" "$out/$name"; then
+              changed=true
+            fi
+          done
+          echo "changed=$changed" >> "$GITHUB_OUTPUT"
 
       - name: Firmar
         id: firma
-        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && steps.lista.outputs.changed == 'true'
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main' && steps.juntar.outputs.changed == 'true'
         env:
           EDITA_CATALOG_KEY: ${{ secrets.EDITA_CATALOG_KEY }}
-          VERSION: ${{ steps.lista.outputs.version }}
+          VERSION: ${{ needs.preparar.outputs.version }}
         run: |
           if [ -z "$EDITA_CATALOG_KEY" ]; then
             echo "::error::Falta el secreto EDITA_CATALOG_KEY (la clave de firma del catálogo): no se publica"
             exit 1
           fi
           out="$RUNNER_TEMP/catalogo"
-          /usr/bin/python3 scripts/catalog.py sign "$out/plugins.json" \
-            --trusted-comment "$(printf 'timestamp:%s\tfile:plugins.json\tcatalog:%s' "$(date -u +%s)" "$VERSION")"
-          /usr/bin/python3 scripts/catalog.py verify --public keys/catalog.pub "$out/plugins.json"
-          # Para reproducir los paquetes hace falta ese mismo AppImage: va en el release
-          cp "$EDITA_APPIMAGE" "$out/"
-          echo "Compilado con $(basename "$EDITA_APPIMAGE") (Edita $EDITA_COMMIT, SHA-256 $(sha256sum "$EDITA_APPIMAGE" | cut -d' ' -f1))" > "$out/edita.txt"
+          for arch in linux-x86_64 linux-aarch64; do
+            name=$(/usr/bin/python3 scripts/catalog.py list-name $arch)
+            /usr/bin/python3 scripts/catalog.py sign "$out/$name" \
+              --trusted-comment "$(printf 'timestamp:%s\tfile:%s\tcatalog:%s' "$(date -u +%s)" "$name" "$VERSION")"
+            /usr/bin/python3 scripts/catalog.py verify --public keys/catalog.pub "$out/$name"
+          done
           echo "publish=true" >> "$GITHUB_OUTPUT"
 
       - name: Subir el catálogo (artefacto)
-        if: always()
+        if: steps.firma.outputs.publish == 'true'
         uses: actions/upload-artifact@v4
         with:
-          name: catalogo-linux-x86_64
-          path: |
-            ${{ runner.temp }}/catalogo
-            ${{ runner.temp }}/paquetes/*.log
+          name: catalogo
+          path: ${{ runner.temp }}/catalogo
           if-no-files-found: error
 
-  # Aparte, en Ubuntu 24.04 (la 22.04 no tiene minisign): la firma se comprueba con la
+  # Aparte, en Ubuntu 24.04 (la 22.04 no tiene minisign): las firmas se comprueban con la
   # herramienta original antes de publicar
   publicar:
-    needs: catalogo
-    if: needs.catalogo.outputs.publish == 'true'
+    needs: [preparar, firmar]
+    if: needs.firmar.outputs.publish == 'true'
     runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
@@ -141,48 +209,57 @@ jobs:
 
       - uses: actions/download-artifact@v4
         with:
-          name: catalogo-linux-x86_64
-          path: ${{ runner.temp }}/artefacto
+          name: catalogo
+          path: ${{ runner.temp }}/catalogo
 
-      - name: Comprobar la firma
+      - name: Comprobar las firmas
         run: |
           sudo apt-get update
           sudo apt-get install -y --no-install-recommends minisign python3-cryptography
-          out="$RUNNER_TEMP/artefacto/catalogo"
-          minisign -Vm "$out/plugins.json" -p keys/catalog.pub
-          /usr/bin/python3 scripts/catalog.py verify --public keys/catalog.pub "$out/plugins.json"
-          # Cada paquete, con el SHA-256 de la lista
+          out="$RUNNER_TEMP/catalogo"
+          for name in plugins.json plugins-linux-aarch64.json; do
+            minisign -Vm "$out/$name" -p keys/catalog.pub
+            /usr/bin/python3 scripts/catalog.py verify --public keys/catalog.pub "$out/$name"
+          done
+          # Cada paquete, con el SHA-256 de su lista
           /usr/bin/python3 - "$out" <<'PY'
           import hashlib, json, os, sys
           out = sys.argv[1]
-          for p in json.load(open(os.path.join(out, "plugins.json")))["npp-plugins"]:
-              if p["edita-build"] == "binary":
-                  name = p["repository"].rsplit("/", 1)[1]
-                  assert hashlib.sha256(open(os.path.join(out, name), "rb").read()).hexdigest() == p["id"], name
+          for name in ("plugins.json", "plugins-linux-aarch64.json"):
+              for p in json.load(open(os.path.join(out, name)))["npp-plugins"]:
+                  if p["edita-build"] == "binary":
+                      zip_name = p["repository"].rsplit("/", 1)[1]
+                      assert hashlib.sha256(open(os.path.join(out, zip_name), "rb").read()).hexdigest() == p["id"], zip_name
           PY
 
       - name: Publicar
         env:
           GH_TOKEN: ${{ github.token }}
-          VERSION: ${{ needs.catalogo.outputs.version }}
-          TAG: ${{ needs.catalogo.outputs.tag }}
+          VERSION: ${{ needs.preparar.outputs.version }}
+          TAG: ${{ needs.preparar.outputs.tag }}
         run: |
-          out="$RUNNER_TEMP/artefacto/catalogo"
+          out="$RUNNER_TEMP/catalogo"
           {
-            echo "Catálogo de plugins de Edita para Linux x86_64. $(cat "$out/edita.txt")."
+            echo "Catálogo de plugins de Edita para Linux x86_64 y arm64 (aarch64)."
             echo
-            echo "| Plugin | Versión | Licencia | Instalación |"
-            echo "|---|---|---|---|"
+            echo "- x86_64: $(cat "$out/edita-linux-x86_64.txt")"
+            echo "- arm64: $(cat "$out/edita-linux-aarch64.txt")"
+            echo
+            echo "| Plugin | Versión | Licencia | x86_64 | arm64 |"
+            echo "|---|---|---|---|---|"
             /usr/bin/python3 -c 'import json,sys
-          for p in json.load(open(sys.argv[1]))["npp-plugins"]:
-              how = "binario" if p["edita-build"] == "binary" else "se compila en el equipo"
-              print("| %s | %s | %s | %s |" % (p["display-name"], p["version"], p["license"], how))' "$out/plugins.json"
+          x86 = json.load(open(sys.argv[1]))["npp-plugins"]
+          arm = {p["folder-name"]: p for p in json.load(open(sys.argv[2]))["npp-plugins"]}
+          how = lambda p: "binario" if p and p["edita-build"] == "binary" else "se compila en el equipo"
+          for p in x86:
+              print("| %s | %s | %s | %s | %s |" % (p["display-name"], p["version"], p["license"], how(p), how(arm.get(p["folder-name"]))))' \
+              "$out/plugins.json" "$out/plugins-linux-aarch64.json"
             echo
-            echo "Comprobar la firma: \`minisign -Vm plugins.json -p catalog.pub\` (la clave está en [keys/catalog.pub](https://github.com/${{ github.repository }}/blob/main/keys/catalog.pub))."
+            echo "Comprobar una firma: \`minisign -Vm plugins.json -p catalog.pub\` (la clave está en [keys/catalog.pub](https://github.com/${{ github.repository }}/blob/main/keys/catalog.pub))."
             echo
-            echo "Comprobar un paquete: con el AppImage de este release, en Ubuntu 22.04 con GCC 12 (\`CC=gcc-12 CXX=g++-12\`), \`scripts/build-all.sh Edita-*.AppImage salida/\` da los mismos SHA-256 (los paquetes son reproducibles)."
+            echo "Comprobar un paquete: con el AppImage de su arquitectura de este release y GCC 12 (\`CC=gcc-12 CXX=g++-12\`), en Ubuntu 22.04 (x86_64) o 24.04 (arm64), \`scripts/build-all.sh Edita-*.AppImage salida/\` da los mismos SHA-256 (los paquetes son reproducibles; los de arm64 llevan además \`-linux-aarch64\` en el nombre: \`scripts/catalog.py rename-packages\`)."
           } > "$RUNNER_TEMP/notas.md"
           gh release create "$TAG" --target "$GITHUB_SHA" --title "Catálogo $VERSION" --latest \
             --notes-file "$RUNNER_TEMP/notas.md" \
-            "$out"/*.zip "$out"/*.zip.sha256 "$out/plugins.json" "$out/plugins.json.minisig" "$out"/*.AppImage \
+            "$out"/*.zip "$out"/*.zip.sha256 "$out"/plugins*.json "$out"/plugins*.json.minisig "$out"/*.AppImage \
             keys/catalog.pub
