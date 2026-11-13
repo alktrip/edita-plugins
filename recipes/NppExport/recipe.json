@@ -1,0 +1,33 @@
+{
+	"folder-name": "NppExport",
+	"display-name": "NppExport",
+	"version": "0.4.0.0",
+	"npp-compatible-versions": "[0.0.1,]",
+	"description": "Exports the selection or the whole document, with its syntax highlighting, to an RTF or HTML file or to the clipboard (RTF, HTML or all formats at once, to paste into a word processor or an email). It is the original source code of the Notepad++ plugin (chcg/NPP_ExportPlugin, 0.4.0), unchanged.",
+	"description-es": "Exporta la selección o todo el documento, con su resaltado de sintaxis, a un archivo RTF o HTML o al portapapeles (RTF, HTML o todos los formatos a la vez, para pegarlo en un procesador de textos o un correo). Es el código original del plugin de Notepad++ (chcg/NPP_ExportPlugin, 0.4.0), sin cambios.",
+	"author": "Harry and contributors (Edita port: Edita contributors)",
+	"homepage": "https://github.com/chcg/NPP_ExportPlugin",
+	"license": "GPL-2.0-only",
+	"source": {
+		"url": "https://github.com/chcg/NPP_ExportPlugin/archive/refs/tags/0.4.0.zip",
+		"sha256": "71364ba4b08065e366d7e54bd748d5b72ac7f693d230223e8f9c96299836673c",
+		"strip-components": 1
+	},
+	"remove": [
+		"src/Notepad_specific/Scintilla.h",
+		"src/Notepad_specific/Sci_Position.h"
+	],
+	"overlay": "overlay",
+	"build-dir": "edita",
+	"requires": [
+		"cmake",
+		"c++"
+	],
+	"check": {
+		"commands": [
+			"&Copy RTF to clipboard",
+			"&Copy HTML to clipboard",
+			"&Copy all formats to clipboard"
+		]
+	}
+}

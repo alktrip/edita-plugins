@@ -1,0 +1,26 @@
+--- a/src/NppJsonViewer/JsonViewDlg.cpp	2026-11-12 21:02:25.259730367 -0600
++++ b/src/NppJsonViewer/JsonViewDlg.cpp	2026-11-12 21:02:25.269022593 -0600
+@@ -1,4 +1,4 @@
+-#include <format>
++#include <string>
+ #include <regex>
+ 
+ #include "JsonViewDlg.h"
+@@ -427,7 +427,7 @@
+             size_t errPosition = start + static_cast<size_t>(res.error_pos);
+             m_pEditor->MakeSelection(errPosition, errPosition + 1);
+ 
+-            std::string err = std::format("\n\nError: ({} : {})", res.error_code, res.error_str);
++            std::string err = "\n\nError: (" + std::to_string(res.error_code) + " : " + res.error_str + ")";
+             retVal          = std::make_optional<std::wstring>((JSON_ERR_VALIDATE + StringHelper::ToWstring(err)));
+         }
+     }
+@@ -874,7 +874,7 @@
+     m_pEditor->MakeSelection(start, end);
+ 
+     // Intimate user
+-    std::string err = std::format("\n\nError: ({} : {})", result.error_code, result.error_str);
++    std::string err = "\n\nError: (" + std::to_string(result.error_code) + " : " + result.error_str + ")";
+ 
+     ShowMessage(JSON_ERROR_TITLE, (JSON_ERR_VALIDATE + StringHelper::ToWstring(err)).c_str(), MB_OK | MB_ICONERROR);
+ }

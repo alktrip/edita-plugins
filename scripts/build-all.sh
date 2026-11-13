@@ -9,6 +9,8 @@
 # compila o no pasa su prueba. Con el mismo Edita, los paquetes son idénticos byte a byte
 # a los que publica la CI: así se puede comprobar un binario del catálogo.
 set -u
+# Sin esto, «edita --check-plugin … | tee» da el código de tee y una prueba que falla pasa
+set -o pipefail
 
 if [ $# -lt 2 ]; then
     echo "Uso: $0 EDITA SALIDA [receta...]" >&2

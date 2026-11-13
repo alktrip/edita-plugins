@@ -1,0 +1,48 @@
+{
+	"folder-name": "NppConverter",
+	"display-name": "Npp Converter",
+	"version": "4.7",
+	"npp-compatible-versions": "[0.0.1,]",
+	"description": "Converts the selection from ASCII to hexadecimal and back, and a Conversion Panel shows a value in ASCII, decimal, hexadecimal, binary and octal at once. It is the original source code of the Notepad++ plugin (npp-plugins/converter, v4.7), unchanged.",
+	"description-es": "Convierte la selección de ASCII a hexadecimal y al revés, y un Panel de conversión muestra un valor a la vez en ASCII, decimal, hexadecimal, binario y octal. Es el código original del plugin de Notepad++ (npp-plugins/converter, v4.7), sin cambios.",
+	"author": "Don HO (Edita port: Edita contributors)",
+	"homepage": "https://github.com/npp-plugins/converter",
+	"license": "GPL-3.0-or-later",
+	"license-files": [
+		"license.txt"
+	],
+	"source": {
+		"url": "https://github.com/npp-plugins/converter/archive/refs/tags/v4.7.zip",
+		"sha256": "21c8e3a7aed42810fd58e5076c4b2ae624f39117674a287468442b73678b4e94",
+		"strip-components": 1
+	},
+	"remove": [
+		"source/Scintilla.h",
+		"source/Sci_Position.h"
+	],
+	"overlay": "overlay",
+	"build-dir": "edita",
+	"requires": [
+		"cmake",
+		"c++"
+	],
+	"check": {
+		"commands": [
+			"ASCII -> HEX",
+			"HEX -> ASCII",
+			"Conversion Panel"
+		],
+		"cases": [
+			{
+				"command": "ASCII -> HEX",
+				"text": "Hi",
+				"expect": "4869"
+			},
+			{
+				"command": "HEX -> ASCII",
+				"text": "4869",
+				"expect": "Hi"
+			}
+		]
+	}
+}

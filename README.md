@@ -69,8 +69,8 @@ Todas compilan el código de la etiqueta que publicó el autor, sin cambios salv
 | [Simplify JSON](recipes/SimplifyJson/) | 1.0.1 | GPL-2.0-only | Escapa, desescapa, da formato y minifica JSON | 3 líneas: el NUL de `SCI_GETSELTEXT`; el original pierde el último carácter de la selección |
 | [TidyText](recipes/TidyText/) | 1.2.0 | GPL-2.0-or-later | Resalta y repara caracteres invisibles y mojibake | 2 líneas: el NUL de `SCI_GETSELTEXT`, al enviar la selección a un asistente |
 | [Auto Detect Indention](recipes/nppAutoDetectIndent/) | 2.3 | GPL-3.0-or-later | Ajusta la sangría a la de cada documento | — (su submódulo, la plantilla de N++, va como `extra-sources`) |
-| [SQL Column Highlighter](recipes/SqlColumnHighlighter/) | 1.0.0 | MIT | Resalta las columnas y valores de un `INSERT` | — |
-| [MIME Tools](recipes/mimeTools/) | 3.1 | GPL-3.0-or-later | Base64, quoted-printable, URL y SAML | — (antes venía con Edita) |
+| [SQL Column Highlighter](recipes/SqlColumnHighlighter/) | 1.0.4 | MIT | Resalta las columnas y valores de un `INSERT` | — (como el original, escribe un registro de diagnóstico en la carpeta temporal) |
+| [MIME Tools](recipes/mimeTools/) | 3.2 | GPL-3.0-or-later | Base64, quoted-printable, URL y SAML | — (antes venía con Edita) |
 | [XML Tools](recipes/XMLTools/) | 3.1.1.13 | GPL-3.0-or-later | Comprobar, validar, formatear y linealizar XML; XPath; XSLT | 1 línea (`tolower` con GCC); su interfaz es un port a Qt sobre `edita_plugin.h`, con libxml2 2.13 y libxslt 1.1 (dentro del plugin, estáticas: no depende de las de la distribución) donde el original usa MSXML (antes venía con Edita) |
 | [SelectQuotedText](recipes/SelectQuotedText/) | 1.1.0 | GPL-2.0-or-later | Selecciona el texto entre comillas alrededor del cursor | — |
 | [Indent By Fold](recipes/IndentByFold/) | 0.7.3 | GPL-2.0-or-later | Sangra el código según su plegado | — (el overlay trae el `version_git.h` que genera su script de Windows) |
@@ -82,8 +82,13 @@ Todas compilan el código de la etiqueta que publicó el autor, sin cambios salv
 | [Pork to Sausage](recipes/pork2sausage/) | 2.6 | GPL-2.0-or-later | Transforma la selección con un programa externo | 1 línea: la misma; su `.ini` va en el paquete con el nombre que busca (`package-files`) |
 | [HLASM Lexer](recipes/HLASMLexer/) | 1.1.1 | Apache-2.0 | Colorea HLASM (ensamblador de IBM para mainframe); plugin de lexer: añade el lenguaje | — (el overlay genera el XML incrustado, como su `build.sh`) |
 | [OCaml Lexer](recipes/OCamlLexer/) | 1.0.0 | Apache-2.0 | Colorea OCaml y marca los avisos de `olint`; plugin de lexer | 1 línea: quita su registro de depuración en `C:\dev`, que en Linux sería un archivo en la carpeta actual |
+| [JSON Viewer](recipes/NPPJSONViewer/) | 2.2.0.0 | MIT | Panel con el árbol del JSON y buscador; formatear, comprimir, ordenar por clave y validar | 2 líneas: sus dos mensajes de error sin `std::format`, que GCC 12 no tiene; rapidjson y la plantilla de N++ (sus submódulos) van como `extra-sources`; C++20 |
+| [Npp Converter](recipes/NppConverter/) | 4.7 | GPL-3.0-or-later | ASCII ↔ hexadecimal y un panel que muestra un valor en ASCII, decimal, hexadecimal, binario y octal | — |
+| [NppExport](recipes/NppExport/) | 0.4.0 | GPL-2.0-only | Exporta la selección o el documento, con su resaltado, a RTF o HTML, en un archivo o en el portapapeles | — |
 
 Los tres parches de `SCI_GETSELTEXT` corrigen fallos que también tienen en Notepad++: en la Scintilla actual (la serie 5, la de Notepad++ y la de Edita), el valor que devuelve no cuenta el NUL final, pero sí lo escribe. Los plugins se escribieron con la regla anterior.
+
+NppExport tampoco tiene binario: su código no trae licencia, y el proyecto de SourceForge del que viene la declara «GPLv2», sin «o posterior», incompatible con la capa de compatibilidad (GPL-3 o posterior) dentro del `.so`. Se compila en el equipo del usuario.
 
 Simplify JSON no tiene binario, y se compila en el equipo del usuario. Se publica como «GPLv2» sin «o posterior», pero incluye los archivos de la interfaz de Notepad++, que son GPL-3 o posterior: su autor creyó que la plantilla de N++ era GPLv2. Si aclara la licencia, pasa a binario.
 

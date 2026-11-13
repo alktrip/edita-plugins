@@ -1,0 +1,69 @@
+{
+	"folder-name": "NPPJSONViewer",
+	"display-name": "JSON Viewer",
+	"version": "2.2.0.0",
+	"npp-compatible-versions": "[0.0.1,]",
+	"description": "A JSON tree panel with search, plus format, compress, sort by key and validate commands for the current JSON document. It is the original source code of the Notepad++ plugin (NPP-JSONViewer/JSON-Viewer, v2.2.0.0) with its rapidjson and the Notepad++ plugin template, and a two-line patch: it builds its two error messages without std::format, which GCC 12 does not have yet.",
+	"description-es": "Un panel con el árbol del JSON y un buscador, y órdenes para dar formato, comprimir, ordenar por clave y validar el documento JSON actual. Es el código original del plugin de Notepad++ (NPP-JSONViewer/JSON-Viewer, v2.2.0.0) con su rapidjson y la plantilla de plugins de Notepad++, y un parche de dos líneas: arma sus dos mensajes de error sin std::format, que GCC 12 todavía no tiene.",
+	"author": "Kapil Ratnani, Rajendra Singh and contributors (Edita port: Edita contributors)",
+	"homepage": "https://github.com/NPP-JSONViewer/JSON-Viewer",
+	"license": "MIT",
+	"license-files": [
+		"LICENSE"
+	],
+	"package-files": [
+		{
+			"from": "external/rapidjson/license.txt",
+			"to": "COPYING.rapidjson"
+		}
+	],
+	"source": {
+		"url": "https://github.com/NPP-JSONViewer/JSON-Viewer/archive/refs/tags/v2.2.0.0.zip",
+		"sha256": "904c3a4e47cf6e388d11ae1a1999c68d8f583d1c645f480be143bd96d2fb807d",
+		"strip-components": 1
+	},
+	"extra-sources": [
+		{
+			"url": "https://github.com/NPP-JSONViewer/rapidjson/archive/e0921584da473004109437b41919fd7070771a52.zip",
+			"sha256": "8ff4fb47de439390ab53e213611f46377c53ac40c04e0ce919e137e880cdaa93",
+			"strip-components": 1,
+			"dest": "external/rapidjson"
+		},
+		{
+			"url": "https://github.com/npp-plugins/plugintemplate/archive/05ee8e9a501e1e37ba462638df188837741c1f78.zip",
+			"sha256": "e8bacded625275df0fab0125a923bcd75b80d6b2acae64b98f52a2492087148e",
+			"strip-components": 1,
+			"dest": "external/npp_plugintemplate"
+		}
+	],
+	"remove": [
+		"src/NppJsonViewer/npp_include/Scintilla.h",
+		"src/NppJsonViewer/npp_include/Sci_Position.h",
+		"external/npp_plugintemplate/src/Scintilla.h",
+		"external/npp_plugintemplate/src/Sci_Position.h"
+	],
+	"patches": [
+		"std-format.patch"
+	],
+	"overlay": "overlay",
+	"build-dir": "edita",
+	"requires": [
+		"cmake",
+		"c++"
+	],
+	"check": {
+		"commands": [
+			"Show &JSON Viewer",
+			"&Format JSON",
+			"&Compress JSON",
+			"Sort by &key (ascending)"
+		],
+		"cases": [
+			{
+				"command": "&Compress JSON",
+				"text": "{\n    \"b\": [1, 2],\n    \"a\": \"x\"\n}",
+				"expect": "{\"b\":[1,2],\"a\":\"x\"}"
+			}
+		]
+	}
+}

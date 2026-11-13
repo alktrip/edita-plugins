@@ -1,0 +1,32 @@
+{
+	"folder-name": "HexEditor",
+	"display-name": "HEX-Editor",
+	"version": "0.9.14.0",
+	"npp-compatible-versions": "[0.0.1,]",
+	"description": "Shows and edits the current document as hexadecimal bytes, with an ASCII column, configurable columns and bytes per column, find and replace, go to offset, compare and coloring. It is the original source code of the Notepad++ plugin (chcg/NPP_HexEditor, 0.9.14), unchanged.",
+	"description-es": "Muestra y edita el documento actual como bytes en hexadecimal, con una columna ASCII, columnas y bytes por columna configurables, buscar y reemplazar, ir a una posición, comparar y colores. Es el código original del plugin de Notepad++ (chcg/NPP_HexEditor, 0.9.14), sin cambios.",
+	"author": "Jens Lorenz and contributors (Edita port: Edita contributors)",
+	"homepage": "https://github.com/chcg/NPP_HexEditor",
+	"license": "GPL-2.0-or-later",
+	"license-files": [
+		"HexEditor/license.txt"
+	],
+	"source": {
+		"url": "https://github.com/chcg/NPP_HexEditor/archive/refs/tags/0.9.14.zip",
+		"sha256": "a6db1d96c851bfc70813bea5adf6f3d55f2df873ca6eec82c9d964dd5e55da56",
+		"strip-components": 1
+	},
+	"remove": [
+		"Common/Ccpp/Scintilla.h",
+		"Common/Ccpp/Sci_Position.h"
+	],
+	"overlay": "overlay",
+	"build-dir": "edita",
+	"requires": [
+		"cmake",
+		"c++"
+	],
+	"check": {
+		"commands": []
+	}
+}
