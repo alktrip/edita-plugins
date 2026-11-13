@@ -3,8 +3,9 @@
 	"display-name": "Select N' Launch",
 	"version": "2.2",
 	"npp-compatible-versions": "[0.0.1,]",
-	"description": "Guarda la selección en un archivo temporal con la extensión que se elija y lo abre con la aplicación del sistema asociada a esa extensión. Es el código original del plugin de Notepad++ (npp-plugins/selectnlaunch, v2.2), sin cambios.",
-	"author": "Don HO (port a Edita: Edita contributors)",
+	"description": "Saves the selection to a temporary file with the chosen extension and opens it with the system application associated with that extension. It is the original source code of the Notepad++ plugin (npp-plugins/selectnlaunch, v2.2), unchanged.",
+	"description-es": "Guarda la selección en un archivo temporal con la extensión que se elija y lo abre con la aplicación del sistema asociada a esa extensión. Es el código original del plugin de Notepad++ (npp-plugins/selectnlaunch, v2.2), sin cambios.",
+	"author": "Don HO (Edita port: Edita contributors)",
 	"homepage": "https://github.com/npp-plugins/selectnlaunch",
 	"license": "GPL-2.0-or-later",
 	"license-files": [

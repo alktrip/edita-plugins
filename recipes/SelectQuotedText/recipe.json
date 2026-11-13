@@ -3,8 +3,9 @@
 	"display-name": "SelectQuotedText",
 	"version": "1.1.0",
 	"npp-compatible-versions": "[0.0.1,]",
-	"description": "Selecciona el texto entre comillas (simples, dobles o las que se configuren) alrededor del cursor. Es el código original del plugin de Notepad++ (ffes/selectquotedtext, v1.1.0), sin cambios.",
-	"author": "Frank Fesevur (port a Edita: Edita contributors)",
+	"description": "Selects the text between quotes (single, double or the configured ones) around the cursor. It is the original source code of the Notepad++ plugin (ffes/selectquotedtext, v1.1.0), unchanged.",
+	"description-es": "Selecciona el texto entre comillas (simples, dobles o las que se configuren) alrededor del cursor. Es el código original del plugin de Notepad++ (ffes/selectquotedtext, v1.1.0), sin cambios.",
+	"author": "Frank Fesevur (Edita port: Edita contributors)",
 	"homepage": "https://github.com/ffes/selectquotedtext",
 	"license": "GPL-2.0-or-later",
 	"license-files": [

@@ -3,8 +3,9 @@
 	"display-name": "SQL Column Highlighter",
 	"version": "1.0.0.0",
 	"npp-compatible-versions": "[0.0.1,]",
-	"description": "En una sentencia INSERT de SQL, un clic en el nombre de una columna resalta sus valores y un doble clic en un valor resalta su columna, en todas las filas. Es el código original del plugin de Notepad++ (zhgao/npp-sql-column-highlighter, v1.0.0), sin cambios.",
-	"author": "zhgao (port a Edita: Edita contributors)",
+	"description": "In an SQL INSERT statement, clicking a column name highlights its values and double clicking a value highlights its column, in every row. It is the original source code of the Notepad++ plugin (zhgao/npp-sql-column-highlighter, v1.0.0), unchanged.",
+	"description-es": "En una sentencia INSERT de SQL, un clic en el nombre de una columna resalta sus valores y un doble clic en un valor resalta su columna, en todas las filas. Es el código original del plugin de Notepad++ (zhgao/npp-sql-column-highlighter, v1.0.0), sin cambios.",
+	"author": "zhgao (Edita port: Edita contributors)",
 	"homepage": "https://github.com/zhgao/npp-sql-column-highlighter",
 	"license": "MIT",
 	"license-files": [

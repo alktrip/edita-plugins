@@ -3,8 +3,9 @@
 	"display-name": "Reverse Lines",
 	"version": "1.0.0.0",
 	"npp-compatible-versions": "[0.0.1,]",
-	"description": "Invierte el orden de las líneas de la selección o del documento, como la orden tac de Unix. Es el código original del plugin de Notepad++ (querykuma/qkNppReverseLines, v1.0.0.0) con un parche de una línea: reserva el byte del NUL final que Scintilla 5 escribe y ya no cuenta (el original escribe un byte fuera de su búfer).",
-	"author": "Query Kuma (port a Edita: Edita contributors)",
+	"description": "Reverses the order of the lines of the selection or the document, like the Unix tac command. It is the original source code of the Notepad++ plugin (querykuma/qkNppReverseLines, v1.0.0.0) with a one-line patch: it reserves the byte for the trailing NUL that Scintilla 5 writes and no longer counts (the original writes one byte past its buffer).",
+	"description-es": "Invierte el orden de las líneas de la selección o del documento, como la orden tac de Unix. Es el código original del plugin de Notepad++ (querykuma/qkNppReverseLines, v1.0.0.0) con un parche de una línea: reserva el byte del NUL final que Scintilla 5 escribe y ya no cuenta (el original escribe un byte fuera de su búfer).",
+	"author": "Query Kuma (Edita port: Edita contributors)",
 	"homepage": "https://github.com/querykuma/qkNppReverseLines",
 	"license": "GPL-3.0-or-later",
 	"license-files": [

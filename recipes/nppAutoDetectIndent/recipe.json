@@ -3,8 +3,9 @@
 	"display-name": "Auto Detect Indention",
 	"version": "2.3",
 	"npp-compatible-versions": "[0.0.1,]",
-	"description": "Detecta la sangría de cada documento (tabulaciones o espacios, y cuántos) y ajusta la tecla Tab a ella. Es el código original del plugin de Notepad++ (Chocobo1/nppAutoDetectIndent, 2.3), sin cambios, con su submódulo (la plantilla de plugins de N++ en el commit que fija).",
-	"author": "Mike Tzou (Chocobo1) (port a Edita: Edita contributors)",
+	"description": "Detects the indentation of each document (tabs or spaces, and how many) and sets the Tab key to match. It is the original source code of the Notepad++ plugin (Chocobo1/nppAutoDetectIndent, 2.3), unchanged, with its submodule (the Notepad++ plugin template at the pinned commit).",
+	"description-es": "Detecta la sangría de cada documento (tabulaciones o espacios, y cuántos) y ajusta la tecla Tab a ella. Es el código original del plugin de Notepad++ (Chocobo1/nppAutoDetectIndent, 2.3), sin cambios, con su submódulo (la plantilla de plugins de N++ en el commit que fija).",
+	"author": "Mike Tzou (Chocobo1) (Edita port: Edita contributors)",
 	"homepage": "https://github.com/Chocobo1/nppAutoDetectIndent",
 	"license": "GPL-3.0-or-later",
 	"license-files": [

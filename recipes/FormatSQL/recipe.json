@@ -3,8 +3,9 @@
 	"display-name": "Datamodder SQL Formatter",
 	"version": "1.3.2.18",
 	"npp-compatible-versions": "[0.0.1,]",
-	"description": "Da formato a SQL con varios dialectos (T-SQL, MySQL, PostgreSQL, Oracle…): mayúsculas de las palabras clave, sangría y saltos de línea configurables. Es el código original del plugin de Notepad++ (dm-utils/formatsql, v1.3.2.18) con un parche de una línea: incluye <stddef.h> para ptrdiff_t, que el <string> de MSVC trae y el de GCC 12 no.",
-	"author": "Datamodder (port a Edita: Edita contributors)",
+	"description": "Formats SQL in several dialects (T-SQL, MySQL, PostgreSQL, Oracle…): keyword case, indentation and configurable line breaks. It is the original source code of the Notepad++ plugin (dm-utils/formatsql, v1.3.2.18) with a one-line patch: it includes <stddef.h> for ptrdiff_t, which MSVC's <string> brings in and GCC 12's does not.",
+	"description-es": "Da formato a SQL con varios dialectos (T-SQL, MySQL, PostgreSQL, Oracle…): mayúsculas de las palabras clave, sangría y saltos de línea configurables. Es el código original del plugin de Notepad++ (dm-utils/formatsql, v1.3.2.18) con un parche de una línea: incluye <stddef.h> para ptrdiff_t, que el <string> de MSVC trae y el de GCC 12 no.",
+	"author": "Datamodder (Edita port: Edita contributors)",
 	"homepage": "https://github.com/dm-utils/formatsql",
 	"license": "MIT",
 	"license-files": [
@@ -15,7 +16,9 @@
 		"sha256": "e2a1a78a303d23bb2478e90a5cf83e6697f15c276c1683148ad49dff54b0c114",
 		"strip-components": 1
 	},
-	"patches": ["ptrdiff.patch"],
+	"patches": [
+		"ptrdiff.patch"
+	],
 	"overlay": "overlay",
 	"build-dir": "edita",
 	"requires": [

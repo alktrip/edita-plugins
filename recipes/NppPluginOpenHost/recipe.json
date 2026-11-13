@@ -3,8 +3,9 @@
 	"display-name": "NppPluginOpenHost",
 	"version": "1.1.0.0",
 	"npp-compatible-versions": "[0.0.1,]",
-	"description": "Abre el archivo hosts del sistema. El plugin de Notepad++ (jejemorg/NppPluginOpenHost, v1.1) abre el de Windows; el port de Edita, con un parche de una línea, abre /etc/hosts.",
-	"author": "jejemorg (port a Edita: Edita contributors)",
+	"description": "Opens the system hosts file. The Notepad++ plugin (jejemorg/NppPluginOpenHost, v1.1) opens the Windows one; the Edita port, with a one-line patch, opens /etc/hosts.",
+	"description-es": "Abre el archivo hosts del sistema. El plugin de Notepad++ (jejemorg/NppPluginOpenHost, v1.1) abre el de Windows; el port de Edita, con un parche de una línea, abre /etc/hosts.",
+	"author": "jejemorg (Edita port: Edita contributors)",
 	"homepage": "https://github.com/jejemorg/NppPluginOpenHost",
 	"license": "Apache-2.0",
 	"license-files": [

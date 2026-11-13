@@ -3,8 +3,9 @@
 	"display-name": "NppStripIpAndHost",
 	"version": "1.0.0",
 	"npp-compatible-versions": "[0.0.1,]",
-	"description": "Quita o enmascara las direcciones IP y los nombres de host del documento, para compartir registros sin datos sensibles. Es el código original del plugin de Notepad++ (larreblarsson/NppStripIpAndHost, 1.0.0), sin cambios.",
-	"author": "Tomas Larsson (port a Edita: Edita contributors)",
+	"description": "Removes or masks IP addresses and host names in the document, to share logs without sensitive data. It is the original source code of the Notepad++ plugin (larreblarsson/NppStripIpAndHost, 1.0.0), unchanged.",
+	"description-es": "Quita o enmascara las direcciones IP y los nombres de host del documento, para compartir registros sin datos sensibles. Es el código original del plugin de Notepad++ (larreblarsson/NppStripIpAndHost, 1.0.0), sin cambios.",
+	"author": "Tomas Larsson (Edita port: Edita contributors)",
 	"homepage": "https://github.com/larreblarsson/NppStripIpAndHost",
 	"license": "GPL-2.0-or-later",
 	"license-files": [

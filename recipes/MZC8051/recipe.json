@@ -3,8 +3,9 @@
 	"display-name": "MZC8051",
 	"version": "0.0.1",
 	"npp-compatible-versions": "[0.0.1,]",
-	"description": "Compila C para microcontroladores 8051 con el compilador MZC8051 desde el editor (hace falta el compilador). Es el código original del plugin de Notepad++ (Jiangshan00001/npp_MZC8051, 0.0.1), sin cambios; la receta pasa de GBK a UTF-8 los dos archivos que lo necesitan.",
-	"author": "Jiangshan00001 (port a Edita: Edita contributors)",
+	"description": "Compiles C for 8051 microcontrollers with the MZC8051 compiler from the editor (the compiler is required). It is the original source code of the Notepad++ plugin (Jiangshan00001/npp_MZC8051, 0.0.1), unchanged; the recipe converts the two files that need it from GBK to UTF-8.",
+	"description-es": "Compila C para microcontroladores 8051 con el compilador MZC8051 desde el editor (hace falta el compilador). Es el código original del plugin de Notepad++ (Jiangshan00001/npp_MZC8051, 0.0.1), sin cambios; la receta pasa de GBK a UTF-8 los dos archivos que lo necesitan.",
+	"author": "Jiangshan00001 (Edita port: Edita contributors)",
 	"homepage": "https://github.com/Jiangshan00001/npp_MZC8051",
 	"license": "GPL-3.0-or-later",
 	"license-files": [

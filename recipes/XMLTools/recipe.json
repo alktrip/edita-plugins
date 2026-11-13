@@ -3,8 +3,9 @@
 	"display-name": "XML Tools",
 	"version": "3.1.1.13",
 	"npp-compatible-versions": "[0.0.1,]",
-	"description": "Comprobar la sintaxis y validar XML (DTD y XSD), formatear (pretty print), linealizar, ruta XPath actual, evaluar XPath, transformación XSL, escapar y comentar. Port de XML Tools (morbac/xmltools 3.1.1.13): usa su biblioteca QuickXml tal cual y libxml2/libxslt donde el original usa MSXML de Windows. Lleva libxml2 2.13 y libxslt 1.1 dentro (no depende de las de la distribución).",
-	"author": "Nicolas Crittin y colaboradores (port a Edita: Edita contributors)",
+	"description": "Check syntax and validate XML (DTD and XSD), pretty print, linearize, current XPath, evaluate XPath, XSL transformation, escape and comment. A port of XML Tools (morbac/xmltools 3.1.1.13): it uses its QuickXml library as is, and libxml2/libxslt where the original uses Windows MSXML. It bundles libxml2 2.13 and libxslt 1.1 (it does not depend on the distribution's).",
+	"description-es": "Comprobar la sintaxis y validar XML (DTD y XSD), formatear (pretty print), linealizar, ruta XPath actual, evaluar XPath, transformación XSL, escapar y comentar. Port de XML Tools (morbac/xmltools 3.1.1.13): usa su biblioteca QuickXml tal cual y libxml2/libxslt donde el original usa MSXML de Windows. Lleva libxml2 2.13 y libxslt 1.1 dentro (no depende de las de la distribución).",
+	"author": "Nicolas Crittin and contributors (Edita port: Edita contributors)",
 	"homepage": "https://github.com/morbac/xmltools",
 	"license": "GPL-3.0-or-later",
 	"license-files": [

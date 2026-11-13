@@ -235,6 +235,10 @@ def build_list(recipes_dir, packages_dir, sdk_dir, base_url, catalog_version, re
         entry["repository"] = ""
         for key in ("description", "author", "homepage", "license"):
             entry[key] = recipe.get(key, "")
+        # La descripción en otros idiomas («description-es»): Edita usa la de su idioma
+        for key, value in recipe.items():
+            if key.startswith("description-") and isinstance(value, str):
+                entry[key] = value
         entry["edita-recipe"] = "recipes/%s/recipe.json" % folder
         zip_path, sha = package_of(packages_dir, folder) if packages_dir else (None, None)
         if publishable(recipe) and zip_path:

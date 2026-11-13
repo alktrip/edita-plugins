@@ -3,8 +3,9 @@
 	"display-name": "HLASM Lexer",
 	"version": "1.1.1",
 	"npp-compatible-versions": "[0.0.1,]",
-	"description": "Resaltado de sintaxis de HLASM (IBM High Level Assembler para mainframe): etiquetas, instrucciones, operandos, comentarios, cadenas, registros y las columnas de continuación. Añade el lenguaje HLASM al menú Lenguaje (archivos .mlc, .mac y .cpy). Es el código original del plugin de Notepad++ (Zaneham/hlasm-npp, v1.1.1), sin cambios.",
-	"author": "Zane Hambly (port a Edita: Edita contributors)",
+	"description": "Syntax highlighting for HLASM (IBM High Level Assembler for mainframes): labels, instructions, operands, comments, strings, registers and continuation columns. Adds the HLASM language to the Language menu (.mlc, .mac and .cpy files). It is the original source code of the Notepad++ plugin (Zaneham/hlasm-npp, v1.1.1), unchanged.",
+	"description-es": "Resaltado de sintaxis de HLASM (IBM High Level Assembler para mainframe): etiquetas, instrucciones, operandos, comentarios, cadenas, registros y las columnas de continuación. Añade el lenguaje HLASM al menú Lenguaje (archivos .mlc, .mac y .cpy). Es el código original del plugin de Notepad++ (Zaneham/hlasm-npp, v1.1.1), sin cambios.",
+	"author": "Zane Hambly (Edita port: Edita contributors)",
 	"homepage": "https://github.com/Zaneham/hlasm-npp",
 	"license": "Apache-2.0",
 	"license-files": [
@@ -32,13 +33,39 @@
 			{
 				"language": "HLASM",
 				"text": "SAMPLE   CSECT\n* nota\n         LR    R12,R15\n",
-				"expect-styles": [[0, 1], [9, 2], [15, 4], [31, 2], [37, 9]]
+				"expect-styles": [
+					[
+						0,
+						1
+					],
+					[
+						9,
+						2
+					],
+					[
+						15,
+						4
+					],
+					[
+						31,
+						2
+					],
+					[
+						37,
+						9
+					]
+				]
 			},
 			{
 				"language": "HLASM",
 				"extension": "mlc",
 				"text": "* comentario\n",
-				"expect-styles": [[0, 4]]
+				"expect-styles": [
+					[
+						0,
+						4
+					]
+				]
 			}
 		]
 	}

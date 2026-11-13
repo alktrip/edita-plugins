@@ -3,8 +3,9 @@
 	"display-name": "Indent By Fold",
 	"version": "0.7.3",
 	"npp-compatible-versions": "[0.0.1,]",
-	"description": "Sangra el código según su plegado (los niveles de plegado del lexer), en lenguajes sin reglas de sangría propias. Es el código original del plugin de Notepad++ (ffes/indentbyfold, v0.7.3), sin cambios; la receta añade el encabezado de versión que genera su script de Windows.",
-	"author": "Ben Bluemel, Frank Fesevur (port a Edita: Edita contributors)",
+	"description": "Indents code according to its folding (the lexer's fold levels), in languages without their own indentation rules. It is the original source code of the Notepad++ plugin (ffes/indentbyfold, v0.7.3), unchanged; the recipe adds the version header that its Windows script generates.",
+	"description-es": "Sangra el código según su plegado (los niveles de plegado del lexer), en lenguajes sin reglas de sangría propias. Es el código original del plugin de Notepad++ (ffes/indentbyfold, v0.7.3), sin cambios; la receta añade el encabezado de versión que genera su script de Windows.",
+	"author": "Ben Bluemel, Frank Fesevur (Edita port: Edita contributors)",
 	"homepage": "https://github.com/ffes/indentbyfold",
 	"license": "GPL-2.0-or-later",
 	"license-files": [

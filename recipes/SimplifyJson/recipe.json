@@ -3,8 +3,9 @@
 	"display-name": "Simplify Json",
 	"version": "1.0.1",
 	"npp-compatible-versions": "[0.0.1,]",
-	"description": "Herramientas de JSON: escapar y desescapar cadenas, dar formato con sangría y minificar. Trabajan sobre la selección o el documento. Es el código original del plugin de Notepad++ (analystvipul/SimplifyJson, v1.0.1) con un parche de tres líneas: lee la selección con la regla de Scintilla 5, que no cuenta el NUL final (el original pierde el último carácter de la selección).",
-	"author": "Vipul Patil (port a Edita: Edita contributors)",
+	"description": "JSON tools: escape and unescape strings, format with indentation and minify. They work on the selection or the document. It is the original source code of the Notepad++ plugin (analystvipul/SimplifyJson, v1.0.1) with a three-line patch: it reads the selection with the Scintilla 5 rule, which does not count the trailing NUL (the original loses the last character of the selection).",
+	"description-es": "Herramientas de JSON: escapar y desescapar cadenas, dar formato con sangría y minificar. Trabajan sobre la selección o el documento. Es el código original del plugin de Notepad++ (analystvipul/SimplifyJson, v1.0.1) con un parche de tres líneas: lee la selección con la regla de Scintilla 5, que no cuenta el NUL final (el original pierde el último carácter de la selección).",
+	"author": "Vipul Patil (Edita port: Edita contributors)",
 	"homepage": "https://github.com/analystvipul/SimplifyJson",
 	"license": "GPL-2.0-only",
 	"license-files": [

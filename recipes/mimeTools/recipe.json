@@ -3,8 +3,9 @@
 	"display-name": "MIME Tools",
 	"version": "3.1",
 	"npp-compatible-versions": "[0.0.1,]",
-	"description": "Base64, Quoted-printable, URL encode/decode y SAML decode. Es el código original del plugin de Notepad++ (npp-plugins/mimetools, v3.1), sin cambios, con la capa de compatibilidad de Edita.",
-	"author": "Don HO, Paul Nankervis (port a Edita: Edita contributors)",
+	"description": "Base64, Quoted-printable, URL encode/decode and SAML decode. It is the original source code of the Notepad++ plugin (npp-plugins/mimetools, v3.1), unchanged, with Edita's compatibility layer.",
+	"description-es": "Base64, Quoted-printable, URL encode/decode y SAML decode. Es el código original del plugin de Notepad++ (npp-plugins/mimetools, v3.1), sin cambios, con la capa de compatibilidad de Edita.",
+	"author": "Don HO, Paul Nankervis (Edita port: Edita contributors)",
 	"homepage": "https://github.com/npp-plugins/mimetools",
 	"license": "GPL-3.0-or-later",
 	"license-files": [

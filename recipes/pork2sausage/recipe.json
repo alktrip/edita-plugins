@@ -3,8 +3,9 @@
 	"display-name": "Pork to Sausage",
 	"version": "2.6",
 	"npp-compatible-versions": "[0.0.1,]",
-	"description": "Transforma la selección con un programa externo: la manda a la orden que se configure y la sustituye por su salida. Es el código original del plugin de Notepad++ (npp-plugins/pork2sausage, v2.6) con un parche de una línea: abre los archivos con std::filesystem::path, porque std::ifstream con una ruta wchar_t es una extensión de MSVC.",
-	"author": "Don HO (port a Edita: Edita contributors)",
+	"description": "Transforms the selection with an external program: it sends it to the configured command and replaces it with its output. It is the original source code of the Notepad++ plugin (npp-plugins/pork2sausage, v2.6) with a one-line patch: it opens files with std::filesystem::path, because std::ifstream with a wchar_t path is an MSVC extension.",
+	"description-es": "Transforma la selección con un programa externo: la manda a la orden que se configure y la sustituye por su salida. Es el código original del plugin de Notepad++ (npp-plugins/pork2sausage, v2.6) con un parche de una línea: abre los archivos con std::filesystem::path, porque std::ifstream con una ruta wchar_t es una extensión de MSVC.",
+	"author": "Don HO (Edita port: Edita contributors)",
 	"homepage": "https://github.com/npp-plugins/pork2sausage",
 	"license": "GPL-2.0-or-later",
 	"license-files": [

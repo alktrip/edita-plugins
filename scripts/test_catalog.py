@@ -94,7 +94,7 @@ class Lists(unittest.TestCase):
         for folder, license_ in (("Libre", "MIT"), ("SoloDos", "GPL-2.0-only"), ("SinPaquete", "GPL-3.0-or-later")):
             write(self.recipes / folder / "recipe.json", json.dumps({
                 "folder-name": folder, "display-name": folder + " plugin", "version": "1.2",
-                "npp-compatible-versions": "[0.0.1,]", "description": "…", "author": "Autor",
+                "npp-compatible-versions": "[0.0.1,]", "description": "…", "description-es": "… en español", "author": "Autor",
                 "homepage": "https://example.org/" + folder, "license": license_}))
             write(self.recipes / folder / "overlay/edita/CMakeLists.txt", "project(%s)\n" % folder)
         for folder in ("Libre", "SoloDos"):
@@ -134,6 +134,8 @@ class Lists(unittest.TestCase):
             self.assertEqual(plugins[folder]["edita-build"], "recipe")
             self.assertEqual(plugins[folder]["id"], "")
             self.assertEqual(plugins[folder]["repository"], "")
+        # Las traducciones de la descripción pasan a la lista
+        self.assertEqual(libre["description-es"], "… en español")
         # Los campos que Edita (y N++) exigen son cadenas
         for p in result["npp-plugins"]:
             for key in ("folder-name", "display-name", "author", "description", "id", "version", "repository", "homepage"):

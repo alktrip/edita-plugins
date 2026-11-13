@@ -3,8 +3,9 @@
 	"display-name": "TidyText",
 	"version": "1.2.0.0",
 	"npp-compatible-versions": "[0.0.1,]",
-	"description": "Resalta y repara caracteres invisibles o mal codificados (mojibake): espacios duros, espacios de ancho cero, BOM y UTF-8 leído como Latin-1, entre otros. Es el código original del plugin de Notepad++ (gonzalu/TidyText, v1.2.0) con un parche de dos líneas: lee la selección con la regla de Scintilla 5, que no cuenta el NUL final (el original escribe un byte fuera de su búfer al enviar la selección a un asistente).",
-	"author": "gonzalu (port a Edita: Edita contributors)",
+	"description": "Highlights and repairs invisible or badly encoded characters (mojibake): non-breaking spaces, zero-width spaces, BOMs and UTF-8 read as Latin-1, among others. It is the original source code of the Notepad++ plugin (gonzalu/TidyText, v1.2.0) with a two-line patch: it reads the selection with the Scintilla 5 rule, which does not count the trailing NUL (the original writes one byte past its buffer when sending the selection to an assistant).",
+	"description-es": "Resalta y repara caracteres invisibles o mal codificados (mojibake): espacios duros, espacios de ancho cero, BOM y UTF-8 leído como Latin-1, entre otros. Es el código original del plugin de Notepad++ (gonzalu/TidyText, v1.2.0) con un parche de dos líneas: lee la selección con la regla de Scintilla 5, que no cuenta el NUL final (el original escribe un byte fuera de su búfer al enviar la selección a un asistente).",
+	"author": "gonzalu (Edita port: Edita contributors)",
 	"homepage": "https://github.com/gonzalu/TidyText",
 	"license": "GPL-2.0-or-later",
 	"license-files": [

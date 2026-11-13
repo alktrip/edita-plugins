@@ -3,8 +3,9 @@
 	"display-name": "NppCrossCheck",
 	"version": "1.3.0.0",
 	"npp-compatible-versions": "[0.0.1,]",
-	"description": "Compara dos listas y marca los elementos que están en una pero no en la otra. Es el código original del plugin de Notepad++ (pablo-code14/NppCrossCheck, v1.3.0) con un parche de una línea: abre los archivos con std::filesystem::path, porque std::ifstream con una ruta wchar_t es una extensión de MSVC.",
-	"author": "Pablo Lopez (port a Edita: Edita contributors)",
+	"description": "Compares two lists and marks the items that are in one but not in the other. It is the original source code of the Notepad++ plugin (pablo-code14/NppCrossCheck, v1.3.0) with a one-line patch: it opens files with std::filesystem::path, because std::ifstream with a wchar_t path is an MSVC extension.",
+	"description-es": "Compara dos listas y marca los elementos que están en una pero no en la otra. Es el código original del plugin de Notepad++ (pablo-code14/NppCrossCheck, v1.3.0) con un parche de una línea: abre los archivos con std::filesystem::path, porque std::ifstream con una ruta wchar_t es una extensión de MSVC.",
+	"author": "Pablo Lopez (Edita port: Edita contributors)",
 	"homepage": "https://github.com/pablo-code14/NppCrossCheck",
 	"license": "GPL-2.0-or-later",
 	"license-files": [
